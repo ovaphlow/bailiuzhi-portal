@@ -2,10 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Feature from '../components/Feature.astro';
-import Figure from '../components/Figure.astro';
+import BearingMbdDiagram from '../components/BearingMbdDiagram.astro';
+import Lightbox from '../components/Lightbox.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/** 案例背景要点：[冒号前的引导词, 说明] */
+const backgroundPoints: [string, string][] = [
+  ['参数化结构设计', '轴承零部件参数化建模，总耗时 5 分钟/个'],
+  ['三维自动标注', 'MBD 模型自动生成，关节轴承组件尺寸链分析'],
+  ['检测表单自动生成', '符合最新国标'],
+  ['老国标降版图纸自动生成', '对接现有能力；加工工艺自动生成'],
+];
 ---
 
 <BaseLayout
@@ -21,65 +29,38 @@ import CtaBand from '../components/CtaBand.astro';
   <section id="intro" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
       <SectionHead eyebrow="Background" title="案例背景" />
-      <Feature
-        desc="轴承标准件系列多、改型频繁，参数化建模与检测编程重复性高，交付周期与质量一致性难以兼顾。"
-        points={[
-          '参数化结构设计：轴承零部件参数化建模，总耗时 5 分钟/个',
-          '三维自动标注：MBD 模型自动生成，关节轴承组件尺寸链分析',
-          '检测表单自动生成：符合最新国标',
-          '老国标降版图纸自动生成，对接现有能力；加工工艺自动生成',
-        ]}
-        img="/assets/media/review/%E8%BD%B4%E6%89%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E5%8F%82%E6%95%B0%E5%8C%96%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image12.png"
-        alt="轴承一体化方案界面"
-        caption="轴承标准件设计、检测一体化方案界面"
-      />
-    </div>
-  </section>
-
-  <section id="solutions" class="bg-surface py-14 md:py-18">
-    <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Solutions" title="方案要点 · 图文详解" desc="参数化建模、三维标注与方案界面。" />
-      <div class="grid gap-10">
-        <Feature
-          sub="01 · 参数化结构设计"
-          title="标准件单件 5 分钟"
-          desc="轴承零部件参数化建模，MBD 模型自动生成，单件设计 5 分钟完成，改型一键驱动全链同步。"
-          points={['关节轴承组件三维尺寸链分析', '标准件设计检测一体化全链路']}
-          img="/assets/media/review/%E8%BD%B4%E6%89%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E5%8F%82%E6%95%B0%E5%8C%96%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image15.png"
-          alt="三维自动标注与尺寸链分析"
-          caption="MBD 三维自动标注与关节轴承尺寸链分析"
-        />
-        <Feature
-          flip
-          sub="02 · 方案界面一览"
-          title="选型、建模、出图一体化操作"
-          desc="轴承方案界面提供参数化选型、三维建模与自动标注出图的统一操作入口。"
-          points={['参数输入 → 模型实时渲染', '自动出图与检测计划衔接']}
-          img="/assets/media/review/%EF%BC%88%E9%80%9A%E7%94%A8%EF%BC%89%E9%9D%9E%E6%A0%87%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%8A%A8%E5%8C%96%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88V2.0/image121.png"
-          alt="轴承方案界面截图"
-          caption="轴承方案界面截图"
-        />
-        <Feature
-          sub="03 · 一体化链路"
-          title="从参数化建模到加工工艺生成"
-          desc="参数化结构设计 → 三维自动标注 → 二维图纸自动生成 → 检测表单自动生成 → 老国标降版图纸自动生成 → 加工工艺自动生成，全链路贯通。"
-          points={['检测表单自动生成，符合最新国标', '加工工艺自动生成，对接现有能力']}
-          img="/assets/media/docs/company-profile/elements/v4-p41-a.jpg"
-          alt="轴承标准件设计检测一体化案例"
-        />
-        <div class="grid gap-6 md:grid-cols-2">
-          <Figure
-            img="/assets/media/review/%E8%BD%B4%E6%89%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E5%8F%82%E6%95%B0%E5%8C%96%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image18.png"
-            alt="参数化建模出图"
-            caption="参数化建模与自动标注出图效果"
-          />
-        </div>
+      <div class="rounded-xl border border-brand/10 bg-brand-soft p-6 md:p-8">
+        <p class="m-0 max-w-240 text-[1.05rem] leading-relaxed font-medium text-brand-deep md:text-[1.18rem]">
+          轴承标准件系列多、改型频繁，参数化建模与检测编程重复性高，交付周期与质量一致性难以兼顾。
+        </p>
+        <ul class="mt-6 mb-0 grid list-none gap-x-10 gap-y-4 p-0 md:grid-cols-2">
+          {
+            backgroundPoints.map(([label, rest]) => (
+              <li class="relative pl-6 text-[1rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[0.5em] before:h-2.5 before:w-2.5 before:rounded-sm before:bg-gold before:content-['']">
+                <strong class="font-semibold text-brand-deep">{label}：</strong>
+                {rest}
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 
+  <!-- 对应 PPT 第 2 页「轴承标准件设计、检测一体化的解决方案」，按原始版式复刻 -->
+  <section id="solutions" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        wide
+        eyebrow="Solutions"
+        title="轴承标准件设计、检测一体化的解决方案"
+        desc=""
+      />
+      <BearingMbdDiagram />
+    </div>
+  </section>
+
   <ContactSection />
-  <CtaBand sub="参数化建模 + MBD 自动标注，重塑轴承行业交付效率。">
-    标准件设计检测 <span class="text-gold-deep">单件 5 分钟</span>
-  </CtaBand>
+  <CtaBand />
+  <Lightbox />
 </BaseLayout>

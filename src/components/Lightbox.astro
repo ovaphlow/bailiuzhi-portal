@@ -1,7 +1,11 @@
 ---
 /**
- * 图片灯箱组件：点击 zoomable 图片可放大浏览，支持前后切换与 Esc 关闭。
- * 在使用方页面引入 <Lightbox /> 即可，配合 img.zoomable class。
+ * 媒体灯箱组件：点击可放大浏览，支持前后切换与 Esc 关闭。
+ *
+ * 使用方页面引入 <Lightbox /> 后：
+ *   - img.zoomable                      → 点击放大图片
+ *   - [data-lb-video="xxx.mp4"]         → 点击在灯箱内播放视频（data-lb-poster 作为封面）
+ * 说明文字取自最近的 figure > figcaption，其次 img 的 alt / data-lb-caption。
  */
 
 ---
@@ -12,6 +16,7 @@
   <button class="lb-next" aria-label="下一张">&#10095;</button>
   <div class="lb-body">
     <img class="lb-img" alt="" />
+    <video class="lb-video" controls playsinline preload="none"></video>
     <div class="lb-cap"></div>
   </div>
 </div>
@@ -45,6 +50,20 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     object-fit: contain;
     background: #fff;
+  }
+  .lb-video {
+    display: none;
+    max-width: 88vw;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    background: #000;
+  }
+  .lb-overlay.is-video .lb-img {
+    display: none;
+  }
+  .lb-overlay.is-video .lb-video {
+    display: block;
   }
   .lb-cap {
     margin-top: 12px;
@@ -97,40 +116,85 @@
     if (!overlay) return;
 
     var lbImg = overlay.querySelector('.lb-img');
+    var lbVideo = overlay.querySelector('.lb-video');
     var lbCap = overlay.querySelector('.lb-cap');
-    var imgs = Array.from(document.querySelectorAll('img.zoomable'));
-    if (!imgs.length) return;
+    var triggers = Array.from(document.querySelectorAll('img.zoomable, [data-lb-video]'));
+    if (!triggers.length) return;
+
+    // 统一成 { kind, src, poster, caption, alt } 列表，顺序即页面 DOM 顺序
+    var items = triggers.map(function (el) {
+      var isVideo = el.hasAttribute('data-lb-video');
+      var cap =
+        el.getAttribute('data-lb-caption') ||
+        el.closest('figure')?.querySelector('figcaption')?.textContent?.trim() ||
+        '';
+      if (isVideo) {
+        return {
+          kind: 'video',
+          src: el.getAttribute('data-lb-video'),
+          poster: el.getAttribute('data-lb-poster') || '',
+          caption: cap,
+          alt: el.getAttribute('aria-label') || '视频',
+        };
+      }
+      return { kind: 'img', src: el.currentSrc || el.src, caption: cap || el.alt || '', alt: el.alt || '' };
+    });
 
     var current = 0;
 
-    function captionFor(img) {
-      var cap = img.closest('figure')?.querySelector('figcaption');
-      return cap?.textContent?.trim() || img.alt || '';
+    function stopVideo() {
+      if (!lbVideo) return;
+      lbVideo.pause();
+      lbVideo.removeAttribute('src');
+      lbVideo.removeAttribute('poster');
+      lbVideo.load();
     }
 
     function show(i) {
-      current = (i + imgs.length) % imgs.length;
-      lbImg.src = imgs[current].src;
-      lbImg.alt = imgs[current].alt || '';
-      lbCap.textContent = captionFor(imgs[current]);
+      current = (i + items.length) % items.length;
+      var item = items[current];
+      if (item.kind === 'video') {
+        overlay.classList.add('is-video');
+        if (lbVideo.getAttribute('src') !== item.src) {
+          lbVideo.setAttribute('src', item.src);
+          if (item.poster) lbVideo.setAttribute('poster', item.poster);
+        }
+        // 不要在此处调用 load()：它会中断紧随其后的 play()（AbortError）
+        var playing = lbVideo.play();
+        if (playing && playing.catch) playing.catch(function () {});
+      } else {
+        stopVideo();
+        overlay.classList.remove('is-video');
+        lbImg.src = item.src;
+        lbImg.alt = item.alt;
+      }
+      lbCap.textContent = item.caption;
     }
 
-    function open(i) {
+    function open(i, fromEl) {
+      // 若已有视频在播，先切到目标项
       show(i);
       overlay.classList.add('open');
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      if (fromEl && !fromEl.classList.contains('zoomable')) fromEl.blur?.();
     }
 
     function close() {
-      overlay.classList.remove('open');
+      stopVideo();
+      overlay.classList.remove('open', 'is-video');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
 
-    imgs.forEach(function (img, i) {
-      img.classList.add('cursor-zoom-in');
-      img.addEventListener('click', function () { open(i); });
+    triggers.forEach(function (el, i) {
+      if (el.tagName === 'IMG' && el.classList.contains('zoomable') && !el.hasAttribute('data-lb-video')) {
+        el.classList.add('cursor-zoom-in');
+      }
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        open(i, el);
+      });
     });
 
     overlay.addEventListener('click', function (e) {
