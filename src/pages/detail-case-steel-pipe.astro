@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Figure from '../components/Figure.astro';
+import Card from '../components/Card.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<BaseLayout
+  title="无缝钢管 AI 排程应用案例 · 百六智数字科技"
+  description="破解原材料损耗严重、库存周转滞缓、订单物料长期呆滞难题 —— 每年节省原材料成本 800 万元，订单扩容 20%。"
+>
+  <PageHero
+    kicker="STEEL PIPE APS · AI 智能排产 | 降本增效 | 库存优化"
+    title="无缝钢管 AI 排程应用案例"
+    lede="破解原材料损耗严重、库存周转滞缓、订单物料长期呆滞难题 —— 每年节省原材料成本 800 万元，订单扩容 20%。"
+  />
+
+  <section id="pain" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card
+          idx="痛点"
+          title="客户痛点"
+          desc="无缝钢管生产物料成本高、计划靠人工经验，浪费与呆滞长期并存。"
+          points={[
+            '原材料损耗严重，年度物料浪费超千万元',
+            '库存周转滞缓，仓储占用与资金积压成本居高不下',
+            '订单物料长期呆滞，排产无法优先消化库存',
+          ]}
+        />
+        <Card
+          idx="方案"
+          title="核心落地内容"
+          desc="AI 排程围绕「省料、合并、消库存」三条主线重构生产计划。"
+          points={[
+            'AI 排程优化工序，减少换模与质检环节，节约物料消耗、提高生产率',
+            '订单智能合并排产，提高钢管切割用料利用率，降低废料产生',
+            '排产优先消化库存并二次加工适配订单，降低库存积压',
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="value" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Value" title="客户价值收益" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card idx="降本" title="800 万元/年 原材料成本节省" desc="工序优化 + 智能合并排料，切割用料利用率显著提升，废料与原料浪费同步下降。" />
+        <Card idx="扩产" title="20% 订单扩容" desc="同等产能下消化更多订单；库存优先消化的排产策略让周转与资金占用同步改善。" />
+      </div>
+      <Figure
+        img="/assets/media/docs/company-profile/elements/v4-p48-a.jpg"
+        alt="无缝钢管 AI 排程应用案例"
+      />
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand sub="从排产计划切入，体验 AI 排程带来的降本与扩容。">
+    让每一吨原料都 <span class="text-gold-deep">用在订单上</span>
+  </CtaBand>
+</BaseLayout>

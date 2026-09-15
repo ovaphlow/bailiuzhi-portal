@@ -1,0 +1,131 @@
+---
+/**
+ * 「产品与解决方案」区块：三大业务场景卡片 + 技术底座赋能 + 产品方案列表。
+ * 首页与产品和解决方案页共用（数据源：data/home、data/products-solutions）。
+ * showProducts=false 时隐藏产品方案列表（首页用），其余内容两页一致。
+ * 产品列表按《公司简介 4.0》层级分组：业务场景（一级）→ 场景下的产品与方案（二级）。
+ */
+import SectionHead from './SectionHead.astro';
+import Card from './Card.astro';
+import { scenes } from '../data/home';
+import { productGroups, type ProductGroup } from '../data/products-solutions';
+
+interface Props {
+  showProducts?: boolean;
+}
+const { showProducts = true } = Astro.props;
+
+/** Tailwind 需要字面量类名，不能拼模板字符串 */
+const colClass: Record<number, string> = {
+  1: 'md:grid-cols-1',
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-3',
+};
+/** 按分组的列数覆盖（columns=1 为通栏纵向）或组内产品数决定列数 */
+function colsFor(group: ProductGroup): string {
+  if (group.columns) return colClass[group.columns];
+  if (group.products.length === 3) return 'md:grid-cols-3';
+  if (group.products.length === 1) return 'md:grid-cols-1';
+  return 'md:grid-cols-2';
+}
+function imgHeightFor(group: ProductGroup): string {
+  return colsFor(group) === 'md:grid-cols-3' ? 'h-48' : 'h-60';
+}
+---
+
+<section id="solutions" class="bg-surface py-14 md:py-18">
+  <div class="mx-auto max-w-300 px-6 lg:px-10">
+    <SectionHead
+      eyebrow="Products & Solutions"
+      title="产品与解决方案"
+      desc="安全、自主、私有、一体化的技术底座"
+      desc1="构建“企业智慧大脑”，让AI智能体成为每位员工的超级助手，赋能业务全流程。"
+    />
+
+    <!-- 三大业务场景 -->
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        scenes.map((item) => (
+          <Card
+            img={item.img}
+            alt={item.alt}
+            idx={item.idx}
+            title={item.title}
+            desc={item.desc}
+            tag={item.tag}
+            list={item.list}
+            href={item.href}
+            class="bg-white"
+          />
+        ))
+      }
+    </div>
+
+    <!-- 技术底座赋能 -->
+    <div class="mt-10 rounded-xl border border-brand/10 bg-brand-soft p-6">
+      <p class="m-0 text-[0.95rem] leading-relaxed text-muted">
+        <strong class="font-semibold text-brand-deep">技术底座赋能：</strong>三大业务场景共享统一的 AI 技术架构与数据标准体系，实现算法模型、数据资源的复用与互通，避免重复建设，为企业构建高效协同、可扩展的 AI 应用生态，持续释放数字化转型价值。
+      </p>
+    </div>
+
+    <!-- 产品与方案列表：按业务场景归属分组（一级场景 → 二级产品） -->
+    {
+      showProducts && (
+        <div class="mt-14">
+          {
+            productGroups.map((group) => (
+              <div id={group.id} class="mb-12 scroll-mt-28 last:mb-0">
+                {/* 一级：业务场景标题条 */}
+                <div class="rounded-xl bg-brand-deep px-6 py-6">
+                  <div class="font-mono text-[0.72rem] tracking-[0.14em] text-gold">
+                    {group.sceneEn}
+                  </div>
+                  <h4 class="mt-1 mb-0 text-xl font-semibold text-white md:text-[1.55rem]">
+                    {group.scene}
+                  </h4>
+                  <p class="mt-2 mb-0 max-w-160 text-[0.9rem] leading-relaxed text-white/70">
+                    {group.desc}
+                  </p>
+                </div>
+
+                {/* 二级：该场景下的产品与方案（文字要点卡或图文卡） */}
+                <div class:list={['mt-6 grid gap-6', colsFor(group)]}>
+                  {group.products.map((item) => (
+                    <Card
+                      img={item.img}
+                      alt={item.alt}
+                      idx={item.idx}
+                      title={item.title}
+                      desc={item.desc}
+                      tag={item.tag}
+                      list={item.list}
+                      listCols={item.listCols ?? (group.columns === 1 ? 2 : undefined)}
+                      metric={item.metric}
+                      href={item.href}
+                      imgHeight={imgHeightFor(group)}
+                      class="bg-white"
+                    />
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      )
+    }
+
+    <!-- 首页隐藏产品卡时，跳转产品和解决方案页 -->
+    {
+      !showProducts && (
+        <div class="mt-10 text-center">
+          <a
+            href="/products-solutions/"
+            class="inline-flex items-center rounded-full bg-brand px-8 py-3 text-[0.95rem] font-semibold text-white transition-colors hover:bg-brand-hover"
+          >
+            查看产品和解决方案 →
+          </a>
+        </div>
+      )
+    }
+  </div>
+</section>

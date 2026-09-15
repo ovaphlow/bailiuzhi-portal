@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/* 设计令牌：与原 site/index.html 的 CSS 变量一一对应 */
+@theme {
+  --color-brand: #1d4ed8;        /* 原 --blue */
+  --color-brand-hover: #1e40af;  /* 原 --blue-hover */
+  --color-brand-deep: #0f2e63;   /* 原 --blue-deep */
+  --color-brand-soft: #eff4ff;   /* 原 --blue-soft */
+  --color-gold: #d4af37;         /* 原 --gold */
+  --color-gold-deep: #b8860b;    /* 原 --gold-deep */
+  --color-gold-soft: #fbf6e9;    /* 原 --gold-soft */
+  --color-surface: #f8fafc;      /* 原 --surface */
+  --color-ink: #0f172a;          /* 原 --text */
+  --color-muted: #64748b;        /* 原 --secondary */
+  --color-teal-soft: #e7f6f5;    /* 浅 teal 背景 */
+  --color-teal-deep: #0f766e;    /* 深 teal 文字 */
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}

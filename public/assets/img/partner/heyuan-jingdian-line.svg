@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="河源精电真实产线：机器人作业与跑机数据回溯示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+
+  <!-- 跑机数据看板 -->
+  <g>
+    <rect x="70" y="60" width="470" height="210" rx="12" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <path d="M70 106H540" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+    <circle cx="96" cy="83" r="7" fill="#d4af37"/>
+    <circle cx="118" cy="83" r="7" fill="#1d4ed8" fill-opacity="0.3"/>
+    <text x="140" y="90" font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#0f2e63">REAL LINE DATA</text>
+    <!-- 曲线坐标系 -->
+    <path d="M104 240H500M104 132V240" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="2"/>
+    <path d="M104 232L146 210L188 220L230 186L272 196L314 158L356 172L398 142L440 152L482 128" fill="none" stroke="#d4af37" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M104 238L146 226L188 230L230 214L272 222L314 200L356 208L398 190L440 198L482 178" fill="none" stroke="#1d4ed8" stroke-opacity="0.45" stroke-width="3" stroke-dasharray="7 7"/>
+    <circle cx="482" cy="128" r="9" fill="#d4af37"/>
+    <!-- 柱状簇 -->
+    <g fill="#1d4ed8" fill-opacity="0.16">
+      <rect x="432" y="204" width="16" height="36" rx="4"/>
+      <rect x="456" y="186" width="16" height="54" rx="4"/>
+    </g>
+    <rect x="480" y="196" width="16" height="44" rx="4" fill="#d4af37" fill-opacity="0.55"/>
+  </g>
+
+  <!-- 黑匣子追溯装置 -->
+  <g>
+    <rect x="860" y="96" width="250" height="150" rx="12" fill="#0f2e63" stroke="#d4af37" stroke-width="4"/>
+    <path d="M884 120V144M884 120H908M1058 120H1082V144M1082 216V192M1082 216H1058M884 216H860V192M860 216V192" fill="none" stroke="#d4af37" stroke-width="4"/>
+    <rect x="906" y="140" width="158" height="56" rx="6" fill="#16386f"/>
+    <path d="M918 184L940 168L962 176L984 156L1006 164L1028 150L1050 158" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round"/>
+    <text x="985" y="224" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="18" fill="#d4af37">X-BLACKBOX</text>
+  </g>
+
+  <!-- 数据流虚线 -->
+  <g fill="none" stroke="#d4af37" stroke-width="4" stroke-dasharray="10 10">
+    <path d="M300 312V282"/>
+    <path d="M905 330V246"/>
+    <path d="M590 476V166H546" stroke-opacity="0.7"/>
+  </g>
+  <path d="M292 292L300 280L308 292M897 260L905 248L913 260M556 158L544 166L556 174" fill="none" stroke="#d4af37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 机器人 1：锁付工位 -->
+  <g>
+    <rect x="252" y="470" width="96" height="26" rx="6" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M280 470L330 380" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <path d="M330 380L318 316" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="300" cy="430" r="14" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <circle cx="330" cy="380" r="14" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <rect x="304" y="300" width="28" height="20" rx="5" fill="#1d4ed8" fill-opacity="0.85"/>
+    <path d="M318 320V344" stroke="#b8860b" stroke-width="6" stroke-linecap="round"/>
+    <text x="300" y="540" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="18" fill="#b8860b">FASTEN</text>
+  </g>
+
+  <!-- 机器人 2：视觉检测工位 -->
+  <g>
+    <rect x="856" y="470" width="96" height="26" rx="6" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M884 470L934 384" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <path d="M934 384L905 340" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="904" cy="432" r="14" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <circle cx="934" cy="384" r="14" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <rect x="880" y="318" width="50" height="26" rx="6" fill="#1d4ed8" fill-opacity="0.85"/>
+    <path d="M890 352L868 428H952Z" fill="#1d4ed8" fill-opacity="0.14" stroke="#1d4ed8" stroke-opacity="0.4" stroke-width="3"/>
+    <text x="905" y="540" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="18" fill="#b8860b">INSPECT</text>
+  </g>
+
+  <!-- 产线输送带 -->
+  <g>
+    <rect x="60" y="566" width="1080" height="44" rx="22" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <g fill="#eff4ff" stroke="#1d4ed8" stroke-width="3">
+      <circle cx="110" cy="588" r="13"/>
+      <circle cx="250" cy="588" r="13"/>
+      <circle cx="390" cy="588" r="13"/>
+      <circle cx="530" cy="588" r="13"/>
+      <circle cx="670" cy="588" r="13"/>
+      <circle cx="810" cy="588" r="13"/>
+      <circle cx="950" cy="588" r="13"/>
+      <circle cx="1090" cy="588" r="13"/>
+    </g>
+    <!-- 流向箭头 -->
+    <path d="M600 634H680" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="4"/>
+    <path d="M662 626L680 634L662 642" fill="none" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- 在制 PCB 板 -->
+  <g>
+    <rect x="252" y="496" width="120" height="66" rx="6" fill="#1d4ed8" fill-opacity="0.14" stroke="#1d4ed8" stroke-width="4"/>
+    <g fill="#1d4ed8" fill-opacity="0.5">
+      <circle cx="278" cy="520" r="5"/>
+      <circle cx="306" cy="520" r="5"/>
+      <circle cx="334" cy="520" r="5"/>
+      <circle cx="278" cy="544" r="5"/>
+      <circle cx="306" cy="544" r="5"/>
+      <circle cx="334" cy="544" r="5"/>
+    </g>
+    <!-- 检测中的板：金色框 -->
+    <rect x="845" y="496" width="120" height="66" rx="6" fill="#1d4ed8" fill-opacity="0.14" stroke="#d4af37" stroke-width="5"/>
+    <g fill="#1d4ed8" fill-opacity="0.5">
+      <circle cx="871" cy="520" r="5"/>
+      <circle cx="899" cy="520" r="5"/>
+      <circle cx="927" cy="520" r="5"/>
+      <circle cx="871" cy="544" r="5"/>
+      <circle cx="899" cy="544" r="5"/>
+    </g>
+    <circle cx="927" cy="544" r="7" fill="#d4af37"/>
+    <!-- 待加工板 -->
+    <rect x="530" y="496" width="120" height="66" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-width="4" stroke-opacity="0.6"/>
+    <path d="M556 529H624" stroke="#1d4ed8" stroke-opacity="0.4" stroke-width="4"/>
+  </g>
+
+  <!-- 底部标注 -->
+  <g>
+    <text x="60" y="712" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#0f2e63">HEYUAN JINGDIAN &#183; LIVE PRODUCTION LINE</text>
+    <path d="M60 726H640" stroke="#d4af37" stroke-width="4"/>
+  </g>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="机器视觉光源选型、参数化建模与出图自动化示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d4af37" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#d4af37" stop-opacity="0.06"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 环形光源 -->
+  <g>
+    <path d="M210 250L330 250L392 402H148Z" fill="url(#cone)"/>
+    <circle cx="270" cy="196" r="104" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <circle cx="270" cy="196" r="74" fill="#eff4ff" stroke="#1d4ed8" stroke-width="4"/>
+    <g fill="#d4af37">
+      <circle cx="270" cy="104" r="9"/>
+      <circle cx="312" cy="113" r="9"/>
+      <circle cx="345" cy="143" r="9"/>
+      <circle cx="355" cy="196" r="9"/>
+      <circle cx="345" cy="249" r="9"/>
+      <circle cx="312" cy="279" r="9"/>
+      <circle cx="270" cy="288" r="9"/>
+      <circle cx="228" cy="279" r="9"/>
+      <circle cx="195" cy="249" r="9"/>
+      <circle cx="185" cy="196" r="9"/>
+      <circle cx="195" cy="143" r="9"/>
+      <circle cx="228" cy="113" r="9"/>
+    </g>
+  </g>
+
+  <!-- 输送线与工件 -->
+  <g>
+    <path d="M96 430H470" stroke="#0f2e63" stroke-width="5"/>
+    <g fill="#eff4ff" stroke="#1d4ed8" stroke-width="3">
+      <circle cx="126" cy="430" r="16"/>
+      <circle cx="204" cy="430" r="16"/>
+      <circle cx="282" cy="430" r="16"/>
+      <circle cx="360" cy="430" r="16"/>
+      <circle cx="438" cy="430" r="16"/>
+    </g>
+    <rect x="230" y="374" width="80" height="46" rx="6" fill="#1d4ed8" fill-opacity="0.2" stroke="#1d4ed8" stroke-width="4"/>
+    <path d="M270 402V430" stroke="#d4af37" stroke-width="3" stroke-dasharray="6 6"/>
+  </g>
+
+  <!-- 自动选型面板 -->
+  <g>
+    <rect x="540" y="120" width="292" height="300" rx="12" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <path d="M540 176H832" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+    <text x="566" y="158" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#0f2e63">AUTO SELECT</text>
+    <g>
+      <!-- 第 1 行：已选中 -->
+      <rect x="566" y="200" width="24" height="24" rx="6" fill="#d4af37"/>
+      <path d="M570 212L576 219L587 202" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="608" y="204" width="160" height="14" rx="7" fill="#1d4ed8" fill-opacity="0.55"/>
+      <!-- 第 2-4 行：候选 -->
+      <rect x="566" y="252" width="24" height="24" rx="6" fill="none" stroke="#1d4ed8" stroke-opacity="0.5" stroke-width="3"/>
+      <rect x="608" y="256" width="120" height="14" rx="7" fill="#1d4ed8" fill-opacity="0.2"/>
+      <rect x="566" y="304" width="24" height="24" rx="6" fill="none" stroke="#1d4ed8" stroke-opacity="0.5" stroke-width="3"/>
+      <rect x="608" y="308" width="180" height="14" rx="7" fill="#1d4ed8" fill-opacity="0.2"/>
+      <rect x="566" y="356" width="24" height="24" rx="6" fill="none" stroke="#1d4ed8" stroke-opacity="0.5" stroke-width="3"/>
+      <rect x="608" y="360" width="140" height="14" rx="7" fill="#1d4ed8" fill-opacity="0.2"/>
+    </g>
+  </g>
+
+  <text x="540" y="470" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">20 CATEGORIES &#183; 40 PARAMS</text>
+</svg>

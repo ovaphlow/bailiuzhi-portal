@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'gold';
+  class?: string;
+}
+const { href, variant = 'primary', class: className } = Astro.props;
+
+const styles = {
+  primary: 'bg-brand text-white hover:bg-brand-hover',
+  gold: 'border border-gold text-gold hover:bg-gold/15',
+} as const;
+---
+
+<!-- 通用按钮（链接形态） -->
+<a
+  href={href}
+  class:list={[
+    'inline-flex items-center gap-2 rounded-md px-6 py-3 text-[0.95rem] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+    styles[variant],
+    className,
+  ]}
+>
+  <slot />
+</a>

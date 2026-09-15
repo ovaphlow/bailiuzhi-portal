@@ -1,0 +1,41 @@
+---
+import { navLinks } from '../data/site';
+---
+
+<!-- 页脚（深色） -->
+<footer class="border-t border-white/[0.08] bg-brand-deep py-12">
+  <div class="mx-auto flex max-w-300 flex-wrap items-start justify-between gap-6 px-6 lg:px-10">
+    <div>
+      <div class="flex items-center">
+        <img src="/assets/img/logo-light.png" alt="百六智数字科技" class="block h-[30px] w-auto" />
+      </div>
+      <p class="mt-1 mb-0 text-[0.875rem] text-[#dee7ff]/66">
+        © 2026 百六智数字科技 · 让每一家追求卓越的制造企业，都拥有专属「智慧大脑」
+      </p>
+    </div>
+    <nav class="flex flex-wrap gap-6 pt-1.5" aria-label="页脚导航">
+      {
+        navLinks.map((link) => (
+          <a
+            class="inline-flex items-center gap-1.5 text-[0.9rem] text-[#dee7ff]/72 transition-colors hover:text-gold"
+            href={link.href}
+          >
+            {link.label}
+            {('deprecated' in link) && link.deprecated && (
+              <span class="inline-block rounded-sm bg-white/10 px-1.5 py-0.5 text-[0.65rem] font-normal text-[#dee7ff]/60">
+                {link.deprecated}
+              </span>
+            )}
+          </a>
+        ))
+      }
+      <a
+        class="text-[0.9rem] text-[#dee7ff]/72 transition-colors hover:text-gold"
+        href="/#contact"
+      >
+        联系我们
+      </a>
+    </nav>
+    <p class="mt-4 w-full text-[0.8rem] text-[#dee7ff]/50">苏ICP备XXXXXXXX号（待填）</p>
+  </div>
+</footer>

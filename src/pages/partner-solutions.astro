@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { productMatrix, customerCase } from '../data/partner-solutions';
+
+/** 按高亮短语把引言切成 普通/高亮 交替片段 */
+function splitQuote(text: string, highlights: string[]) {
+  const parts: { t: string; hl: boolean }[] = [];
+  let rest = text;
+  let hi = 0;
+  while (rest.length > 0) {
+    const target = highlights[hi];
+    const pos = target ? rest.indexOf(target) : -1;
+    if (target && pos >= 0) {
+      if (pos > 0) parts.push({ t: rest.slice(0, pos), hl: false });
+      parts.push({ t: target, hl: true });
+      rest = rest.slice(pos + target.length);
+      hi += 1;
+    } else {
+      parts.push({ t: rest, hl: false });
+      break;
+    }
+  }
+  return parts;
+}
+const quoteParts = splitQuote(customerCase.quote, customerCase.highlights);
+---
+
+<BaseLayout
+  title="合作伙伴解决方案 · 百六智数字科技"
+  description="携手无锡众脉机器人，工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环。"
+>
+  <PageHero
+    kicker="PARTNER SOLUTIONS · ZHONGMAI ROBOTICS"
+    title="合作伙伴解决方案"
+    lede="携手无锡众脉机器人，以工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环，赋能制造企业柔性智造升级。"
+  />
+
+  <!-- 工业具身智能产品矩阵（BP 第 10 页） -->
+  <section id="product-matrix" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Product Matrix"
+        title="工业具身智能产品矩阵"
+        desc="从核心部件到工作站到产线，全栈自研闭环。"
+      />
+      {
+        productMatrix.map((tier, i) => (
+          <div class={i === 0 ? '' : 'mt-12'}>
+            <!-- 分层标题 -->
+            <div class="mb-5 flex flex-wrap items-baseline gap-3">
+              <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{tier.tierEn}</span>
+              <h3 class="text-lg font-semibold text-brand-deep">{tier.tier}</h3>
+              <span class="hidden h-[1px] flex-1 bg-ink/[0.08] sm:block" />
+            </div>
+            <!-- 该层产品卡片 -->
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {tier.items.map((item) => (
+                <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
+                  <span class="inline-grid h-10 w-10 place-items-center rounded-lg bg-brand-deep text-[1.05rem] font-semibold text-white">
+                    {item.glyph}
+                  </span>
+                  <h4 class="mt-4 mb-1.5 text-[1.02rem] font-semibold text-brand-deep">{item.title}</h4>
+                  <p class="m-0 text-[0.88rem] text-muted">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 客户现场案例展示（BP 第 21 页） -->
+  <section id="customer-case" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Customer Case"
+        title="客户现场案例展示"
+        desc="与河源精电两年测试磨合，顶级产线跑出来的真实数据与技术迭代速度。"
+      />
+      <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
+        <figure class="m-0">
+          <img
+            src={customerCase.img}
+            alt={customerCase.alt}
+            class="zoomable block w-full rounded-xl border border-ink/[0.08] bg-white shadow-sm"
+            loading="lazy"
+          />
+          <figcaption class="mt-3 text-center text-[0.82rem] text-muted">{customerCase.caption}</figcaption>
+        </figure>
+        <div>
+          <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">河源精电 · 客户现场</span>
+          <blockquote class="m-0 mt-4 border-l-4 border-gold pl-6 text-[1.15rem] leading-relaxed text-brand-deep md:text-[1.3rem]">
+            {
+              quoteParts.map((part) =>
+                part.hl ? <strong class="font-semibold text-brand">{part.t}</strong> : part.t
+              )
+            }
+          </blockquote>
+          <p class="mt-6 text-[0.9rem] text-muted">无锡众脉机器人智能科技有限公司</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand />
+  <Lightbox />
+</BaseLayout>

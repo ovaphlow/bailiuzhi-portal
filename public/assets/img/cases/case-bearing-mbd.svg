@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="轴承标准件设计、检测一体化示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 轴承：外圈 / 滚珠 / 内圈 -->
+  <circle cx="250" cy="270" r="118" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+  <circle cx="250" cy="270" r="80" fill="none" stroke="#1d4ed8" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="7 7"/>
+  <circle cx="250" cy="270" r="55" fill="#eff4ff" stroke="#0f2e63" stroke-width="5"/>
+  <g fill="#1d4ed8" fill-opacity="0.85">
+    <circle cx="250" cy="190" r="15"/>
+    <circle cx="307" cy="213" r="15"/>
+    <circle cx="330" cy="270" r="15"/>
+    <circle cx="307" cy="327" r="15"/>
+    <circle cx="250" cy="350" r="15"/>
+    <circle cx="193" cy="327" r="15"/>
+    <circle cx="170" cy="270" r="15"/>
+    <circle cx="193" cy="213" r="15"/>
+  </g>
+  <!-- 中心十字 -->
+  <path d="M250 145V395M125 270H375" stroke="#0f2e63" stroke-opacity="0.28" stroke-width="2" stroke-dasharray="6 6"/>
+  <!-- 直径标注 -->
+  <path d="M132 432H368" stroke="#d4af37" stroke-width="4"/>
+  <path d="M150 424L132 432L150 440" fill="none" stroke="#d4af37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M350 424L368 432L350 440" fill="none" stroke="#d4af37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="250" y="466" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">&#216; AUTO MBD</text>
+
+  <!-- 图纸页 -->
+  <g>
+    <rect x="540" y="168" width="290" height="190" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M540 300H830" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+    <path d="M716 300V358" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+    <!-- 零件简图 -->
+    <rect x="572" y="196" width="104" height="72" rx="6" fill="#eff4ff" stroke="#1d4ed8" stroke-width="3"/>
+    <circle cx="596" cy="232" r="13" fill="#ffffff" stroke="#1d4ed8" stroke-width="3"/>
+    <circle cx="652" cy="232" r="13" fill="#ffffff" stroke="#1d4ed8" stroke-width="3"/>
+    <path d="M700 196V268M690 268H790M690 196V268" stroke="#0f2e63" stroke-opacity="0.35" stroke-width="2"/>
+    <!-- 标注线 -->
+    <path d="M572 296H676" stroke="#d4af37" stroke-width="3"/>
+    <path d="M584 289L572 296L584 303" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M664 289L676 296L664 303" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- 检测表单自动生成：对勾 -->
+  <g>
+    <circle cx="556" cy="404" r="20" fill="#ffffff" stroke="#b8860b" stroke-width="4"/>
+    <path d="M547 405L554 413L567 396" fill="none" stroke="#b8860b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="592" y="413" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#0f2e63">5 min / part</text>
+  </g>
+</svg>

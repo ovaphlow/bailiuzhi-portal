@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Figure from '../components/Figure.astro';
+import Card from '../components/Card.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<BaseLayout
+  title="机器视觉光源选型、参数化建模、出图自动化应用案例 · 百六智数字科技"
+  description="客户定制需求多、产品种类多（产品大类近二十种）、可变更参数数量多、响应慢 —— 光源自动选型 + 出图系统破解设计瓶颈。"
+>
+  <PageHero
+    kicker="VISION LIGHTING"
+    title="机器视觉光源选型、参数化建模、出图自动化软件应用案例"
+    lede="客户定制需求多、产品种类多（产品大类近二十种）、可变更参数数量多、响应慢 —— 光源自动选型 + 出图系统破解设计瓶颈。"
+  />
+
+  <section id="intro" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card
+          idx="痛点"
+          title="客户痛点"
+          desc="机器视觉光源产品定制品类繁杂，传统人工设计响应能力跟不上业务增长。"
+          points={['客户定制需求多，产品种类多（产品大类近二十种）', '可变更的参数数量多（近 40 个），设计改版频繁', '响应慢，图纸交付周期拖累订单转化']}
+        />
+        <Card
+          idx="方案"
+          title="解决方案"
+          desc="为客户开发了光源自动选型和出图系统，把光源选型经验与图纸生成规则固化进软件。"
+          points={['环形、条形、同轴、背光、无影、点线光源等全系列参数化建模', '近 20 个产品大类，细分种类不断完善', '可变更参数近 40 个，全部参数驱动生成']}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="value" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Value" title="价值提升" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card idx="统一管理" title="已生成产品种类统一入库" desc="统一管理已经生成过的产品种类，选型与图纸规则持续沉淀复用。" />
+        <Card idx="自动生成" title="新增尺寸需求也能自动出图" desc="对于新增的尺寸需求也可以使用软件自动生成，极大提升设计效率、缩短了给客户提供图纸的时间。" />
+      </div>
+      <Figure
+        img="/assets/media/docs/company-profile/elements/v4-p44-a.jpg"
+        alt="机器视觉光源选型案例"
+      />
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand sub="从光源选型系统开始，体验参数化建模与自动出图的效率跃升。">
+    让定制产品设计 <span class="text-gold-deep">参数化、自动化</span>
+  </CtaBand>
+</BaseLayout>

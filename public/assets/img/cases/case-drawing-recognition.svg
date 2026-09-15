@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="二维图纸智能识别与测量直驱示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 二维图纸 -->
+  <g>
+    <rect x="66" y="130" width="390" height="290" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <rect x="104" y="170" width="200" height="140" rx="8" fill="none" stroke="#1d4ed8" stroke-width="4"/>
+    <circle cx="150" cy="240" r="20" fill="none" stroke="#1d4ed8" stroke-width="4"/>
+    <circle cx="258" cy="240" r="20" fill="none" stroke="#1d4ed8" stroke-width="4"/>
+    <path d="M104 340H304M232 170V310" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="3"/>
+    <path d="M104 388H304" stroke="#1d4ed8" stroke-opacity="0.35" stroke-width="3"/>
+    <path d="M330 352H414M362 310V394" stroke="#1d4ed8" stroke-opacity="0.35" stroke-width="3"/>
+    <!-- 标题栏 -->
+    <path d="M66 372H456" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+    <path d="M330 372V420" stroke="#0f2e63" stroke-opacity="0.25" stroke-width="2"/>
+  </g>
+
+  <!-- 识别放大镜 -->
+  <g>
+    <circle cx="300" cy="298" r="86" fill="#d4af37" fill-opacity="0.10" stroke="#d4af37" stroke-width="6"/>
+    <path d="M362 360L410 408" stroke="#d4af37" stroke-width="12" stroke-linecap="round"/>
+    <path d="M262 300H338" stroke="#b8860b" stroke-width="4"/>
+    <path d="M274 292L262 300L274 308M326 292L338 300L326 308" fill="none" stroke="#b8860b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="300" y="342" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#b8860b">OCR</text>
+  </g>
+
+  <!-- 五步链路 -->
+  <g>
+    <path d="M528 168H846" stroke="#1d4ed8" stroke-opacity="0.25" stroke-width="3"/>
+    <g>
+      <circle cx="546" cy="168" r="22" fill="#1d4ed8" fill-opacity="0.85"/>
+      <circle cx="626" cy="168" r="22" fill="#1d4ed8" fill-opacity="0.85"/>
+      <circle cx="706" cy="168" r="22" fill="#1d4ed8" fill-opacity="0.85"/>
+      <circle cx="786" cy="168" r="22" fill="#d4af37"/>
+      <circle cx="846" cy="168" r="22" fill="#d4af37"/>
+    </g>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="18" fill="#0f2e63" text-anchor="middle">
+      <text x="546" y="230">PARSE</text>
+      <text x="626" y="230">MATCH</text>
+      <text x="706" y="230">REBUILD</text>
+      <text x="786" y="230">MEASURE</text>
+      <text x="846" y="230">REPORT</text>
+    </g>
+  </g>
+
+  <!-- 数智直驱测量 -->
+  <g>
+    <rect x="528" y="286" width="318" height="182" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <path d="M566 404V330L636 296L706 330V404L636 438Z" fill="#eff4ff" stroke="#1d4ed8" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M706 330L770 300" stroke="#0f2e63" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="776" cy="296" r="12" fill="#d4af37"/>
+    <g fill="#d4af37">
+      <circle cx="600" cy="382" r="6"/>
+      <circle cx="636" cy="366" r="6"/>
+      <circle cx="672" cy="382" r="6"/>
+    </g>
+  </g>
+</svg>

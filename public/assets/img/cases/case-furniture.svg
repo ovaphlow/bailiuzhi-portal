@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="智能家具制造 AI 排程与板材套料示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 板材套料 -->
+  <g>
+    <rect x="68" y="150" width="352" height="244" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <g stroke="#1d4ed8" stroke-width="3">
+      <rect x="86" y="168" width="150" height="98" fill="#1d4ed8" fill-opacity="0.16"/>
+      <rect x="244" y="168" width="158" height="60" fill="#d4af37" fill-opacity="0.28"/>
+      <rect x="244" y="236" width="70" height="30" fill="#1d4ed8" fill-opacity="0.16"/>
+      <rect x="322" y="236" width="80" height="30" fill="#1d4ed8" fill-opacity="0.16"/>
+      <rect x="86" y="274" width="84" height="102" fill="#1d4ed8" fill-opacity="0.16"/>
+      <rect x="178" y="274" width="110" height="46" fill="#1d4ed8" fill-opacity="0.16"/>
+      <rect x="178" y="328" width="110" height="48" fill="#d4af37" fill-opacity="0.28"/>
+      <rect x="296" y="274" width="106" height="102" fill="#1d4ed8" fill-opacity="0.16"/>
+    </g>
+    <text x="68" y="424" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">NESTING LAYOUT</text>
+  </g>
+
+  <!-- 排产甘特 -->
+  <g>
+    <rect x="452" y="150" width="388" height="196" rx="12" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <g fill="#1d4ed8" fill-opacity="0.22">
+      <rect x="484" y="188" width="132" height="22" rx="6"/>
+      <rect x="484" y="226" width="248" height="22" rx="6"/>
+      <rect x="484" y="264" width="180" height="22" rx="6"/>
+      <rect x="484" y="302" width="272" height="22" rx="6"/>
+    </g>
+    <rect x="632" y="226" width="152" height="22" rx="6" fill="#d4af37"/>
+    <path d="M666 162V336" stroke="#b8860b" stroke-width="3" stroke-dasharray="8 8"/>
+    <text x="646" y="386" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#0f2e63">AI SCHEDULING</text>
+  </g>
+
+  <!-- 降本结论 -->
+  <g>
+    <path d="M486 440L486 480" stroke="#b8860b" stroke-width="6" stroke-linecap="round"/>
+    <path d="M471 465L486 484L501 465" fill="none" stroke="#b8860b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="522" y="476" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#0f2e63">SAVE &#165; 5.0M / YEAR</text>
+  </g>
+</svg>

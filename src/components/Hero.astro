@@ -1,0 +1,79 @@
+---
+import Button from './Button.astro';
+
+const facts = [
+  { value: '1 : 3.7', label: '平均投入产出比 · 6-14 个月回本' },
+  { value: '<30 天', label: '私有化部署周期' },
+  { value: '85%+', label: '开箱即用率' },
+  { value: '99.5%+', label: 'AI 质检准确率' },
+];
+---
+
+<!-- Hero：封面背景 + 蓝色渐变遮罩 + 金生水抽象水流纹 -->
+<header class="relative overflow-hidden border-b border-ink/[0.08] text-white">
+  <div
+    class="absolute inset-0 bg-[url('/assets/media/docs/company-profile-pptx/cover-background.jpeg')] bg-cover bg-center"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,68,0.88)_0%,rgba(11,31,68,0.62)_48%,rgba(11,31,68,0.18)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <svg
+    class="pointer-events-none absolute bottom-0 left-0 h-[110px] w-full"
+    viewBox="0 0 1440 110"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+  >
+    <path d="M0 40 C 220 20, 360 60, 560 42 S 900 18, 1440 40" stroke="#D4AF37" stroke-width="1.4" opacity="0.4"></path>
+    <path d="M0 62 C 240 44, 480 80, 720 60 S 1200 44, 1440 62" stroke="#1D4ED8" stroke-width="2" opacity="0.22"></path>
+    <path d="M0 84 C 260 68, 520 100, 780 82 S 1240 70, 1440 86" stroke="#0F2E63" stroke-width="2.6" opacity="0.16"></path>
+    <path d="M0 100 C 300 86, 600 116, 900 98 S 1200 88, 1440 100" stroke="#1D4ED8" stroke-width="2" opacity="0.12"></path>
+  </svg>
+
+  <div
+    class="relative mx-auto max-w-300 px-6 pt-[104px] pb-[72px] lg:px-10 lg:pt-[148px] lg:pb-[104px]"
+  >
+    <div class="max-w-[760px]">
+      <div
+        class="mb-5 inline-block border-l-2 border-gold pl-3.5 text-[0.875rem] font-semibold tracking-[0.12em] text-gold"
+      >
+        AI × 智能制造 · 数据驱动-知识沉淀-效率跃升-安全可控
+      </div>
+      <h1
+        class="mb-5 text-[clamp(1.5rem,3.2vw,2.2rem)] leading-[1.25] font-semibold tracking-[0.01em] whitespace-nowrap text-white max-sm:whitespace-normal"
+      >
+        让每一家追求卓越的<span class="text-[#bfd9ff]">制造企业</span>，都拥有专属<span
+          class="text-gold">「智慧大脑」</span
+        >
+      </h1>
+      <p class="mb-9 max-w-[640px] text-lg text-white/90">
+	百六智数字科技是哈工大与上海大学相关技术在智能制造领域落地转化的重要载体，专注&nbsp;
+        <strong class="font-semibold text-white">AI</strong>
+	&nbsp;与制造业的深度融合，提供非标自动化设备与 AI
+        驱动的企业智能工作平台解决方案，立足无锡、服务全国、走向世界。
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <Button href="#solutions">了解解决方案</Button>
+        <Button href="#scenes" variant="gold">探索核心场景</Button>
+      </div>
+      <div class="mt-12 flex flex-wrap gap-10 border-t border-white/[0.22] pt-8">
+        {
+          facts.map((f) => (
+            <div>
+              <b class="flex items-center text-xl font-semibold text-white">
+                <span class="mr-2 inline-block h-2.5 w-2.5 rounded-sm bg-gold" />
+                {f.value}
+              </b>
+              <span class="text-[0.875rem] text-white/75">{f.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</header>

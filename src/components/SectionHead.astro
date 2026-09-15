@@ -1,0 +1,23 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  desc?: string;
+  desc1?: string;
+}
+const { eyebrow, title, desc, desc1 } = Astro.props;
+---
+
+<!-- 通用区块标题：金色 eyebrow + 深蓝大标题（带金色短下划线） -->
+<div class="mb-10 max-w-160">
+  <div class="text-[0.8rem] font-semibold tracking-[0.14em] text-gold-deep uppercase">
+    {eyebrow}
+  </div>
+  <h2
+    class="mt-2 mb-3 text-[clamp(1.5rem,3vw,2.25rem)] leading-[1.3] font-semibold text-brand-deep after:mt-3.5 after:block after:h-[3px] after:w-11 after:rounded-sm after:bg-gold after:content-['']"
+  >
+    {title}
+  </h2>
+  {desc && <p class="m-0 text-muted">{desc}</p>}
+  {desc1 && <p class="m-0 text-muted">{desc1}</p>}
+</div>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="AI 视觉识别与检测应用示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d4ed8" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#1d4ed8" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 机械臂 -->
+  <g>
+    <rect x="118" y="404" width="132" height="34" rx="8" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M148 404L214 300" stroke="#0f2e63" stroke-width="16" stroke-linecap="round"/>
+    <path d="M214 300L318 232" stroke="#0f2e63" stroke-width="16" stroke-linecap="round"/>
+    <circle cx="196" cy="352" r="18" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <circle cx="228" cy="286" r="18" fill="#ffffff" stroke="#1d4ed8" stroke-width="5"/>
+    <rect x="304" y="206" width="46" height="34" rx="8" fill="#1d4ed8" fill-opacity="0.85"/>
+    <path d="M338 222H394" stroke="#0f2e63" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <!-- 视觉成像锥 + 检测目标 -->
+  <g>
+    <path d="M330 236L246 404H522Z" fill="url(#cone)"/>
+    <rect x="316" y="356" width="140" height="56" rx="8" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <!-- 缺陷识别框 -->
+    <path d="M356 322H420V394H356Z" fill="none" stroke="#d4af37" stroke-width="5"/>
+    <path d="M356 322H340M420 322H436M356 394H340M420 394H436" stroke="#d4af37" stroke-width="5"/>
+    <circle cx="390" cy="360" r="11" fill="#d4af37" fill-opacity="0.5" stroke="#b8860b" stroke-width="4"/>
+    <text x="452" y="336" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">NG</text>
+    <path d="M228 424L516 424" stroke="#0f2e63" stroke-opacity="0.35" stroke-width="4"/>
+  </g>
+
+  <!-- 三大模块 -->
+  <g>
+    <rect x="576" y="150" width="272" height="78" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <rect x="576" y="244" width="272" height="78" rx="10" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <rect x="576" y="338" width="272" height="78" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <!-- 机械臂图元 -->
+    <path d="M608 210L636 178L664 200" fill="none" stroke="#1d4ed8" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="636" cy="178" r="7" fill="#d4af37"/>
+    <!-- 成像图元 -->
+    <rect x="604" y="266" width="52" height="34" rx="6" fill="none" stroke="#1d4ed8" stroke-width="5"/>
+    <circle cx="630" cy="283" r="10" fill="#1d4ed8" fill-opacity="0.5"/>
+    <!-- 分析图元 -->
+    <path d="M604 398V366M620 398V352M636 398V372M652 398V344" stroke="#1d4ed8" stroke-width="6" stroke-linecap="round"/>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#0f2e63">
+      <text x="686" y="196">ROBOT</text>
+      <text x="686" y="291">VISION</text>
+      <text x="686" y="385">ANALYSIS</text>
+    </g>
+  </g>
+
+  <text x="576" y="466" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">3 MODULES &#183; ONE PIPELINE</text>
+</svg>

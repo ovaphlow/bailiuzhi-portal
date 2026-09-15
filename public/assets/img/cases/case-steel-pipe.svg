@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="无缝钢管 AI 排程示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 钢管原料 -->
+  <g>
+    <rect x="70" y="168" width="300" height="52" rx="26" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <rect x="70" y="232" width="300" height="52" rx="26" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <rect x="70" y="296" width="300" height="52" rx="26" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <ellipse cx="370" cy="194" rx="20" ry="26" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
+    <ellipse cx="370" cy="258" rx="20" ry="26" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
+    <ellipse cx="370" cy="322" rx="20" ry="26" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
+    <text x="70" y="396" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">PIPE STOCK</text>
+  </g>
+
+  <!-- AI 排程甘特 -->
+  <g>
+    <rect x="436" y="140" width="404" height="238" rx="12" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <g fill="#1d4ed8" fill-opacity="0.22">
+      <rect x="470" y="182" width="150" height="24" rx="6"/>
+      <rect x="470" y="222" width="248" height="24" rx="6"/>
+      <rect x="470" y="262" width="196" height="24" rx="6"/>
+      <rect x="470" y="302" width="286" height="24" rx="6"/>
+    </g>
+    <rect x="596" y="182" width="176" height="24" rx="6" fill="#d4af37"/>
+    <path d="M640 150V372" stroke="#b8860b" stroke-width="3" stroke-dasharray="8 8"/>
+    <path d="M462 172V326" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="3"/>
+    <text x="700" y="428" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#0f2e63">AI SCHEDULING</text>
+  </g>
+
+  <!-- 降本结论 -->
+  <g>
+    <path d="M140 452L140 500" stroke="#b8860b" stroke-width="6" stroke-linecap="round"/>
+    <path d="M124 484L140 504L156 484" fill="none" stroke="#b8860b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="176" y="494" font-family="Consolas, 'Courier New', monospace" font-size="26" fill="#0f2e63">SAVE &#165; 8.0M / YEAR</text>
+  </g>
+</svg>

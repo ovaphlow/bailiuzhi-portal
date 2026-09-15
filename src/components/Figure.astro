@@ -1,0 +1,22 @@
+---
+interface Props {
+  img: string;
+  alt?: string;
+  /** 图片说明文字（原站 figcaption） */
+  caption?: string;
+  /** 附加类（如并排两图时控制宽度） */
+  class?: string;
+}
+const { img, alt = '', caption, class: className } = Astro.props;
+---
+
+<!-- 通栏大图 + 说明（对应原站 figure.fx-img.wide 与 .duo figure） -->
+<figure class:list={['m-0', className]}>
+  <img
+    class="block w-full rounded-xl border border-ink/[0.08] bg-white object-cover"
+    src={img}
+    alt={alt}
+    loading="lazy"
+  />
+  {caption && <figcaption class="mt-2 text-[0.85rem] text-muted">{caption}</figcaption>}
+</figure>

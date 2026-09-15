@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Figure from '../components/Figure.astro';
+import Card from '../components/Card.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<BaseLayout
+  title="复杂零部件一模到底的设计、检测一体化应用案例 · 百六智数字科技"
+  description="以 MBD 信息模型直驱设计、加工与检测全链路：设计制造一体化属性库 + 结构化加工/检测工艺库，自动标注、检测计划、NC 加工程序与三坐标测量程序自动生成。"
+>
+  <PageHero
+    kicker="ONE-MODE MBD"
+    title="复杂零部件实现一模到底的设计、检测一体化应用案例"
+    lede="以 MBD 信息模型直驱设计、加工与检测全链路：设计制造一体化属性库 + 结构化加工/检测工艺库，自动标注、检测计划、NC 加工程序与三坐标测量程序自动生成。"
+  />
+
+  <section id="pipeline" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Pipeline"
+        title="一模到底 · 全链路自动化"
+        desc="从 UG NX 模型到三坐标测量程序，一个模型贯穿始终。"
+      />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card idx="STEP 1-2 · 设计规范驱动" title="要素命名规则 + 设计规范库，自动匹配属性" desc="基于设计制造一体化属性库与结构化加工/检测工艺库，UG NX 模型按要素命名规则自动匹配属性。" points={['设计制造一体化属性库', '结构化加工 / 检测工艺库']} />
+        <Card idx="STEP 3 · MBD 直驱" title="CAS 自动标注和 MBD 模型生成" desc="MBD 信息模型直驱后续全部环节，1 周专业操作时间缩至 4 小时。" points={['自动标注：1 周 → 4 小时', '模型、图纸、标注一改全链同步']} />
+        <Card idx="STEP 4 · 检测直驱" title="测针自动配置 / 测点生成，检测计划自动生成" desc="基于检测工艺/资源库自动完成测针配置与测点生成，2 周时间缩至 1 小时。" points={['测针配置与测点生成：2 周 → 1 小时', '测量准备时间总体提效 60%']} />
+        <Card idx="STEP 5 · 加工直驱" title="NC 加工程序与三坐标测量程序自动生成" desc="数控加工程序与三坐标测量程序由模型自动生成，设计与检测执行无缝衔接。" points={['NC 加工程序自动生成', '三坐标测量程序自动生成']} />
+      </div>
+      <Figure
+        img="/assets/media/docs/company-profile/elements/v4-p45-a.jpg"
+        alt="复杂零部件一模到底案例"
+      />
+    </div>
+  </section>
+
+  <section id="value" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Value" title="量化收益" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card idx="标注提效" title="CAS 自动标注 1 周 → 4 小时" desc="专业操作时间从一周压缩到四小时，标注质量与规范全程受控。" />
+        <Card idx="测量提效" title="测量准备总体提效 60%" desc="测针配置、测点生成从两周缩至一小时，三坐标测量程序即取即用。" />
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand sub="从复杂零部件开始，体验一模到底的设计检测一体化。">
+    一个模型，<span class="text-gold-deep">直达检测</span>
+  </CtaBand>
+</BaseLayout>

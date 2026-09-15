@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import SolutionsSection from '../components/SolutionsSection.astro';
+---
+
+<BaseLayout
+  title="产品和解决方案 · 百六智数字科技"
+  description="安全、自主、私有、一体化的技术底座，构建企业智慧大脑，让 AI 智能体赋能业务全流程。"
+>
+  <PageHero
+    kicker="PRODUCTS & SOLUTIONS"
+    title="产品和解决方案"
+    lede="安全、自主、私有、一体化的技术底座，构建企业智慧大脑，让 AI 智能体赋能业务全流程。"
+  />
+
+  <!-- 与首页「产品与解决方案」区块完全一致 -->
+  <SolutionsSection />
+
+  <ContactSection />
+  <CtaBand />
+</BaseLayout>

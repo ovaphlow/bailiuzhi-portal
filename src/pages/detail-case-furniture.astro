@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Figure from '../components/Figure.astro';
+import Card from '../components/Card.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<BaseLayout
+  title="智能家具制造 AI 排程应用案例 · 百六智数字科技"
+  description="破解非标定制多、板材利用率低、工艺周期不一致、仓库积压难题 —— 每年原材料成本节约 500 万元，缩短供货周期、降低呆滞库存。"
+>
+  <PageHero
+    kicker="FURNITURE APS · AI 优化排产 | 提升板材利用率 | 保障订单交付"
+    title="智能家具制造 AI 排程应用案例"
+    lede="破解非标定制多、板材利用率低、工艺周期不一致、仓库积压难题 —— 每年原材料成本节约 500 万元，缩短供货周期、降低呆滞库存。"
+  />
+
+  <section id="pain" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card
+          idx="痛点"
+          title="客户痛点"
+          desc="非标定制家具「一单一款」，人工排产难以平衡板材、周期与交付。"
+          points={[
+            '非标定制家具多，生产计划难统一',
+            '板材利用率低，原材料浪费明显',
+            '同一订单产品工艺周期不一致',
+            '生产仓库积压，发货等待严重，交付延期风险高',
+          ]}
+        />
+        <Card
+          idx="方案"
+          title="核心落地内容"
+          desc="AI 排程生成算法优化生产排版，让板材、周期、交付三者对齐。"
+          points={[
+            'AI 排程生成算法优化生产排版，提高板材利用率',
+            '合理规划生产周期，同一订单不同产品同一天完成生产',
+            '减少生产仓库积压，推动按时交付',
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="value" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Value" title="客户价值收益" />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card idx="降本" title="每年原材料成本节约 500 万元" desc="AI 排版提高板材利用率，配合精细化物料采购管理、严控冗余备货。" />
+        <Card idx="提速" title="缩短供货周期，极速履约交付" desc="同一订单不同产品同一天完成生产，降低库存积压与资金闲置成本，呆滞库存显著下降。" />
+      </div>
+      <Figure
+        img="/assets/media/docs/company-profile/elements/v4-p49-a.jpg"
+        alt="智能家具制造 AI 排程应用案例"
+      />
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand sub="从板材排版切入，体验 AI 排程带来的降本与履约提升。">
+    非标定制也能 <span class="text-gold-deep">按期交付</span>
+  </CtaBand>
+</BaseLayout>

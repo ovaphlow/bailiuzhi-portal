@@ -1,0 +1,144 @@
+---
+interface ListItem {
+  title: string;
+  desc?: string;
+}
+interface Props {
+  img?: string;
+  alt?: string;
+  /** 金色序号，如 01 */
+  idx?: string;
+  /** 蓝色等宽英文标签，如 BEARING MBD */
+  big?: string;
+  title: string;
+  desc?: string;
+  /** 「查看详情 →」链接 */
+  href?: string;
+  /** 蓝色胶囊标签（无 list 时使用） */
+  tag?: string;
+  /** 列表项（2-4 条）：正文以 li 呈现，底部 tag 行显示各项标题 */
+  list?: ListItem[];
+  /** 列表列数（md 及以上生效；用于通栏卡片内多栏排布要点） */
+  listCols?: 1 | 2;
+  /** 纯要点列表（整句呈现，金色方块引导；与 list 互斥使用） */
+  points?: string[];
+  /** 金色方块引导的指标行（案例卡片用） */
+  metric?: string;
+  /** 图片高度类，默认 h-48；解决方案区用 h-60 */
+  imgHeight?: string;
+  /** 图片可点击放大（配合 Lightbox 组件使用） */
+  zoomable?: boolean;
+  /** 附加类（如 bg-white 覆盖默认的 bg-surface） */
+  class?: string;
+}
+const {
+  img,
+  alt = '',
+  idx,
+  big,
+  title,
+  desc,
+  href,
+  tag,
+  list,
+  listCols,
+  points,
+  metric,
+  imgHeight = 'h-48',
+  zoomable,
+  class: className,
+} = Astro.props;
+
+/** 解析文本中的 **…** 标记：对应 PDF 原文的红色强调文字 */
+function rich(text: string): { red?: string; plain?: string }[] {
+  return text
+    .split(/(\*\*[^*]+\*\*)/g)
+    .filter((p) => p !== "")
+    .map((p) => (p.startsWith("**") && p.endsWith("**") ? { red: p.slice(2, -2) } : { plain: p }));
+}
+---
+
+<!-- 通用内容卡片：底部区块（metric / tag / 链接）用 mt-auto 置底，同一行卡片底部对齐 -->
+<article class:list={['flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8', className]}>
+  {
+    img && (
+      <img
+        class={`mb-4 block w-full shrink-0 ${imgHeight} rounded-lg border border-ink/[0.08] bg-white object-cover${zoomable ? ' zoomable' : ''}`}
+        src={img}
+        alt={alt}
+        loading="lazy"
+      />
+    )
+  }
+  {idx && <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">{idx}</div>}
+  {big && <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{big}</div>}
+  <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">{title}</h3>
+  {desc && <p class="m-0 text-[0.95rem] text-muted">{desc}</p>}
+  {
+    points && points.length > 0 && (
+      <ul class="mt-3 mb-0 list-none space-y-2 p-0">
+        {points.map((point) => (
+          <li class="relative pl-5 text-[0.9rem] leading-relaxed text-muted before:absolute before:left-0 before:top-[0.5em] before:h-2 before:w-2 before:rounded-sm before:bg-gold before:content-['']">
+            {point}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    list && list.length > 0 && (
+      <ul class:list={['mt-3 mb-0 list-none space-y-2 p-0', listCols === 2 && 'md:grid md:grid-cols-2 md:gap-x-8 md:space-y-0 md:gap-y-2']}>
+        {list.map((item) => (
+          <li class="relative pl-5 text-[0.9rem] leading-relaxed text-muted before:absolute before:left-0 before:top-[0.5em] before:h-2 before:w-2 before:rounded-sm before:bg-gold before:content-['']">
+            <span class="font-semibold text-brand-deep">{item.title}</span>
+            {
+              item.desc && (
+                <span>
+                  ：
+                  {rich(item.desc).map((seg) =>
+                    seg.red ? <span class="text-[#ff0000]">{seg.red}</span> : seg.plain
+                  )}
+                </span>
+              )
+            }
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  <slot />
+  <div class="mt-auto flex flex-col">
+    {
+      metric && (
+        <span class="mt-3 block text-[1.05rem] font-semibold text-brand-deep before:mr-2 before:inline-block before:h-2 before:w-2 before:rounded-sm before:bg-gold before:content-['']">
+          {metric}
+        </span>
+      )
+    }
+    {
+      ((list && list.length > 0) || tag || href) && (
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          {list && list.length > 0
+            ? list.map((item) => (
+                <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand">
+                  {item.title}
+                </span>
+              ))
+            : tag && (
+                <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand">
+                  {tag}
+                </span>
+              )}
+          {href && (
+            <a
+              class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand transition-colors hover:bg-brand hover:text-white"
+              href={href}
+            >
+              查看详情 →
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</article>

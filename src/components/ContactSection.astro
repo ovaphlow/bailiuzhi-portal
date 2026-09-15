@@ -1,0 +1,65 @@
+---
+import SectionHead from './SectionHead.astro';
+import { contact } from '../data/site';
+
+interface Props {
+  /** 可选：卡片下方备注（如首页的 "1+5+N" 战略布局） */
+  note?: string;
+}
+const { note } = Astro.props;
+---
+
+<!-- 联系我们：首页与内页共用 -->
+<section id="contact" class="py-14 md:py-18">
+  <div class="mx-auto max-w-300 px-6 lg:px-10">
+    <SectionHead
+      eyebrow="Contact"
+      title="联系我们"
+      desc="欢迎咨询解决方案与合作事宜，我们将在第一时间与您联系。"
+    />
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8">
+        <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">TEL</div>
+        <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">电话咨询</h3>
+        <p class="m-0 text-[0.95rem] text-muted">
+          <a class="font-semibold text-brand hover:text-brand-hover" href={contact.telHref}
+            >{contact.tel}</a
+          ><br />张智 · 微信同号
+        </p>
+        <div class="mt-auto pt-4">
+          <span
+            class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand"
+            >7×24 小时</span
+          >
+        </div>
+      </div>
+      <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8">
+        <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">MAIL</div>
+        <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">商务邮箱</h3>
+        <p class="m-0 text-[0.95rem] text-muted">
+          <a class="font-semibold text-brand hover:text-brand-hover" href={`mailto:${contact.mail}`}
+            >{contact.mail}</a
+          >
+        </p>
+        <div class="mt-auto pt-4">
+          <span
+            class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand"
+            >24 小时内回复</span
+          >
+        </div>
+      </div>
+      <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8">
+        <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">ADDR</div>
+        <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">公司地址</h3>
+        <p class="m-0 text-[0.95rem] text-muted">江苏省无锡市滨湖区<br />建筑西路777号A3幢3层320</p>
+        <div class="mt-auto pt-4">
+          <span
+            class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand"
+            >立足无锡 · 服务全国</span
+          >
+        </div>
+      </div>
+    </div>
+    {note && <p class="mt-6 mb-0 text-[0.9rem] text-muted">{note}</p>}
+  </div>
+</section>

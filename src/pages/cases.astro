@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Card from '../components/Card.astro';
+import Lightbox from '../components/Lightbox.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { cases, sceneOrder, sceneMeta } from '../data/cases';
+
+/** 按场景分组（跳过无案例的分组） */
+const grouped = sceneOrder
+  .map((scene) => ({
+    key: scene,
+    ...sceneMeta[scene],
+    cases: cases.filter((c) => c.scene === scene),
+  }))
+  .filter((group) => group.cases.length > 0);
+---
+
+<BaseLayout
+  title="案例 · 百六智数字科技"
+  description="10 个真实落地案例，覆盖研发设计端 AI 与生产制造端 AI 两大核心业务场景。"
+>
+  <PageHero
+    kicker="CASE STUDIES"
+    title="客户应用案例"
+    lede="10 个真实落地案例，按产品应用场景分类，覆盖研发设计端 AI 与生产制造端 AI 两大核心业务。"
+  />
+
+  <!-- 客户应用案例：按场景分组 -->
+  <section id="cases" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Case Studies"
+        title="客户应用案例"
+        desc="从研发设计、数字化车间到 AI 视觉与车间仿真，覆盖制造业关键场景。"
+      />
+      <div class="space-y-14">
+        {
+          grouped.map((group) => (
+            <div>
+              <!-- 场景分组标题 -->
+              <div class="mb-6 flex flex-wrap items-baseline gap-3">
+                <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{group.en}</span>
+                <h3 class="text-xl font-semibold text-brand-deep">{group.key}</h3>
+                <span class="hidden h-[1px] flex-1 bg-ink/[0.08] sm:block" />
+                <span class="ml-auto text-[0.82rem] text-muted">{group.desc}</span>
+              </div>
+              <!-- 该场景下的案例卡片 -->
+              <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {group.cases.map((item) => (
+                  <Card
+                    img={item.img}
+                    alt={item.alt}
+                    big={item.big}
+                    title={item.title}
+                    desc={item.desc}
+                    metric={item.metric}
+                    href={item.href}
+                    zoomable
+                    class="bg-white"
+                  />
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand />
+  <Lightbox />
+</BaseLayout>

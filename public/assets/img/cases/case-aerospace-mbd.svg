@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="航天复材装配体智能拆分、快速出图示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <pattern id="weave" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M26 0H0V26" fill="none" stroke="#1d4ed8" stroke-opacity="0.28" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 复材装配体大件 -->
+  <g>
+    <rect x="70" y="150" width="230" height="240" rx="12" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <rect x="88" y="168" width="194" height="204" rx="8" fill="url(#weave)" stroke="#1d4ed8" stroke-opacity="0.35" stroke-width="2"/>
+    <path d="M96 330C130 300 178 296 216 262" fill="none" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M104 218C140 236 168 240 208 214" fill="none" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/>
+    <text x="185" y="428" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">1000+ PARTS</text>
+  </g>
+
+  <!-- 智能拆分射线 -->
+  <g stroke="#d4af37" stroke-width="4" stroke-linecap="round">
+    <path d="M312 270H400" />
+    <path d="M312 214L398 168" />
+    <path d="M312 326L398 372" />
+  </g>
+  <path d="M382 262L400 270L382 278" fill="none" stroke="#d4af37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 拆分出的零件族 -->
+  <g stroke="#0f2e63" stroke-width="4" fill="#ffffff">
+    <rect x="440" y="140" width="120" height="80" rx="8"/>
+    <path d="M612 140H700V172H644V220H612Z" fill="#eff4ff"/>
+    <circle cx="806" cy="180" r="42" fill="#eff4ff"/>
+    <circle cx="806" cy="180" r="16" fill="#ffffff"/>
+    <path d="M440 316H520L560 396H440Z" fill="#eff4ff"/>
+    <rect x="612" y="300" width="120" height="96" rx="8"/>
+    <path d="M776 260L840 260L840 396L776 396L776 330L808 330L808 260" fill="#eff4ff"/>
+  </g>
+  <!-- 自动识别标记 -->
+  <g stroke="#b8860b" stroke-width="4" fill="none">
+    <path d="M448 148H440V156M552 148H560V156M448 212H440V204M552 212H560V204"/>
+    <path d="M696 308H688V316M800 308H808V316M696 388H688V380M800 388H808V380"/>
+  </g>
+
+  <!-- 出图纸张 -->
+  <g>
+    <rect x="612" y="424" width="150" height="66" rx="8" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M636 446H740M636 462H700" stroke="#1d4ed8" stroke-opacity="0.5" stroke-width="3"/>
+    <text x="778" y="466" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">&lt;1 min</text>
+  </g>
+</svg>

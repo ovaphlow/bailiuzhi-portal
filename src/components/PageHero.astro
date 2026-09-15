@@ -1,0 +1,29 @@
+---
+interface Props {
+  /** 顶部小标签，如 CORE CAPABILITIES */
+  kicker: string;
+  title: string;
+  /** 一段简介 */
+  lede?: string;
+}
+const { kicker, title, lede } = Astro.props;
+---
+
+<!-- 内页浅色 Hero（单栏） -->
+<header
+  class="border-b border-ink/[0.08] bg-[linear-gradient(180deg,#F6F9FF_0%,#FFFFFF_100%)]"
+>
+  <div class="mx-auto max-w-full px-6 pt-16 pb-12 lg:px-10 lg:pt-24 lg:pb-16">
+    <div
+      class="mb-5 inline-block border-l-2 border-gold pl-3.5 text-[0.875rem] font-semibold tracking-[0.12em] text-gold-deep"
+    >
+      {kicker}
+    </div>
+    <h1
+      class="mb-5 text-[clamp(2rem,5vw,3.5rem)] leading-[1.22] font-semibold tracking-[0.01em] text-brand-deep"
+    >
+      {title}
+    </h1>
+    {lede && <p class="max-w-full text-lg text-muted">{lede}</p>}
+  </div>
+</header>

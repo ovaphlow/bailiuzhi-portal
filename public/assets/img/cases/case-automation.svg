@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="非标自动化行业设计出图提效示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 装配体图纸 -->
+  <g>
+    <rect x="70" y="120" width="430" height="250" rx="10" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <!-- 产线示意：辊子 + 皮带 + 工件 -->
+    <path d="M110 300H460" stroke="#0f2e63" stroke-width="5"/>
+    <g fill="#eff4ff" stroke="#1d4ed8" stroke-width="3">
+      <circle cx="130" cy="300" r="18"/>
+      <circle cx="200" cy="300" r="18"/>
+      <circle cx="270" cy="300" r="18"/>
+      <circle cx="340" cy="300" r="18"/>
+      <circle cx="410" cy="300" r="18"/>
+    </g>
+    <g fill="#1d4ed8" fill-opacity="0.18" stroke="#1d4ed8" stroke-width="3">
+      <rect x="150" y="246" width="60" height="46" rx="6"/>
+      <rect x="252" y="234" width="72" height="58" rx="6"/>
+      <rect x="366" y="252" width="54" height="40" rx="6"/>
+    </g>
+    <!-- 尺寸标注 -->
+    <path d="M150 330V372M222 330V372M150 356H222" stroke="#d4af37" stroke-width="3"/>
+    <path d="M158 348L150 356L158 364M214 348L222 356L214 364" fill="none" stroke="#d4af37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="292" y="382" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">AUTO DRAWING</text>
+  </g>
+
+  <!-- 提效倍率柱状 -->
+  <g>
+    <path d="M560 400H846" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="3"/>
+    <g fill="#d4af37">
+      <rect x="576" y="310" width="46" height="90" rx="6"/>
+      <rect x="646" y="283" width="46" height="117" rx="6"/>
+      <rect x="716" y="265" width="46" height="135" rx="6"/>
+      <rect x="786" y="256" width="46" height="144" rx="6"/>
+    </g>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#0f2e63" text-anchor="middle">
+      <text x="599" y="272">5x</text>
+      <text x="669" y="245">6.5x</text>
+      <text x="739" y="227">7.5x</text>
+      <text x="809" y="218">8x</text>
+    </g>
+    <text x="703" y="440" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">BATCH OUTPUT</text>
+  </g>
+
+  <!-- 0.5 分钟/标注 -->
+  <g>
+    <circle cx="140" cy="452" r="20" fill="#ffffff" stroke="#b8860b" stroke-width="4"/>
+    <path d="M131 453L138 461L151 444" fill="none" stroke="#b8860b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="176" y="461" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#0f2e63">0.5 min / mark</text>
+  </g>
+</svg>

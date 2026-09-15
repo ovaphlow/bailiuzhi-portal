@@ -1,0 +1,77 @@
+---
+import { navLinks } from '../data/site';
+
+const { pathname } = Astro.url;
+const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+---
+
+<!-- 顶部导航：吸顶 + 毛玻璃；移动端汉堡菜单（少 JS，data-open 切换） -->
+<nav class="sticky top-0 z-50 border-b border-ink/[0.08] bg-white/90 backdrop-blur-[8px]">
+  <div class="relative mx-auto flex h-18 max-w-300 items-center justify-between px-6 lg:px-10">
+    <a class="flex items-center" href="#top" aria-label="百六智数字科技">
+      <img src="/assets/img/logo-main.png" alt="百六智数字科技" class="block h-10 w-auto" />
+    </a>
+
+    <div class="flex items-center gap-6">
+      <div
+        id="nav-menu"
+        data-open="false"
+        class="hidden flex-col max-md:absolute max-md:top-18 max-md:right-0 max-md:left-0 max-md:border-b max-md:border-ink/[0.08] max-md:bg-white max-md:px-6 max-md:pt-2 max-md:pb-4 max-md:data-[open=true]:flex md:flex md:flex-row md:items-center md:gap-8"
+      >
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[
+                'inline-flex items-center gap-1.5 border-b border-ink/[0.08] py-3 text-[0.95rem] transition-colors last:border-b-0 md:border-0 md:py-0',
+                isActive(link.href)
+                  ? 'text-brand'
+                  : 'text-muted hover:text-brand',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+              ]}
+            >
+              {link.label}
+              {('deprecated' in link) && link.deprecated && (
+                <span class="inline-block rounded-sm bg-ink/[0.06] px-1.5 py-0.5 text-[0.65rem] font-normal text-muted/80">
+                  {link.deprecated}
+                </span>
+              )}
+            </a>
+          ))
+        }
+      </div>
+      <a
+        href="/#contact"
+        class="hidden rounded-md bg-brand px-6 py-3 text-[0.95rem] font-semibold text-white transition-colors hover:bg-brand-hover md:inline-flex"
+      >
+        联系我们
+      </a>
+    </div>
+
+    <button
+      id="nav-burger"
+      type="button"
+      class="absolute top-1/2 right-6 flex -translate-y-1/2 flex-col items-center gap-1 p-2 md:hidden"
+      aria-label="打开菜单"
+      aria-controls="nav-menu"
+      aria-expanded="false"
+    >
+      <span class="h-0.5 w-[22px] rounded-sm bg-brand-deep"></span>
+      <span class="h-0.5 w-[22px] rounded-sm bg-brand-deep"></span>
+      <span class="h-0.5 w-[22px] rounded-sm bg-brand-deep"></span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const burger = document.getElementById('nav-burger');
+  const menu = document.getElementById('nav-menu');
+
+  burger?.addEventListener('click', () => {
+    const open = menu?.dataset.open !== 'true';
+    if (menu) menu.dataset.open = String(open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+  });
+</script>

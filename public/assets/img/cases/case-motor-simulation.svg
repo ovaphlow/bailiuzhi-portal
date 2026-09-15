@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="高压电机智能装配车间仿真示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7faff"/>
+      <stop offset="1" stop-color="#e6efff"/>
+    </linearGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#1d4ed8" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="540" fill="url(#bg)"/>
+  <rect width="900" height="540" fill="url(#grid)"/>
+
+  <!-- 高压电机 -->
+  <g>
+    <g stroke="#1d4ed8" stroke-width="5" stroke-linecap="round">
+      <path d="M196 174L206 152M196 366L206 388M242 138L248 160M298 126L298 150M354 138L348 160M400 174L390 152M400 366L390 388M354 402L348 380M298 414L298 390M242 402L248 380"/>
+    </g>
+    <circle cx="298" cy="270" r="112" fill="#ffffff" stroke="#0f2e63" stroke-width="6"/>
+    <circle cx="298" cy="270" r="76" fill="#eff4ff" stroke="#1d4ed8" stroke-width="5"/>
+    <circle cx="298" cy="270" r="18" fill="#1d4ed8" fill-opacity="0.4"/>
+    <rect x="410" y="248" width="72" height="44" rx="8" fill="#ffffff" stroke="#0f2e63" stroke-width="5"/>
+    <text x="298" y="452" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#b8860b">ASSEMBLY UNIT</text>
+  </g>
+
+  <!-- 车间布局（虚实叠加） -->
+  <g>
+    <!-- 物理布局 -->
+    <path d="M508 250L716 176L856 232L648 308Z" fill="#ffffff" stroke="#0f2e63" stroke-width="5" stroke-linejoin="round"/>
+    <!-- 工位 -->
+    <g stroke="#1d4ed8" stroke-width="4" fill="#1d4ed8" fill-opacity="0.14">
+      <path d="M566 236L628 213L664 227L602 250Z"/>
+      <path d="M624 262L686 239L722 253L660 276Z"/>
+      <path d="M682 288L744 265L780 279L718 302Z"/>
+    </g>
+    <path d="M540 300L700 240" stroke="#0f2e63" stroke-opacity="0.3" stroke-width="4" stroke-dasharray="8 8"/>
+    <!-- 虚拟仿真叠加层 -->
+    <path d="M508 224L716 150L856 206L648 282Z" fill="none" stroke="#d4af37" stroke-width="5" stroke-dasharray="10 8" stroke-linejoin="round"/>
+    <text x="682" y="360" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#b8860b">DIGITAL TWIN</text>
+  </g>
+
+  <!-- 规划提效 -->
+  <g>
+    <rect x="508" y="404" width="200" height="16" rx="8" fill="#1d4ed8" fill-opacity="0.22"/>
+    <rect x="508" y="404" width="132" height="16" rx="8" fill="#d4af37"/>
+    <text x="728" y="420" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#0f2e63">PLAN OK</text>
+  </g>
+</svg>
