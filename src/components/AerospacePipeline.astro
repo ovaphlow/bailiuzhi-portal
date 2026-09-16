@@ -1,0 +1,158 @@
+---
+/**
+ * 航天复材案例「一体化链路」示意图（纯 SVG 绘制，不使用文档配图）。
+ * 内容依据《百六智数字科技公司简介 4.0》P43：
+ *   装配CAD导入 → BOM快速提取 → AI识别与分类 → 自动精度设计 → 全自动出图 → 自动生成检验计划
+ * 其中后四个环节分别与四项「零部件规范」对应，交付结果为零件图纸生成时间少于 1 分钟/个。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  ink: '#0f172a',
+  muted: '#64748b',
+  surface: '#f8fafc',
+  line: '#cbd5e1',
+};
+
+/** 前两环节是输入，后四环节与对应规范配对 */
+const steps = [
+  { label: '装配 CAD 导入', rule: null },
+  { label: 'BOM 快速提取', rule: null },
+  { label: 'AI 识别与分类', rule: '零部件类型规范' },
+  { label: '自动精度设计', rule: '零部件精度规范' },
+  { label: '全自动出图', rule: '零部件图纸规范' },
+  { label: '自动生成检验计划', rule: '零部件检验规范' },
+];
+
+const W = 160; // 环节框宽
+const GAP = 24;
+const Y = 186; // 环节框顶
+const H = 72; // 环节框高
+const x = (i: number) => 40 + i * (W + GAP);
+const cx = (i: number) => x(i) + W / 2;
+const busY = Y + H + 32; // 汇流线
+const bandY = busY + 20; // 结果条
+const RULE_W = 140;
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 420"
+    role="img"
+    aria-label="航天复材装配体一体化链路：装配CAD导入、BOM快速提取、AI识别与分类、自动精度设计、全自动出图、自动生成检验计划；后四个环节分别与零部件类型、精度、图纸、检验四项规范对应，零件图纸生成时间少于1分钟每个。"
+    class="block h-auto w-full min-w-[900px]"
+  >
+    <title>航天复材装配体智能拆分与快速出图一体化链路</title>
+
+    <!-- 四项规范标签及其指向对应环节的虚线 -->
+    {
+      steps.map((s, i) =>
+        s.rule ? (
+          <g>
+            <rect
+              x={cx(i) - RULE_W / 2}
+              y={22}
+              width={RULE_W}
+              height={34}
+              rx={8}
+              fill={C.goldSoft}
+              stroke={C.gold}
+              stroke-opacity="0.5"
+            />
+            <text
+              x={cx(i)}
+              y={44}
+              text-anchor="middle"
+              font-size="14"
+              font-weight="600"
+              fill={C.goldDeep}
+            >
+              {s.rule}
+            </text>
+            <line
+              x1={cx(i)}
+              y1={56}
+              x2={cx(i)}
+              y2={Y}
+              stroke={C.gold}
+              stroke-width="1.5"
+              stroke-dasharray="4 4"
+            />
+          </g>
+        ) : null,
+      )
+    }
+
+    <!-- 环节框：前两步为输入（浅色），后四步与规范配对（品牌色） -->
+    {
+      steps.map((s, i) => (
+        <g>
+          <rect
+            x={x(i)}
+            y={Y}
+            width={W}
+            height={H}
+            rx={10}
+            fill={s.rule ? C.soft : C.surface}
+            stroke={s.rule ? C.brand : C.line}
+            stroke-opacity={s.rule ? 0.4 : 1}
+          />
+          <text
+            x={cx(i)}
+            y={Y + 43}
+            text-anchor="middle"
+            font-size="15"
+            font-weight="600"
+            fill={s.rule ? C.deep : C.ink}
+          >
+            {s.label}
+          </text>
+        </g>
+      ))
+    }
+
+    <!-- 环节之间的箭头 -->
+    {
+      [0, 1, 2, 3, 4].map((i) => {
+        const y = Y + H / 2;
+        const from = x(i) + W + 3;
+        const to = x(i + 1);
+        return (
+          <g>
+            <line x1={from} y1={y} x2={to - 8} y2={y} stroke={C.brand} stroke-width="2" />
+            <polygon points={`${to - 8},${y - 5} ${to},${y} ${to - 8},${y + 5}`} fill={C.brand} />
+          </g>
+        );
+      })
+    }
+
+    <!-- 各环节汇流到交付结果 -->
+    <g stroke={C.brand} stroke-width="1.5" stroke-opacity="0.55">
+      {steps.map((_, i) => (
+        <line x1={cx(i)} y1={Y + H} x2={cx(i)} y2={busY} />
+      ))}
+      <line x1={cx(0)} y1={busY} x2={cx(steps.length - 1)} y2={busY} />
+      <line x1={(cx(0) + cx(steps.length - 1)) / 2} y1={busY} x2={(cx(0) + cx(steps.length - 1)) / 2} y2={bandY} />
+    </g>
+
+    <!-- 交付结果 -->
+    <rect
+      x={40}
+      y={bandY}
+      width={1080}
+      height={62}
+      rx={12}
+      fill={C.goldSoft}
+      stroke={C.gold}
+      stroke-opacity="0.45"
+    />
+    <text x={580} y={bandY + 39} text-anchor="middle" font-size="16" fill={C.muted}>
+      <tspan>零件图纸生成时间</tspan>
+      <tspan font-size="23" font-weight="700" fill={C.goldDeep}> 少于 1 分钟 / 个</tspan>
+    </text>
+  </svg>
+</div>

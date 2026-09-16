@@ -2,85 +2,98 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Feature from '../components/Feature.astro';
+import MotorSimAnalysis from '../components/MotorSimAnalysis.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/**
+ * 本页内容逐字取自《百六智数字科技公司简介 4.0》P47
+ * 「某高压电机智能装配车间仿真应用案例」，未作改写，也未做外部补充：
+ *
+ *   正文三条（P47 正文原文）：
+ *     · 发现和消除那些需要消耗时间和费用的补救措施才能解决的问题；
+ *     · 提高规划的准确性和效率，同时减少投资，降低试错成本；
+ *     · 优化物流和性能，提高在多品种生产环境中的投资回报率。
+ *
+ *   第一张示意图图注（原文，7 项）：
+ *     布局分析 / 输送设备数量 / 资源利用率 / 每小时产量 / 瓶颈分析 / 使用率 MTTR / 物流输送
+ *   第二张示意图图注（原文，10 项）：
+ *     方案比较分析 / 识别依赖关系 / 减少过分资源 / 节约投资 / 优化控制策略 /
+ *     减少生产时间 / 优化批量大小 / 减少库存容量 / 增加对用户需求的灵活性 / 减少“主观决策”的数量
+ */
+const highlights = [
+  { no: '01', text: '发现和消除那些需要消耗时间和费用的补救措施才能解决的问题；' },
+  { no: '02', text: '提高规划的准确性和效率，同时减少投资，降低试错成本；' },
+  { no: '03', text: '优化物流和性能，提高在多品种生产环境中的投资回报率。' },
+];
+
+/** 第二组为并列关注点（无序），故不加序号，按原图注的左右分布顺序排列 */
+const optimizeTargets = [
+  '方案比较分析',
+  '识别依赖关系',
+  '减少过分资源',
+  '节约投资',
+  '优化控制策略',
+  '减少生产时间',
+  '优化批量大小',
+  '减少库存容量',
+  '增加对用户需求的灵活性',
+  '减少“主观决策”的数量',
+];
 ---
 
 <BaseLayout
-  title="某高压电机智能装配车间仿真案例 · 百六智数字科技"
-  description="运用工厂/产线仿真能力，发现并消除需要补救措施才能解决的问题，提高规划准确性与效率，减少投资、降低试错成本。"
+  title="某高压电机智能装配车间仿真应用案例 · 百六智数字科技"
+  description="发现和消除那些需要消耗时间和费用的补救措施才能解决的问题；提高规划的准确性和效率，同时减少投资，降低试错成本。"
 >
-  <PageHero
-    kicker="HIGH-VOLTAGE MOTOR"
-    title="某高压电机智能装配车间仿真"
-    lede="运用工厂/产线仿真能力，发现并消除需要补救措施才能解决的问题，提高规划准确性与效率，减少投资、降低试错成本。"
-  />
+  <PageHero kicker="HIGH-VOLTAGE MOTOR · 仿真应用案例" title="某高压电机智能装配车间仿真应用案例" />
 
-  <!-- 案例背景 -->
-  <section id="intro" class="py-14 md:py-18">
+  <!-- 案例要点 -->
+  <section id="highlights" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Background" title="案例背景" />
-      <Feature
-        desc="高压电机多品种装配场景中，布局与物流规划复杂，现场问题往往在投产后才暴露，返工与补救成本高。"
-        points={[
-          '发现问题 → 消除需要消耗时间与费用的补救措施才能解决的问题',
-          '提高规划的准确性和效率，同时减少投资，降低试错成本',
-          '优化物流和性能，提高在多品种生产环境中的投资回报率',
-          '结合工厂布局仿真、生产物流仿真与产线产能仿真，实现智能化规划',
-        ]}
-        img="/assets/media/docs/company-profile-pptx/media/img-28cfc5aac9ef.webp"
-        alt="高压电机装配车间案例"
-        caption="高压电机智能装配车间仿真案例图"
-      />
-    </div>
-  </section>
-
-  <!-- 方案要点 · 图文详解 -->
-  <section id="solutions" class="bg-surface py-14 md:py-18">
-    <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead
-        eyebrow="Solutions"
-        title="方案要点 · 图文详解"
-        desc="发现问题、提高规划准确性与效率、优化物流与性能。"
-      />
-      <div class="grid gap-10">
-        <Feature
-          sub="01 · 仿真前置验证"
-          title="投产前先在虚拟世界发现问题"
-          desc="发现和消除那些需要消耗时间和费用的补救措施才能解决的问题，避免方案缺陷到投产后才暴露。"
-          points={['虚拟世界中提前暴露布局、物流与产能问题', '削减补救措施带来的时间与费用成本']}
-          img="/assets/media/docs/company-profile/elements/v4-p47-a.jpg"
-          alt="某高压电机智能装配车间仿真应用案例"
-          caption="智能装配车间仿真应用案例要点"
-        />
-        <Feature
-          flip
-          sub="02 · 规划准确性与效率"
-          title="提高规划准确性和效率"
-          desc="通过方案比较分析、识别依赖关系、优化批量大小与控制策略，提高规划的准确性和效率，同时减少投资、降低试错成本。"
-          points={['方案比较分析、识别依赖关系', '节约投资、减少生产时间、减少库存容量', '优化控制策略，增加对用户需求的灵活性']}
-          img="/assets/media/docs/company-profile/elements/v4-p47-b.jpg"
-          alt="装配车间布局仿真优化"
-          caption="车间布局仿真：方案比较分析与投资优化"
-        />
-        <Feature
-          sub="03 · 物流与性能优化"
-          title="提升多品种生产的投资回报率"
-          desc="优化物流和性能，提高多品种生产环境中的投资回报率；结合布局分析、瓶颈分析、资源利用率与物流输送仿真持续调优。"
-          points={['布局分析 · 瓶颈分析 · 物流输送仿真', '资源利用率与使用率（MTTR）评估']}
-          img="/assets/media/docs/company-profile/elements/v4-p47-a.jpg"
-          alt="产线仿真软件分析"
-          caption="产线仿真：布局、瓶颈与物流分析"
-        />
+      <SectionHead eyebrow="Highlights" title="案例要点" />
+      <div class="grid gap-6 lg:grid-cols-3">
+        {
+          highlights.map((h) => (
+            <article class="flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8 transition-shadow hover:shadow-[0_10px_30px_-18px_rgba(15,46,99,0.35)]">
+              <span class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">{h.no}</span>
+              <p class="mt-4 mb-0 text-[1.05rem] leading-[1.9] text-ink">{h.text}</p>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
+  <!-- 仿真分析维度：各维度分别观察车间里的什么 -->
+  <section id="analysis" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Analysis" title="仿真分析维度" />
+      <div class="rounded-xl border border-ink/[0.08] bg-white p-4 md:p-6">
+        <MotorSimAnalysis />
+      </div>
+    </div>
+  </section>
+
+  <!-- 布局与物流优化关注点：并列清单，不配图 -->
+  <section id="optimize" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Optimization" title="布局与物流优化关注点" />
+      <ul
+        class="m-0 grid list-none grid-cols-1 gap-x-14 border-b border-ink/[0.08] p-0 md:grid-cols-2"
+      >
+        {
+          optimizeTargets.map((t) => (
+            <li class="flex items-center gap-4 border-t border-ink/[0.08] py-5">
+              <span class="h-2 w-2 shrink-0 rounded-sm bg-gold" />
+              <span class="text-[1.05rem] leading-relaxed text-ink">{t}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <ContactSection />
-  <CtaBand
-    sub="从诊断与规划开始，锁定高价值场景快速验证。"
-  >
-    像规划建设一样 <span class="text-gold-deep">先在虚拟世界验证</span>
-  </CtaBand>
+  <CtaBand />
 </BaseLayout>

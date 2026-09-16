@@ -2,6 +2,8 @@
 dist/
 # generated types
 .astro/
+# scripts/render-svgs.mjs 的输出
+.svg-preview/
 
 # dependencies
 node_modules/

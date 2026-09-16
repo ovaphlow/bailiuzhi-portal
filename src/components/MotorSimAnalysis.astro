@@ -1,0 +1,213 @@
+---
+/**
+ * 「某高压电机智能装配车间仿真应用案例」示意图一 · 矢量重绘（纯 SVG，不使用 P47 位图）。
+ *
+ * 图注文字逐条取自《百六智数字科技公司简介 4.0》P47 第一张示意图
+ * （工厂 / 产线仿真软件界面截图）上的标注原文，未增删改写：
+ *   布局分析 · 输送设备数量 · 资源利用率 · 每小时产量 · 瓶颈分析 · 使用率 MTTR · 物流输送
+ *
+ * 绘制方式：以车间平面示意为底，沿用原图“标注 + 引线 + 观察点”的表达，位图改为矢量。
+ */
+
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  surface: '#f8fafc',
+  metal: '#94a3b8',
+  red: '#b91c1c',
+};
+
+/* ── 车间几何 ───────────────────────────────────────────── */
+const B = { x: 320, y: 64, w: 500, h: 300 };
+const COLS = [356, 444, 532, 620, 708];
+const ROWS = [104, 208];
+const ST = { w: 64, h: 44 };
+const CONVEYOR = { x1: 340, x2: 800, y: 180 };
+const AGV = { x1: 340, x2: 800, y: 288 };
+const BOTTLENECK = { cx: 740, cy: 126, r: 32 };
+
+/** 工位阵列：右上角工位即「瓶颈分析」标注所指对象 */
+const STATIONS = ROWS.flatMap((y, ri) =>
+  COLS.map((x, ci) => ({ x, y, bottleneck: ri === 0 && ci === COLS.length - 1 })),
+);
+
+/* ── 图注（原文） ───────────────────────────────────────── */
+const LEFT_CALLOUTS = [
+  { text: '布局分析', ly: 104, to: [B.x + 2, B.y + 32] },
+  { text: '输送设备数量', ly: 190, to: [CONVEYOR.x1 + 4, CONVEYOR.y] },
+  { text: '资源利用率', ly: 300, to: [COLS[0] + 2, ROWS[1] + ST.h] },
+];
+const RIGHT_CALLOUTS = [
+  { text: '瓶颈分析', ly: 104, to: [BOTTLENECK.cx + BOTTLENECK.r, BOTTLENECK.cy] },
+  { text: '每小时产量', ly: 186, to: [CONVEYOR.x2 + 6, CONVEYOR.y - 4] },
+  { text: '使用率 MTTR', ly: 272, to: [COLS[4] + ST.w + 2, ROWS[1] + 22] },
+  { text: '物流输送', ly: 368, to: [AGV.x2 - 10, AGV.y + 2] },
+];
+---
+
+<div class="overflow-x-auto">
+  <svg
+    viewBox="0 0 1160 440"
+    role="img"
+    aria-label="车间布局与物流仿真分析维度示意：以俯视车间平面为底，标出布局分析、输送设备数量、资源利用率、每小时产量、瓶颈分析、使用率 MTTR、物流输送七个分析维度。"
+    class="block h-auto w-full min-w-[1000px]"
+  >
+    <title>车间布局与物流仿真 · 分析维度</title>
+
+    <defs>
+      <pattern id="msaGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M20 0 L0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="1" />
+      </pattern>
+    </defs>
+
+    {/* 车间外框 */}
+    <rect
+      x={B.x}
+      y={B.y}
+      width={B.w}
+      height={B.h}
+      rx={10}
+      fill={C.surface}
+      stroke={C.line}
+    />
+    <rect
+      x={B.x + 12}
+      y={B.y + 12}
+      width={B.w - 24}
+      height={B.h - 24}
+      rx={6}
+      fill="url(#msaGrid)"
+      stroke={C.line}
+      stroke-dasharray="5 4"
+    />
+
+    {/* 输送线 */}
+    <g>
+      <rect
+        x={CONVEYOR.x1}
+        y={CONVEYOR.y - 7}
+        width={CONVEYOR.x2 - CONVEYOR.x1}
+        height={14}
+        rx={7}
+        fill="#ffffff"
+        stroke={C.line}
+      />
+      {Array.from({ length: 19 }, (_, i) => CONVEYOR.x1 + 12 + i * 24).map((x) => (
+        <line
+          x1={x}
+          y1={CONVEYOR.y - 5}
+          x2={x}
+          y2={CONVEYOR.y + 5}
+          stroke={C.metal}
+          stroke-opacity="0.5"
+        />
+      ))}
+      {[500, 620, 740].map((x) => (
+        <polygon
+          points={`${x},${CONVEYOR.y - 4} ${x + 9},${CONVEYOR.y} ${x},${CONVEYOR.y + 4}`}
+          fill={C.brand}
+          fill-opacity="0.65"
+        />
+      ))}
+    </g>
+
+    {/* 工位 ↔ 输送线 接驳 */}
+    {COLS.map((x) => (
+      <g stroke={C.metal} stroke-opacity="0.6">
+        <line x1={x + ST.w / 2} y1={ROWS[0] + ST.h + 4} x2={x + ST.w / 2} y2={CONVEYOR.y - 10} />
+        <line x1={x + ST.w / 2} y1={CONVEYOR.y + 10} x2={x + ST.w / 2} y2={ROWS[1] - 4} />
+      </g>
+    ))}
+
+    {/* 工位 */}
+    {STATIONS.map((s) => (
+      <rect
+        x={s.x}
+        y={s.y}
+        width={ST.w}
+        height={ST.h}
+        rx={6}
+        fill={s.bottleneck ? '#fef2f2' : '#ffffff'}
+        stroke={s.bottleneck ? C.red : C.metal}
+        stroke-opacity={s.bottleneck ? 0.9 : 0.8}
+      />
+    ))}
+
+    {/* 瓶颈分析所指工位 */}
+    <circle
+      cx={BOTTLENECK.cx}
+      cy={BOTTLENECK.cy}
+      r={BOTTLENECK.r}
+      fill="none"
+      stroke={C.red}
+      stroke-opacity="0.55"
+      stroke-dasharray="6 5"
+    />
+
+    {/* 物流输送通道（AGV） */}
+    <line
+      x1={AGV.x1}
+      y1={AGV.y}
+      x2={AGV.x2}
+      y2={AGV.y}
+      stroke={C.brand}
+      stroke-opacity="0.45"
+      stroke-width="2"
+      stroke-dasharray="7 6"
+    />
+    <g>
+      <rect x={548} y={AGV.y - 11} width={42} height={22} rx={5} fill="#ffffff" stroke={C.brand} stroke-opacity="0.8" />
+      <rect x={554} y={AGV.y - 6} width={30} height={12} rx={2} fill={C.brand} fill-opacity="0.22" />
+      <circle cx={558} cy={AGV.y + 12} r={3} fill={C.ink} fill-opacity="0.6" />
+      <circle cx={580} cy={AGV.y + 12} r={3} fill={C.ink} fill-opacity="0.6" />
+    </g>
+
+    {/* ── 图注：左 ── */}
+    {LEFT_CALLOUTS.map((c) => (
+      <g>
+        <line x1={294} y1={c.ly - 4} x2={c.to[0]} y2={c.to[1]} stroke={C.gold} stroke-opacity="0.8" />
+        <circle cx={c.to[0]} cy={c.to[1]} r={3.4} fill={C.gold} />
+        <text x={286} y={c.ly} text-anchor="end" font-size="13" font-weight="600" fill={C.deep}>
+          {c.text}
+        </text>
+      </g>
+    ))}
+
+    {/* ── 图注：右 ── */}
+    {RIGHT_CALLOUTS.map((c) => (
+      <g>
+        <line x1={848} y1={c.ly - 4} x2={c.to[0]} y2={c.to[1]} stroke={C.gold} stroke-opacity="0.8" />
+        <circle cx={c.to[0]} cy={c.to[1]} r={3.4} fill={C.gold} />
+        <text x={856} y={c.ly} font-size="13" font-weight="600" fill={C.deep}>
+          {c.text}
+        </text>
+      </g>
+    ))}
+
+    {/* 图例 */}
+    <g>
+      <circle cx={B.x + 8} cy={392} r={3.4} fill={C.gold} />
+      <text x={B.x + 20} y={396} font-size="11.5" fill={C.muted}>
+        实心点：各分析维度的观测对象
+      </text>
+      <circle
+        cx={B.x + 8}
+        cy={420}
+        r={6}
+        fill="none"
+        stroke={C.red}
+        stroke-opacity="0.6"
+        stroke-dasharray="4 3"
+      />
+      <text x={B.x + 20} y={424} font-size="11.5" fill={C.muted}>
+        红色虚线圆圈：瓶颈工位
+      </text>
+    </g>
+  </svg>
+</div>

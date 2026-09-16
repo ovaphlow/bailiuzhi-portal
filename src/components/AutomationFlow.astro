@@ -1,0 +1,96 @@
+---
+/**
+ * 非标自动化案例「装配批量导入 → 图纸一键生成」流程示意（纯 SVG 绘制）。
+ * 四个零件用简化技术轮廓表示，右侧为生成的零件图纸。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  surface: '#f8fafc',
+};
+
+const names = ['定位组件', '承载板', '随行夹具', '卷针组件'];
+/** 四个零件轮廓的绘制中心 */
+const centers = [80, 190, 300, 410];
+const CY = 110;
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1100 210"
+    role="img"
+    aria-label="装配批量导入后，定位组件、承载板、随行夹具、卷针组件等零件一键生成可交付的零件图纸。"
+    class="block h-auto w-full min-w-[880px]"
+  >
+    <title>装配批量导入、图纸一键生成</title>
+
+    <text x={245} y={34} text-anchor="middle" font-size="16" font-weight="600" fill={C.deep}>
+      装配批量导入
+    </text>
+
+    <!-- 零件轮廓（示意） -->
+    <g stroke={C.brand} stroke-width="2.5" fill="#ffffff">
+      <!-- 定位组件：带孔与台阶的块 -->
+      <rect x={centers[0] - 35} y={CY - 22} width={70} height={44} />
+      <rect x={centers[0] + 21} y={CY - 22} width={14} height={11} fill={C.soft} stroke-width="2" />
+      <!-- 承载板：带孔阵的板 -->
+      <rect x={centers[1] - 38} y={CY - 20} width={76} height={40} />
+      <!-- 随行夹具：U 形支架 -->
+      <path d={`M${centers[2] - 32} ${CY - 24} V${CY + 20} H${centers[2] + 32} V${CY - 24}`} fill="none" />
+      <!-- 卷针组件：同心圆 -->
+      <circle cx={centers[3]} cy={CY} r={22} />
+      <circle cx={centers[3]} cy={CY} r={13} stroke-width="2" />
+      <circle cx={centers[3]} cy={CY} r={4} stroke-width="2" />
+    </g>
+    <g fill="#ffffff" stroke={C.brand} stroke-width="2">
+      <circle cx={centers[0] - 16} cy={CY + 2} r={5} />
+      <circle cx={centers[0] + 8} cy={CY + 2} r={5} />
+      <circle cx={centers[1] - 25} cy={CY - 7} r={3.5} />
+      <circle cx={centers[1] - 9} cy={CY - 7} r={3.5} />
+      <circle cx={centers[1] + 9} cy={CY - 7} r={3.5} />
+      <circle cx={centers[1] + 25} cy={CY - 7} r={3.5} />
+      <circle cx={centers[1] - 17} cy={CY + 10} r={3.5} />
+      <circle cx={centers[1] + 17} cy={CY + 10} r={3.5} />
+      <circle cx={centers[2] - 24} cy={CY - 12} r={3.5} />
+      <circle cx={centers[2] + 24} cy={CY - 12} r={3.5} />
+    </g>
+
+    <!-- 零件名称 -->
+    {
+      names.map((n, i) => (
+        <text x={centers[i]} y={170} text-anchor="middle" font-size="12.5" fill={C.muted}>
+          {n}
+        </text>
+      ))
+    }
+
+    <!-- 箭头：图纸一键生成 -->
+    <line x1={468} y1={CY} x2={588} y2={CY} stroke={C.brand} stroke-width="2" />
+    <polygon points={`588,${CY - 5} 600,${CY} 588,${CY + 5}`} fill={C.brand} />
+    <text x={532} y={84} text-anchor="middle" font-size="15" font-weight="600" fill={C.deep}>
+      图纸一键生成
+    </text>
+
+    <!-- 右侧：生成的零件图纸（错位堆叠） -->
+    <rect x={676} y={4} width={170} height={120} rx={6} fill={C.surface} stroke={C.line} />
+    <rect x={688} y={16} width={170} height={120} rx={6} fill={C.surface} stroke={C.line} />
+    <rect x={700} y={28} width={170} height={120} rx={6} fill="#ffffff" stroke={C.brand} stroke-opacity="0.4" />
+    <g stroke={C.brand} stroke-width="2" fill="none">
+      <rect x={720} y={52} width={70} height={46} />
+    </g>
+    <g stroke={C.muted} stroke-width="1.2">
+      <line x1={720} y1={46} x2={790} y2={46} />
+      <line x1={720} y1={43} x2={720} y2={49} />
+      <line x1={790} y1={43} x2={790} y2={49} />
+      <line x1={712} y1={52} x2={712} y2={98} />
+      <line x1={709} y1={52} x2={715} y2={52} />
+      <line x1={709} y1={98} x2={715} y2={98} />
+    </g>
+    <rect x={806} y={122} width={58} height={20} fill={C.surface} stroke={C.line} />
+    <text x={785} y={170} text-anchor="middle" font-size="12.5" fill={C.muted}>零件图纸</text>
+  </svg>
+</div>

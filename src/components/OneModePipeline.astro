@@ -1,0 +1,155 @@
+---
+/**
+ * 复杂零部件「一模到底」全链路示意（纯 SVG 绘制，不使用文档配图）。
+ * 内容依据《百六智数字科技公司简介 4.0》P45：
+ *   UG NX 模型 → CAS 自动标注和 MBD 模型生成 → 测针自动配置/测点生成 → 三坐标测量程序自动生成
+ *   六项支撑库（设计规范库、设计制造一体化属性库、要素命名规则、自动匹配属性、
+ *   结构化加工/检测工艺库、检测工艺/资源库）经 MBD 信息模型直驱上述环节，
+ *   并派生检测计划生成与 NC 加工程序自动生成（数控加工程序）等输出。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  surface: '#f8fafc',
+};
+
+/** 支撑库（P45 上方的六项） */
+const libs = [
+  '设计规范库',
+  '设计制造一体化属性库',
+  '要素命名规则',
+  '自动匹配属性',
+  '结构化加工 · 检测工艺库',
+  '检测工艺 · 资源库',
+];
+
+/** 四个环节；metric 为 P45 标注的量化结果 */
+const steps = [
+  { no: '01', lines: ['UG NX 模型'], metric: null },
+  { no: '02', lines: ['CAS 自动标注和', 'MBD 模型生成'], metric: '1 周专业操作时间缩至 4 小时' },
+  { no: '03', lines: ['测针自动配置 /', '测点生成'], metric: '2 周时间缩至 1 小时' },
+  { no: '04', lines: ['三坐标测量程序', '自动生成'], metric: '测量准备时间总体提效 60%' },
+];
+
+const CHIP_W = 170;
+const CHIP_X = (i: number) => 40 + i * 182; // 间距 12
+const CHIP_CX = (i: number) => CHIP_X(i) + CHIP_W / 2;
+const BOX_W = 252;
+const BOX_X = (i: number) => 40 + i * 276; // 间距 24
+const BOX_CX = (i: number) => BOX_X(i) + BOX_W / 2;
+const BOX_Y = 182;
+const BOX_H = 110;
+const BUS_Y = 84;
+const BAND_Y = 98;
+const BAND_H = 48;
+
+/** 输出（P45 右侧一列） */
+const outputs = [
+  { label: '检测计划生成', cx: BOX_CX(2), w: 220, from: 2 },
+  { label: 'NC 加工程序自动生成 · 数控加工程序', cx: BOX_CX(3), w: 268, from: 3 },
+];
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 -14 1160 434"
+    role="img"
+    aria-label="一模到底全链路：UG NX 模型经 CAS 自动标注和 MBD 模型生成、测针自动配置与测点生成，到三坐标测量程序自动生成；六项支撑库由 MBD 信息模型直驱全链，并派生检测计划与 NC 加工程序。"
+    class="block h-auto w-full min-w-[900px]"
+  >
+    <title>复杂零部件一模到底设计检测一体化链路</title>
+
+    <!-- 支撑库 -->
+    <text x={40} y={12} font-size="12.5" fill={C.muted}>支撑库</text>
+    {
+      libs.map((t, i) => (
+        <g>
+          <rect x={CHIP_X(i)} y={20} width={CHIP_W} height={42} rx={8} fill={C.goldSoft} stroke={C.gold} stroke-opacity="0.5" />
+          <text x={CHIP_CX(i)} y={46} text-anchor="middle" font-size="12.5" font-weight="600" fill={C.goldDeep}>{t}</text>
+          <line x1={CHIP_CX(i)} y1={62} x2={CHIP_CX(i)} y2={BUS_Y} stroke={C.gold} stroke-width="1.5" stroke-dasharray="4 4" />
+        </g>
+      ))
+    }
+    <line x1={CHIP_CX(0)} y1={BUS_Y} x2={CHIP_CX(libs.length - 1)} y2={BUS_Y} stroke={C.gold} stroke-width="1.5" stroke-dasharray="4 4" />
+    <line x1={580} y1={BUS_Y} x2={580} y2={BAND_Y} stroke={C.gold} stroke-width="1.5" stroke-dasharray="4 4" />
+
+    <!-- MBD 信息模型直驱 -->
+    <rect x={40} y={BAND_Y} width={1080} height={BAND_H} rx={10} fill={C.soft} stroke={C.brand} stroke-opacity="0.3" />
+    <text x={580} y={BAND_Y + 31} text-anchor="middle" font-size="17" font-weight="600" fill={C.deep}>MBD 信息模型直驱</text>
+    {
+      steps.map((_, i) => (
+        <line x1={BOX_CX(i)} y1={BAND_Y + BAND_H} x2={BOX_CX(i)} y2={BOX_Y} stroke={C.brand} stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.5" />
+      ))
+    }
+
+    <!-- 四个环节 -->
+    {
+      steps.map((s, i) => (
+        <g>
+          <rect
+            x={BOX_X(i)}
+            y={BOX_Y}
+            width={BOX_W}
+            height={BOX_H}
+            rx={10}
+            fill={i === 0 ? C.surface : C.soft}
+            stroke={i === 0 ? C.line : C.brand}
+            stroke-opacity={i === 0 ? 1 : 0.4}
+          />
+          <text x={BOX_CX(i)} y={BOX_Y + 28} text-anchor="middle" font-size="10.5" font-weight="600" fill={C.goldDeep}>{s.no}</text>
+          {s.lines.length === 1 ? (
+            <text x={BOX_CX(i)} y={BOX_Y + 74} text-anchor="middle" font-size="14.5" font-weight="600" fill={i === 0 ? C.ink : C.deep}>{s.lines[0]}</text>
+          ) : (
+            s.lines.map((ln, k) => (
+              <text x={BOX_CX(i)} y={BOX_Y + 58 + k * 22} text-anchor="middle" font-size="14.5" font-weight="600" fill={C.deep}>{ln}</text>
+            ))
+          )}
+          {s.metric && (
+            <text x={BOX_CX(i)} y={BOX_Y + 100} text-anchor="middle" font-size="12" fill={C.goldDeep}>{s.metric}</text>
+          )}
+        </g>
+      ))
+    }
+
+    <!-- 环节之间的箭头 -->
+    {
+      [0, 1, 2].map((i) => {
+        const y = BOX_Y + BOX_H / 2;
+        const from = BOX_X(i) + BOX_W + 3;
+        const to = BOX_X(i + 1);
+        return (
+          <g>
+            <line x1={from} y1={y} x2={to - 8} y2={y} stroke={C.brand} stroke-width="2" />
+            <polygon points={`${to - 8},${y - 5} ${to},${y} ${to - 8},${y + 5}`} fill={C.brand} />
+          </g>
+        );
+      })
+    }
+
+    <!-- 输出 -->
+    {
+      outputs.map((o) => (
+        <g>
+          <line
+            x1={o.cx}
+            y1={BOX_Y + BOX_H}
+            x2={o.cx}
+            y2={330}
+            stroke={C.line}
+            stroke-width="1.5"
+            stroke-dasharray="4 4"
+          />
+          <rect x={o.cx - o.w / 2} y={330} width={o.w} height={42} rx={8} fill="#ffffff" stroke={C.line} />
+          <text x={o.cx} y={356} text-anchor="middle" font-size="12.5" fill={C.deep}>{o.label}</text>
+        </g>
+      ))
+    }
+  </svg>
+</div>

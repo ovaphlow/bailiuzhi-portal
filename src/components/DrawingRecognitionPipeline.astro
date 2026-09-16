@@ -1,0 +1,62 @@
+---
+/**
+ * 二维图纸智能识别「从图纸到测量」流程示意（纯 SVG 绘制，不使用文档配图）。
+ * 五个环节用箭头带（chevron）横向排列，铺满整幅宽度：二维图纸在左端输入，依次经五个环节。
+ * 环节名称与顺序依据《公司简介 4.0》P46 与《二维图纸自动识别软件介绍1.0.pptx》slide15。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  muted: '#64748b',
+};
+
+const steps = ['图纸智能识别', '图纸智能解析', '工艺智能匹配', '模型智能重构', '数智直驱测量'];
+
+const STEP_S = 180; // 相邻箭头带起点间距
+const X0 = 200;
+const W = 216; // 箭头带总宽（含右侧尖角）
+const POINT = 36; // 左侧凹口 / 右侧尖角进深
+const TOP = 60;
+const H = 92;
+const cx = (i: number) => X0 + i * STEP_S + POINT + (W - POINT * 2) / 2;
+/** 箭头带路径：左侧凹口 + 右侧尖角 */
+const chevron = (i: number) => {
+  const x = X0 + i * STEP_S;
+  return `M${x} ${TOP} L${x + W - POINT} ${TOP} L${x + W} ${TOP + H / 2} L${x + W - POINT} ${TOP + H} L${x} ${TOP + H} L${x + POINT} ${TOP + H / 2} Z`;
+};
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 212"
+    role="img"
+    aria-label="从二维图纸到测量：二维图纸依次经图纸智能识别、图纸智能解析、工艺智能匹配、模型智能重构、数智直驱测量五个环节。"
+    class="block h-auto w-full min-w-[860px]"
+  >
+    <title>从二维图纸到测量的五个环节</title>
+
+    <!-- 输入 -->
+    <text x={20} y={70} font-size="12.5" fill={C.muted}>输入</text>
+    <rect x={20} y={78} width={150} height={56} rx={10} fill={C.goldSoft} stroke={C.gold} stroke-opacity="0.5" />
+    <text x={95} y={113} text-anchor="middle" font-size="15.5" font-weight="600" fill={C.goldDeep}>二维图纸</text>
+    <line x1={174} y1={106} x2={192} y2={106} stroke={C.brand} stroke-width="2" />
+    <polygon points="192,101 204,106 192,111" fill={C.brand} />
+
+    <!-- 五个环节：箭头带 -->
+    {
+      steps.map((s, i) => (
+        <g>
+          <path d={chevron(i)} fill={C.soft} stroke={C.brand} stroke-opacity="0.35" />
+          <text x={cx(i)} y={TOP + 32} text-anchor="middle" font-size="11" font-weight="700" fill={C.goldDeep}>
+            {String(i + 1).padStart(2, '0')}
+          </text>
+          <text x={cx(i)} y={TOP + 60} text-anchor="middle" font-size="15" font-weight="600" fill={C.deep}>{s}</text>
+        </g>
+      ))
+    }
+  </svg>
+</div>

@@ -1,0 +1,235 @@
+---
+/**
+ * 中船某研究所 AI 视觉应用「三模块协同」机制示意（纯 SVG 绘制，不使用文档配图）。
+ *
+ * 内容依据《百六智数字科技公司简介 4.0》P50「中船某研究所 AI 视觉应用案例」，
+ * 该页正文为一张示意图 + 一段文字说明，图中文字要点逐条对应如下：
+ *
+ *   多机械臂检测模块
+ *     · 多台工业机械臂协同作业
+ *     · 负责轨迹规划与全覆盖扫描
+ *     · 实现检测区域自动分配
+ *   视觉成像模块
+ *     · 工业相机 + 光源系统
+ *     · 完成表面图像采集与数据获取
+ *   视觉分析模块
+ *     · 图像预处理与特征提取
+ *     · 缺陷识别与尺寸测量
+ *     · 与标准模型数据库比对
+ *
+ * 左：检测工位俯视示意（安全围栏内的待检工件 + 多台机械臂 + 线性导轨）；
+ * 右：三模块协同链路，逐条列出各模块职责。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  teal: '#0f766e',
+  tealSoft: '#e7f6f5',
+  red: '#b91c1c',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  surface: '#f8fafc',
+  metal: '#94a3b8',
+};
+
+/* ── 工位示意几何 ─────────────────────────────────────────── */
+
+const CELL = { x: 40, y: 74, w: 372, h: 250 };
+
+/** 线性导轨（机械臂沿其移动） */
+const RAILS = [
+  { x: CELL.x + 14, y: CELL.y + 26, w: CELL.w - 28 },
+  { x: CELL.x + 14, y: CELL.y + CELL.h - 34, w: CELL.w - 28 },
+];
+
+/**
+ * 四台机械臂：两台在导轨上、两台在侧边，末端均朝向工件中心。
+ * mirror=true 表示机械臂朝右伸展（位于工件左侧时使用）。
+ */
+const WORK = { cx: 194, cy: 186 };
+const ARMS = [
+  { x: 118, y: 114, mirror: true, reach: 1 },
+  { x: 300, y: 114, mirror: false, reach: 1 },
+  { x: 118, y: 288, mirror: true, reach: 1 },
+  { x: 300, y: 288, mirror: false, reach: 1 },
+];
+
+/* ── 三模块内容 ───────────────────────────────────────────── */
+
+const MODULES = [
+  {
+    no: '01',
+    name: '多机械臂检测模块',
+    points: ['多台工业机械臂协同作业', '负责轨迹规划与全覆盖扫描', '实现检测区域自动分配'],
+    accent: C.red,
+  },
+  {
+    no: '02',
+    name: '视觉成像模块',
+    points: ['工业相机 + 光源系统', '完成表面图像采集与数据获取'],
+    accent: C.brand,
+  },
+  {
+    no: '03',
+    name: '视觉分析模块',
+    points: ['图像预处理与特征提取', '缺陷识别与尺寸测量', '与标准模型数据库比对'],
+    accent: C.teal,
+  },
+];
+
+/** 单个模块卡片高度随要点条数变化 */
+const CARD_Y = [72, 190, 272];
+const CARD_H = [104, 68, 104];
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 396"
+    role="img"
+    aria-label="中船某研究所 AI 视觉应用三模块协同：多机械臂检测模块负责多台工业机械臂协同作业、轨迹规划与全覆盖扫描、检测区域自动分配；视觉成像模块以工业相机加光源系统完成表面图像采集与数据获取；视觉分析模块完成图像预处理与特征提取、缺陷识别与尺寸测量，并与标准模型数据库比对。"
+    class="block h-auto w-full min-w-[1000px]"
+  >
+    <title>AI 视觉检测三模块协同机制</title>
+
+    <!-- 列标题 -->
+    <text x={0} y={22} font-size="12.5" fill={C.muted}>检测工位 · 三模块协同</text>
+    <text x={506} y={22} font-size="12.5" fill={C.muted}>模块职责</text>
+
+    <!-- ═══ 左：工位示意 ═══ -->
+    <g>
+      {/* 安全围栏 */}
+      <rect x={CELL.x} y={CELL.y} width={CELL.w} height={CELL.h} rx={8} fill={C.goldSoft} stroke={C.gold} stroke-opacity="0.75" />
+      <rect x={CELL.x + 10} y={CELL.y + 10} width={CELL.w - 20} height={CELL.h - 20} rx={5} fill="#ffffff" stroke={C.gold} stroke-opacity="0.35" stroke-dasharray="5 4" />
+
+      {/* 线性导轨 */}
+      {RAILS.map((r) => (
+        <g>
+          <rect x={r.x} y={r.y} width={r.w} height={7} rx={3.5} fill={C.line} />
+          <rect x={r.x} y={r.y + 7} width={r.w} height={3} rx={1.5} fill={C.metal} fill-opacity="0.5" />
+        </g>
+      ))}
+
+      {/* 待检工件（台阶轴/锥形筒体）与托架 */}
+      <g>
+        {/* 托架 */}
+        <rect x={112} y={218} width={164} height={14} rx={4} fill={C.gold} fill-opacity="0.35" stroke={C.goldDeep} stroke-opacity="0.6" />
+        <rect x={126} y={206} width={16} height={14} fill={C.metal} fill-opacity="0.55" />
+        <rect x={248} y={206} width={16} height={14} fill={C.metal} fill-opacity="0.55" />
+        {/* 工件主体 */}
+        <rect x={130} y={168} width={106} height={40} rx={6} fill={C.brand} fill-opacity="0.16" stroke={C.brand} stroke-opacity="0.5" />
+        {/* 大端法兰 */}
+        <path d="M236 160 L272 160 L272 216 L236 216 Z" fill={C.brand} fill-opacity="0.1" stroke={C.brand} stroke-opacity="0.5" />
+        {/* 小端锥体 */}
+        <path d="M130 176 L100 186 L100 194 L130 202 Z" fill={C.brand} fill-opacity="0.1" stroke={C.brand} stroke-opacity="0.5" />
+        {/* 被检测表面高亮（正在扫描的区域） */}
+        <rect x={146} y={168} width={24} height={40} fill={C.teal} fill-opacity="0.28" stroke={C.teal} stroke-opacity="0.7" />
+      </g>
+
+      {/* 机械臂：末端朝向工件中心 */}
+      {
+        ARMS.map((a) => {
+          // 从底座指向工件中心的方向单位向量
+          const dx = WORK.cx - a.x;
+          const dy = WORK.cy - a.y;
+          const len = Math.hypot(dx, dy);
+          const ux = dx / len;
+          const uy = dy / len;
+          // 肩关节与肘关节位置
+          const shX = a.x + ux * 8;
+          const shY = a.y + uy * 8;
+          const elX = a.x + ux * 30 - uy * 14;
+          const elY = a.y + uy * 30 + ux * 14;
+          const wrX = a.x + ux * 66;
+          const wrY = a.y + uy * 66;
+          // 视场扇形：从末端沿朝向工件方向张开，止于工件表面，避免大面积覆盖工件
+          const coneLen = Math.max(0, len - 66 - 26);
+          const tipX = a.x + ux * (66 + coneLen);
+          const tipY = a.y + uy * (66 + coneLen);
+          const spread = 22;
+          return (
+            <g>
+              {/* 底座 + 滑块 */}
+              <rect x={a.x - 11} y={a.y - 6} width={22} height={12} rx={2} fill={C.ink} fill-opacity="0.75" />
+              {/* 立柱 */}
+              <line x1={a.x} y1={a.y} x2={shX} y2={shY} stroke={C.metal} stroke-width="8" stroke-linecap="round" />
+              {/* 大臂 */}
+              <line x1={shX} y1={shY} x2={elX} y2={elY} stroke={C.metal} stroke-width="7" stroke-linecap="round" />
+              {/* 小臂 */}
+              <line x1={elX} y1={elY} x2={wrX} y2={wrY} stroke={C.metal} stroke-width="5.5" stroke-linecap="round" />
+              {/* 关节 */}
+              <circle cx={shX} cy={shY} r={4} fill="#ffffff" stroke={C.metal} stroke-width="2" />
+              <circle cx={elX} cy={elY} r={3.6} fill="#ffffff" stroke={C.metal} stroke-width="2" />
+              {/* 扫描视场（朝向工件，止于表面） */}
+              <path
+                d={`M${wrX} ${wrY} L${tipX - uy * spread} ${tipY + ux * spread} L${tipX + uy * spread} ${tipY - ux * spread} Z`}
+                fill={C.teal}
+                fill-opacity="0.12"
+                stroke={C.teal}
+                stroke-opacity="0.28"
+              />
+              {/* 末端执行器（相机/测头）盖在视场之上 */}
+              <circle cx={wrX} cy={wrY} r={6} fill="#ffffff" stroke={C.deep} stroke-width="1.8" />
+              <circle cx={wrX} cy={wrY} r={2.2} fill={C.deep} />
+            </g>
+          );
+        })
+      }
+
+      {/* 视场中心标注 */}
+      <text x={CELL.x} y={CELL.y + CELL.h + 22} font-size="11" fill={C.muted}>安全围栏内 · 多台机械臂沿导轨协同扫描</text>
+      <text x={CELL.x} y={CELL.y + CELL.h + 38} font-size="11" fill={C.teal}>高亮区域为正在扫描的待检表面</text>
+    </g>
+
+    <!-- 分隔线 -->
+    <line x1={466} y1={44} x2={466} y2={354} stroke={C.line} stroke-dasharray="4 4" />
+
+    <!-- 左 → 右 连接箭头 -->
+    <line x1={430} y1={198} x2={466} y2={198} stroke={C.brand} stroke-width="2" stroke-opacity="0" />
+
+    <!-- ═══ 右：三模块职责 ═══ -->
+    {
+      MODULES.map((mod, i) => {
+        const y = CARD_Y[i];
+        const h = CARD_H[i];
+        return (
+          <g>
+            <rect x={506} y={y} width={654} height={h} rx={8} fill={i === 0 ? C.soft : '#ffffff'} stroke={mod.accent} stroke-opacity="0.3" />
+            {/* 序号 */}
+            <text x={524} y={y + 24} font-size="12" font-weight="600" fill={C.goldDeep}>{mod.no}</text>
+            {/* 模块名 */}
+            <text x={556} y={y + 25} font-size="14.5" font-weight="600" fill={mod.accent}>{mod.name}</text>
+            {/* 要点 */}
+            {mod.points.map((p, j) => (
+              <g>
+                <circle cx={530} cy={y + 46 + j * 20 - 4} r={2.6} fill={mod.accent} fill-opacity="0.75" />
+                <text x={544} y={y + 46 + j * 20} font-size="12" fill={mod.ink}>{p}</text>
+              </g>
+            ))}
+            {/* 右侧模块角色短标 */}
+            <text x={1148} y={y + 25} text-anchor="end" font-size="10.5" fill={C.muted}>
+              {['执行', '采集', '判定'][i]}
+            </text>
+          </g>
+        );
+      })
+    }
+
+    <!-- 三模块串联关系 -->
+    {
+      [
+        [CARD_Y[0] + CARD_H[0] / 2, CARD_Y[1] + CARD_H[1] / 2],
+        [CARD_Y[1] + CARD_H[1] / 2, CARD_Y[2] + CARD_H[2] / 2],
+      ].map(([y1, y2]) => (
+        <g>
+          <line x1={832} y1={y1 + 14} x2={832} y2={y2 - 14} stroke={C.line} stroke-width="1.5" />
+          <polygon points={`827,${y2 - 14} 832,${y2 - 6} 837,${y2 - 14}`} fill={C.line} />
+        </g>
+      ))
+    }
+  </svg>
+</div>

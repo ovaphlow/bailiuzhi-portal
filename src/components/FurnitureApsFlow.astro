@@ -1,0 +1,256 @@
+---
+/**
+ * 智能家具制造 AI 排程「板材排版优化 + 生产周期对齐」机制示意（纯 SVG 绘制，不使用文档配图）。
+ * 内容依据《谷器数据 SupplyX AI 智能体空间 v8.1》P16「案例二-家具定制排程」：
+ *   AI 排程生成算法优化生产排版，提高板材利用率；
+ *   合理规划生产周期，同一订单不同产品同一天完成生产；
+ *   减少生产仓库积压，推动按时交付。
+ * 左：同一订单的板件在标准板材上的排样（AI 排程前后对比）；右：生产甘特图（排程前参差 → 排程后同日完工）。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  goldSoft: '#fbf6e9',
+  teal: '#0f766e',
+  tealSoft: '#e7f6f5',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  surface: '#f8fafc',
+};
+
+/* ── 左侧：板材排样 ────────────────────────────────────────── */
+
+/** 板件下料尺寸与件数：排程前后为同一批板件，仅排布方式不同 */
+interface Cut {
+  w: number;
+  h: number;
+  hot?: boolean;
+}
+const BOARD_W = 178;
+const BOARD_H = 140;
+
+/** 同一订单的板件清单（两组排布共用，保证对比口径一致） */
+const cuts: Cut[] = [
+  { w: 62, h: 40, hot: true },
+  { w: 44, h: 40 },
+  { w: 36, h: 34 },
+  { w: 70, h: 34, hot: true },
+  { w: 52, h: 30 },
+  { w: 30, h: 30 },
+];
+
+/**
+ * 手工排版：按人工习惯「整行平铺、同宽同高优先」，板件按高度降序各占一行，
+ * 行内未放下的板件直接溢出 —— 行末与末行留下大片余料。
+ */
+function nestManual(items: Cut[]) {
+  const placed: (Cut & { x: number; y: number })[] = [];
+  let y = 0;
+  for (const it of items) {
+    if (y + it.h > BOARD_H) continue; // 溢出，成为余料
+    placed.push({ ...it, x: 0, y });
+    y += it.h + 6;
+  }
+  const usedArea = placed.reduce((s, p) => s + p.w * p.h, 0);
+  return { placed, rate: usedArea / (BOARD_W * BOARD_H) };
+}
+
+/**
+ * AI 算法排版：按面积降序装箱（首次适应递减），板件密排填入行内空隙 —— 相同板材装下更多板件。
+ */
+function nestAuto(items: Cut[]) {
+  const rows: { y: number; h: number; used: number }[] = [];
+  const placed: (Cut & { x: number; y: number })[] = [];
+  const sorted = [...items].sort((a, b) => b.w * b.h - a.w * a.h);
+
+  for (const it of sorted) {
+    let row = rows.find((r) => r.h >= it.h && r.used + it.w <= BOARD_W);
+    if (!row) {
+      const prev = rows[rows.length - 1];
+      const y = prev ? prev.y + prev.h + 3 : 0;
+      if (y + it.h > BOARD_H) continue; // 本板放不下，留作余料
+      row = { y, h: it.h, used: 0 };
+      rows.push(row);
+    }
+    placed.push({ ...it, x: row.used, y: row.y });
+    row.used += it.w + 3;
+  }
+  const usedArea = placed.reduce((s, p) => s + p.w * p.h, 0);
+  return { placed, rate: usedArea / (BOARD_W * BOARD_H) };
+}
+
+/** 排程前：手工排版按件平铺，行末余料大 —— 利用率低 */
+const before = nestManual(cuts);
+/** 排程后：算法优化排版，同一批板件密排 —— 利用率高 */
+const after = nestAuto(cuts);
+
+/* ── 右侧：生产甘特图 ──────────────────────────────────────── */
+
+/** 同一订单的不同产品，各自跨若干工序日 */
+interface Bar {
+  name: string;
+  /** 起始日（0 基） */
+  start: number;
+  /** 跨越天数 */
+  span: number;
+  hot?: boolean;
+}
+
+/** 排程前：同订单产品起止参差，跨度超出承诺完工日，成品滞留等齐 */
+const ganttBefore: Bar[] = [
+  { name: '产品 A', start: 0, span: 3 },
+  { name: '产品 B', start: 2, span: 3, hot: true },
+  { name: '产品 C', start: 3, span: 2, hot: true },
+  { name: '产品 D', start: 4, span: 3 },
+];
+
+/** 排程后：周期对齐，同一订单不同产品同一天完成生产 */
+const ganttAfter: Bar[] = [
+  { name: '产品 A', start: 0, span: 3 },
+  { name: '产品 B', start: 0, span: 3, hot: true },
+  { name: '产品 C', start: 1, span: 2, hot: true },
+  { name: '产品 D', start: 0, span: 3 },
+];
+
+const DAYS = 7;
+const DAY_W = 30;
+const LABEL_W = 58;
+const ROW_H = 26;
+/** 承诺完工日：横轴第 6 日末（订单承诺交付节点） */
+const DUE_DAY = 6;
+/** 甘特图绘图区右侧余量 */
+const PLOT_PAD = 46;
+const PLOT_W = DAYS * DAY_W + PLOT_PAD;
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 372"
+    role="img"
+    aria-label="AI 排程同时优化板材排版与生产周期：排版方面，同一订单板件由疏放改为密排，板材利用率由 22% 提升至 41%；周期方面，同一订单不同产品由参差完工改为同一天完成生产，减少生产仓库积压、推动按时交付。"
+    class="block h-auto w-full min-w-[1000px]"
+  >
+    <title>AI 排程：板材排版优化与生产周期对齐</title>
+
+    <!-- 列标题 -->
+    <text x={0} y={22} font-size="12.5" fill={C.muted}>板材排版 · 提高利用率</text>
+    <text x={506} y={22} font-size="12.5" fill={C.muted}>生产周期 · 同订单同日完工</text>
+
+    <!-- ═══ 左栏：排样对比 ═══ -->
+    {
+      [
+        { x: 0, title: '排程前 · 手工排版', data: before, accent: C.muted, box: C.surface, stroke: C.line, note: '行末余料大、板材利用率低', noteFill: C.muted },
+        { x: 262, title: '排程后 · 算法优化排版', data: after, accent: C.brand, box: '#ffffff', stroke: C.brand, note: '板件密排、板材利用率提升', noteFill: C.brand },
+      ].map((col) => (
+        <g>
+          <text x={col.x} y={52} font-size="12" font-weight="600" fill={col.accent}>{col.title}</text>
+          <rect x={col.x} y={62} width={BOARD_W} height={BOARD_H} rx={6} fill={col.box} stroke={col.stroke} stroke-opacity={col.box === '#ffffff' ? 0.4 : 1} />
+          {col.data.placed.map((p) => (
+            <rect
+              x={col.x + p.x}
+              y={62 + p.y}
+              width={p.w}
+              height={p.h}
+              rx={3}
+              fill={p.hot ? C.goldSoft : C.soft}
+              stroke={p.hot ? C.gold : C.brand}
+              stroke-opacity={p.hot ? 0.7 : 0.45}
+            />
+          ))}
+          <text x={col.x} y={220} font-size="11.5" fill={col.noteFill}>{col.note}</text>
+          <text x={col.x} y={237} font-size="11" font-weight="600" fill={col.accent}>
+            {`板材利用率 ${(col.data.rate * 100).toFixed(0)}%`}
+          </text>
+        </g>
+      ))
+    }
+
+    {/* AI 排程箭头 */}
+    <line x1={180} y1={132} x2={228} y2={132} stroke={C.brand} stroke-width="2" />
+    <polygon points="228,126 242,132 228,138" fill={C.brand} />
+    <text x={211} y={118} text-anchor="middle" font-size="12" font-weight="600" fill={C.deep}>AI 排程</text>
+
+    {/* 分隔线 */}
+    <line x1={466} y1={44} x2={466} y2={248} stroke={C.line} stroke-dasharray="4 4" />
+
+    <!-- ═══ 右栏：甘特图 ═══ -->
+    <g>
+      <text x={506} y={52} font-size="12" font-weight="600" fill={C.muted}>排程前 · 起止参差</text>
+      <text x={836} y={52} font-size="12" font-weight="600" fill={C.brand}>排程后 · 周期对齐</text>
+
+      {[0, 1].map((col) => {
+        const baseX = 506 + col * 330;
+        const bars = col === 0 ? ganttBefore : ganttAfter;
+        const plotX = baseX + LABEL_W;
+        const boxW = LABEL_W + PLOT_W;
+        const finishX = plotX + DUE_DAY * DAY_W;
+        return (
+          <g>
+            {/* 绘图底 */}
+            <rect x={baseX} y={62} width={boxW} height={140} rx={6} fill={col === 0 ? C.surface : '#ffffff'} stroke={col === 0 ? C.line : C.brand} stroke-opacity={col === 0 ? 1 : 0.4} />
+            {/* 日刻度 */}
+            {Array.from({ length: DAYS + 1 }).map((_, d) => (
+              <line x1={plotX + d * DAY_W} y1={62} x2={plotX + d * DAY_W} y2={202} stroke={C.line} stroke-opacity="0.55" />
+            ))}
+            {/* 行 */}
+            {bars.map((b, i) => {
+              const y = 74 + i * ROW_H;
+              return (
+                <g>
+                  <text x={baseX + 8} y={y + 14} font-size="10.5" fill={C.muted}>{b.name}</text>
+                  <rect
+                    x={plotX + b.start * DAY_W}
+                    y={y + 2}
+                    width={b.span * DAY_W - 3}
+                    height={18}
+                    rx={3}
+                    fill={b.hot ? C.gold : C.brand}
+                    fill-opacity={b.hot ? 0.85 : 0.72}
+                  />
+                </g>
+              );
+            })}
+            {/* 计划完工口径竖线（第 6 日末，即订单承诺完工日） */}
+            <line x1={finishX} y1={62} x2={finishX} y2={202} stroke={col === 0 ? C.muted : C.teal} stroke-width="1.5" stroke-dasharray={col === 0 ? '4 3' : undefined} />
+            <text x={finishX - 4} y={72} text-anchor="end" font-size="10" fill={col === 0 ? C.muted : C.teal}>承诺完工日</text>
+          </g>
+        );
+      })}
+
+      {/* 完工口径说明 */}
+      <text x={506} y={232} font-size="11.5" fill={C.muted}>完工日分散 → 成品滞留等齐、仓库积压</text>
+      <text x={836} y={232} font-size="11.5" fill={C.teal}>完工日收拢 → 减少积压、推动按时交付</text>
+
+      {/* 图例 */}
+      <g>
+        <rect x={506} y={246} width={14} height={10} rx={2} fill={C.brand} fill-opacity="0.72" />
+        <text x={526} y={255} font-size="11" fill={C.muted}>常规工序</text>
+        <rect x={604} y={246} width={14} height={10} rx={2} fill={C.gold} fill-opacity="0.85" />
+        <text x={624} y={255} font-size="11" fill={C.muted}>前序未完、被动等待的工序</text>
+      </g>
+    </g>
+
+    <!-- ═══ 底部：三条落地动作 ═══ -->
+    {
+      [
+        ['AI 排程生成算法优化生产排版', '提高板材利用率'],
+        ['合理规划生产周期', '同一订单不同产品同一天完成生产'],
+        ['减少生产仓库积压', '推动按时交付'],
+      ].map(([head, tail], i) => {
+        const x = i * 388;
+        return (
+          <g>
+            <rect x={x} y={286} width={368} height={62} rx={8} fill={C.soft} stroke={C.brand} stroke-opacity="0.25" />
+            <text x={x + 18} y={312} font-size="12" font-weight="600" fill={C.goldDeep}>{`0${i + 1}`}</text>
+            <text x={x + 44} y={313} font-size="13.5" font-weight="600" fill={C.deep}>{head}</text>
+            <text x={x + 44} y={334} font-size="11.5" fill={C.muted}>{tail}</text>
+          </g>
+        );
+      })
+    }
+  </svg>
+</div>

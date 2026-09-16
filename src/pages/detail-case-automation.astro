@@ -2,10 +2,59 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Feature from '../components/Feature.astro';
-import Figure from '../components/Figure.astro';
+import AutomationFlow from '../components/AutomationFlow.astro';
+import Lightbox from '../components/Lightbox.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/** 素材目录（非标自动化产线行业案例 PPT） */
+const M =
+  '/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE';
+
+/**
+ * 总体指标，依据《非标自动化产线行业案例-自动标注与自动出图.pptx》第 2 页：
+ * 出图速度 0.5 分/标注、1~5 分钟/零件，四个实测项目提速 5 / 6.5 / 7.5 / 8 倍。
+ */
+const kpis = [
+  { value: '5–8 倍', label: '四组件实测提速' },
+  { value: '0.5 分/标注', label: '出图速度' },
+  { value: '1~5 分钟/零件', label: '单零件出图时间' },
+];
+
+/**
+ * 四个实测项目（同上第 2 页）。demoN.mp4 为 pptx 内嵌演示视频，
+ * 原为 HEVC 编码浏览器无法播放，已转码为 H.264；demoN-poster.png 为原视频封面。
+ */
+const demos = [
+  {
+    name: '定位组件',
+    scale: '2 组件 / 4 零件',
+    marks: '300+ 个标注',
+    manual: '人工 1 人 / 2+ 小时',
+    speedup: '5 倍',
+  },
+  {
+    name: '承载板',
+    scale: '1 零件',
+    marks: '750+ 个标注',
+    manual: '人工 1 人 / 5+ 小时',
+    speedup: '6.5 倍',
+  },
+  {
+    name: '随行夹具',
+    scale: '1 组件 / 15 零件',
+    marks: '600+ 个标注',
+    manual: '人工 1 人 / 8+ 小时',
+    speedup: '7.5 倍',
+  },
+  {
+    name: '卷针组件',
+    scale: '3 组件 / 17 零件',
+    marks: '800+ 个标注',
+    manual: '人工 1 人 / 16+ 小时',
+    speedup: '8 倍',
+  },
+].map((d, i) => ({ ...d, poster: `${M}/demo${i + 1}-poster.png`, video: `${M}/demo${i + 1}.mp4` }));
 ---
 
 <BaseLayout
@@ -18,72 +67,96 @@ import CtaBand from '../components/CtaBand.astro';
     lede="装配批量导入、图纸一键生成，显著提升非标自动化行业的设计出图效率，图纸生成提速 5–8 倍。"
   />
 
-  <section id="intro" class="py-14 md:py-18">
+  <section id="overview" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Background" title="案例背景" />
-      <Feature
-        desc="非标自动化产线组件多、改型快、出图量大，传统人工标注出图周期长，制约交付速度。"
-        points={[
-          '装配批量导入，图纸一键生成，应对快速多变的出图需求',
-          '自动标注与自动出图，图纸生成提速 5–8 倍（2 组件/套件场景实测）',
-          '自动精度设计与检测表单自动生成，出图与检测一致贯通',
-          '精度智能设计 + 自动替人出图 + 智能读图应用，全链路提效',
-        ]}
-        img="/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image11.png"
-        alt="产线出图对比图示"
-        caption="产线出图对比：自动出图提速 5–8 倍"
+      <SectionHead
+        eyebrow="Overview"
+        title="非标行业快速多变出图需求的解决方案与应用"
+        desc="装配批量导入、图纸一键生成，实测项目覆盖组件与单零件两类场景，出图速度 0.5 分/标注。"
       />
-    </div>
-  </section>
-
-  <section id="solutions" class="bg-surface py-14 md:py-18">
-    <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Solutions" title="方案要点 · 图文详解" desc="一键出图、方案应用与实测成效。" />
-      <div class="grid gap-10">
-        <Feature
-          sub="01 · 一键出图"
-          title="装配批量导入、图纸一键生成"
-          desc="装配批量导入后图纸一键生成，自动出图效果直接可交付，应对快速多变出图需求。"
-          points={[
-            '分组件实测提速 5 / 6.5 / 7.5 / 8 倍',
-            '出图速度 0.5 分钟/标注，实测标注量 300+ / 750+ / 600+ / 800+ 个',
-            '组件/套件批量场景实测验证',
-          ]}
-          img="/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image10.png"
-          alt="自动出图提速概览"
-          caption="非标行业快速多变出图需求的解决方案与应用"
-        />
-        <Feature
-          flip
-          sub="02 · 方案应用"
-          title="自动出图效果一览"
-          desc="装配批量导入、图纸一键生成的实际出图效果，配合自动精度设计保证质量一致性。"
-          points={['自动标注与自动出图全流程', '检测表单同步自动生成']}
-          img="/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image12.png"
-          alt="批量导入一键出图"
-          caption="装配批量导入、图纸一键生成的出图效果"
-        />
-        <Feature
-          sub="03 · 出图检测贯通"
-          title="自动精度设计与检测表单同步生成"
-          desc="自动精度设计与检测表单同步自动生成，出图与检测一致贯通，精度智能设计、自动替人出图、智能读图应用贯穿全链路。"
-          points={['精度设计 + 自动出图 + 智能读图全链路', '改型一键驱动，图纸与检测同步更新']}
-          img="/assets/media/docs/company-profile/elements3/v3-p39.jpg"
-          alt="非标自动化出图案例"
-        />
-        <div class="grid gap-6 md:grid-cols-2">
-          <Figure
-            img="/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE/image13.png"
-            alt="产线出图提速对比"
-            caption="产线出图组件与提速对比"
-          />
-        </div>
+      <div class="grid gap-6 rounded-xl border border-brand/10 bg-brand-soft p-6 sm:grid-cols-3 md:p-8">
+        {
+          kpis.map((k) => (
+            <div class="text-center">
+              <div class="text-[clamp(1.4rem,2.6vw,1.9rem)] leading-tight font-semibold text-brand-deep">
+                {k.value}
+              </div>
+              <div class="mt-2 text-[0.86rem] text-muted">{k.label}</div>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
+  <section id="demos" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Results"
+        title="四组件实测数据与演示"
+        desc="四个实测项目的规模、标注量与人工耗时；点击封面可播放该组件的出图演示。"
+      />
+      <div class="grid gap-5 md:grid-cols-2">
+        {
+          demos.map((d) => (
+            <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-5">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 class="m-0 text-base font-semibold text-brand-deep">{d.name}</h3>
+                <span class="text-[1.35rem] leading-none font-semibold text-gold-deep">{d.speedup}</span>
+              </div>
+              <p class="mt-1.5 mb-0 text-[0.85rem] text-muted">{d.scale}</p>
+
+              <button
+                type="button"
+                class="group relative mt-4 block w-full cursor-pointer overflow-hidden rounded-lg border border-ink/[0.08] bg-ink/5 p-0"
+                data-lb-video={d.video}
+                data-lb-poster={d.poster}
+                data-lb-caption={`${d.name}（${d.scale}）出图演示`}
+                aria-label={`播放${d.name}出图演示视频`}
+              >
+                <img
+                  class="block aspect-[3/2] w-full object-cover"
+                  src={d.poster}
+                  alt={`${d.name}出图演示`}
+                  loading="lazy"
+                />
+                <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+                  <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                    <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              <p class="mt-auto mb-0 pt-4 text-[0.85rem] text-muted">
+                {d.marks} · {d.manual}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mt-3 mb-0 text-center text-[0.8rem] text-muted">
+        四个项目实测：标注量 300+ ~ 800+ 个，人工耗时 2+ ~ 16+ 小时，提速 5 ~ 8 倍。
+      </p>
+    </div>
+  </section>
+
+  <section id="flow" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Solution"
+        title="装配批量导入、图纸一键生成"
+        desc="装配批量导入后，定位组件、承载板、随行夹具、卷针组件等零件图纸一键生成。"
+      />
+      <AutomationFlow />
+      <p class="mt-3 mb-0 text-center text-[0.8rem] text-muted">
+        零件无需逐张人工标注，出图速度 0.5 分/标注，单零件 1~5 分钟。
+      </p>
+    </div>
+  </section>
+
   <ContactSection />
-  <CtaBand sub="装配批量导入、图纸自动生成，交付提速 5–8 倍。">
-    让非标出图 <span class="text-gold-deep">一键完成</span>
-  </CtaBand>
+  <CtaBand />
+  <Lightbox />
 </BaseLayout>

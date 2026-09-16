@@ -4,14 +4,13 @@ interface Props {
   title: string;
   desc?: string;
   desc1?: string;
-  /** 长标题放宽容器宽度，避免末字被挤到第二行 */
-  wide?: boolean;
 }
-const { eyebrow, title, desc, desc1, wide = false } = Astro.props;
+const { eyebrow, title, desc, desc1 } = Astro.props;
 ---
 
 <!-- 通用区块标题：金色 eyebrow + 深蓝大标题（带金色短下划线） -->
-<div class:list={['mb-10', wide ? 'max-w-240' : 'max-w-160']}>
+<!-- 宽度不设上限，跟随父级容器；标题与副标题同宽，避免长句被无谓折行 -->
+<div class="mb-10">
   <div class="text-[0.8rem] font-semibold tracking-[0.14em] text-gold-deep uppercase">
     {eyebrow}
   </div>

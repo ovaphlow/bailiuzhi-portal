@@ -2,84 +2,133 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Feature from '../components/Feature.astro';
-import Figure from '../components/Figure.astro';
+import AerospacePipeline from '../components/AerospacePipeline.astro';
+import AerospaceClustering from '../components/AerospaceClustering.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/** 交付结果（依据《公司简介 4.0》P43） */
+const kpis = [
+  { value: '1000 多个', label: '复材装配体零件' },
+  { value: '150 多种', label: '归并后零件类型' },
+  { value: '少于 1 分钟/个', label: '零件图纸生成时间' },
+];
+
+/** 四项零部件规范与其对应的环节（依据 P43 的规范—环节对应关系） */
+const rules = [
+  {
+    idx: '01',
+    rule: '零部件类型规范',
+    output: 'AI 识别与分类',
+    desc: '按类型规范识别零件与装配结构，相似零件、相似装配结构自动归并，零件类型由上千件收敛到百余种。',
+  },
+  {
+    idx: '02',
+    rule: '零部件精度规范',
+    output: '自动精度设计',
+    desc: '按精度规范自动完成精度设计，替代人工逐件设定，满足航天级高可靠、高精度要求。',
+  },
+  {
+    idx: '03',
+    rule: '零部件图纸规范',
+    output: '全自动出图',
+    desc: '按图纸规范自动生成零件图纸，无需逐张手工标注，图纸生成时间少于 1 分钟/个。',
+  },
+  {
+    idx: '04',
+    rule: '零部件检验规范',
+    output: '自动生成检验计划',
+    desc: '按检验规范自动生成检验计划，设计结果直接衔接检测环节，形成设计检测闭环。',
+  },
+];
 ---
 
 <BaseLayout
-  title="航天行业 MBD 设计检测一体化案例 · 百六智数字科技"
-  description="面向航天行业的 MBD 设计检测一体化方案，保障高可靠、高精度要求下的质量与效率，实现复材装配体智能拆分、快速出图。"
+  title="航天复材装配体智能拆分、快速出图的一体化应用案例 · 百六智数字科技"
+  description="面向航天行业的 MBD 设计检测一体化方案：1000 多个零件的复材装配体智能拆分，相似零件与相似装配结构自动识别，零件图纸生成少于 1 分钟/个。"
 >
   <PageHero
     kicker="AEROSPACE MBD"
-    title="航天行业 MBD 设计检测一体化"
+    title="航天复材装配体智能拆分、快速出图的一体化应用案例"
     lede="面向航天行业的 MBD 设计检测一体化方案，保障高可靠、高精度要求下的质量与效率，实现复材装配体智能拆分、快速出图。"
   />
 
-  <section id="intro" class="py-14 md:py-18">
+  <section id="overview" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Background" title="案例背景" />
-      <Feature
-        desc="航天行业对可靠性与精度要求极高，复材装配体零件数量大、结构复杂，设计与检测交付周期紧。"
-        points={[
-          '1000 多个零件、150 多种零件的复材装配体智能拆分',
-          '相似零件、相似装配结构自动识别与分类',
-          '零件图纸生成 <1 分钟/个，全自动出图缩短交付周期',
-          '自动生成检验计划，MBD 设计检测一体化保障航天级质量',
-        ]}
-        img="/assets/media/review/%EF%BC%88%E9%80%9A%E7%94%A8%EF%BC%89%E9%9D%9E%E6%A0%87%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%8A%A8%E5%8C%96%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88V2.0/image129.png"
-        alt="航天复材装配体智能拆分"
-        caption="航天复材装配体智能拆分、快速出图一体化方案"
+      <SectionHead
+        eyebrow="Overview"
+        title="智能拆分与快速出图的交付结果"
+        desc="复材装配体零件数量大、结构相似度高，设计与检测交付周期紧。四项零部件规范与四个环节一一对应，从装配 CAD 导入到检验计划生成全程贯通。"
       />
+      <div class="grid gap-6 rounded-xl border border-brand/10 bg-brand-soft p-6 sm:grid-cols-3 md:p-8">
+        {
+          kpis.map((k) => (
+            <div class="text-center">
+              <div class="text-[clamp(1.4rem,2.6vw,1.9rem)] leading-tight font-semibold text-brand-deep">
+                {k.value}
+              </div>
+              <div class="mt-2 text-[0.86rem] text-muted">{k.label}</div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section id="solutions" class="bg-surface py-14 md:py-18">
+  <section id="pipeline" class="bg-surface py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Solutions" title="方案要点 · 图文详解" desc="智能拆分、精度设计与检验出图闭环。" />
-      <div class="grid gap-10">
-        <Feature
-          sub="01 · AI 识别与 BOM 提取"
-          title="复材装配体智能拆分"
-          desc="AI 识别与分类、BOM 快速提取，航天复材装配体快速拆分、快速出图。"
-          points={['自动识别与分类零件', 'BOM 快速提取与组织']}
-          img="/assets/media/review/%EF%BC%88%E9%80%9A%E7%94%A8%EF%BC%89%E9%9D%9E%E6%A0%87%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%8A%A8%E5%8C%96%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88V2.0/image133.png"
-          alt="AI 识别与 BOM 提取"
-          caption="AI 识别与分类、BOM 快速提取"
-        />
-        <Feature
-          flip
-          sub="02 · 精度设计与检验出图"
-          title="航天级质量保障"
-          desc="自动精度设计、检验计划自动生成与全自动出图，保障高可靠、高精度要求下的质量与效率。"
-          points={['检验计划自动生成', '全自动出图缩短交付周期']}
-          img="/assets/media/review/%EF%BC%88%E9%80%9A%E7%94%A8%EF%BC%89%E9%9D%9E%E6%A0%87%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%8A%A8%E5%8C%96%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88V2.0/image135.png"
-          alt="自动精度设计与出图"
-          caption="自动精度设计、检验计划生成与全自动出图"
-        />
-        <Feature
-          sub="03 · 全自动出图链路"
-          title="从装配 CAD 导入到检验计划生成"
-          desc="装配 CAD 导入 → BOM 快速提取 → AI 识别与分类 → 自动精度设计 → 自动生成检验计划 → 全自动出图，全流程贯通。"
-          points={['相似零件与相似装配结构自动识别分类', '零件图纸生成 <1 分钟/个']}
-          img="/assets/media/docs/company-profile/elements/v4-p42-a.jpg"
-          alt="航天复材装配体智能拆分案例"
-        />
-        <div class="grid gap-6 md:grid-cols-2">
-          <Figure
-            img="/assets/media/review/%EF%BC%88%E9%80%9A%E7%94%A8%EF%BC%89%E9%9D%9E%E6%A0%87%E8%AE%BE%E8%AE%A1%E8%87%AA%E5%8A%A8%E5%8C%96%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%A1%88V2.0/image137.png"
-            alt="复材装配体拆分"
-            caption="航天复材装配体智能拆分、快速出图"
-          />
-        </div>
+      <SectionHead
+        eyebrow="Pipeline"
+        title="从装配 CAD 导入到检验计划生成"
+        desc="装配 CAD 导入、BOM 快速提取后，四项零部件规范分别对应后四个环节，最终交付零件图纸与检验计划。"
+      />
+      <AerospacePipeline />
+      <p class="mt-3 mb-0 text-center text-[0.8rem] text-muted">
+        四项规范与四个环节的对应关系：类型规范对应 AI 识别与分类、精度规范对应自动精度设计、图纸规范对应全自动出图、检验规范对应检验计划生成。
+      </p>
+    </div>
+  </section>
+
+  <section id="classification" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="AI Classification"
+        title="相似零件与相似装配结构的自动识别"
+        desc="不依赖人工逐件比对，由 AI 完成识别与分类，把上千个零件按结构相似性归并为百余种类型。"
+      />
+      <AerospaceClustering />
+      <p class="mt-3 mb-0 text-center text-[0.8rem] text-muted">
+        相似零件结构、相似装配结构自动识别与分类，是后续自动精度设计与全自动出图的前提。
+      </p>
+    </div>
+  </section>
+
+  <section id="rules" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Standards"
+        title="零部件规范与对应环节"
+        desc="四项零部件规范，及其在原方案中一一对应的四个环节。"
+      />
+      <div class="grid gap-5 md:grid-cols-2">
+        {
+          rules.map((r) => (
+            <div class="rounded-xl border border-ink/[0.08] bg-white p-6">
+              <div class="font-mono text-[0.7rem] tracking-[0.14em] text-gold-deep">{r.idx}</div>
+              <div class="mt-2 inline-flex rounded-md bg-gold-soft px-2.5 py-1 text-[0.82rem] font-medium text-gold-deep">
+                {r.rule}
+              </div>
+              <div class="mt-3 flex items-baseline gap-2">
+                <span class="text-[1.05rem] font-semibold text-brand-deep">→ {r.output}</span>
+              </div>
+              <p class="mt-2 mb-0 text-[0.9rem] leading-relaxed text-muted">{r.desc}</p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
   <ContactSection />
-  <CtaBand sub="高可靠、高精度要求下的设计检测一体化。">
-    航天级质量，<span class="text-gold-deep">智能化交付</span>
-  </CtaBand>
+  <CtaBand />
 </BaseLayout>

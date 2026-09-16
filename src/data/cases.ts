@@ -1,15 +1,14 @@
 /**
  * 案例页内容数据（迁移自 site/cases.html，与 PDF P40–51 对齐）。
- * 所有案例按「产品应用场景」三大分组排列。
+ * 所有案例按「产品应用场景」两大分组排列。
  */
 
 /** 首页与案例页共用的场景分组 key */
-export type SceneKey = '研发设计端 AI' | '生产制造端 AI' | '协同智能与巡检';
+export type SceneKey = '研发设计端 AI' | '生产制造端 AI';
 
 export const sceneOrder: SceneKey[] = [
   '研发设计端 AI',
   '生产制造端 AI',
-  '协同智能与巡检',
 ];
 
 export const sceneMeta: Record<SceneKey, { en: string; desc: string }> = {
@@ -20,10 +19,6 @@ export const sceneMeta: Record<SceneKey, { en: string; desc: string }> = {
   '生产制造端 AI': {
     en: 'MANUFACTURING AI',
     desc: 'AI 排程 · AI 视觉检测 · 车间仿真，驱动生产效率与质量的双重提升。',
-  },
-  '协同智能与巡检': {
-    en: 'COLLABORATIVE AI',
-    desc: '基于 Fiz-Chat 的无人机智能巡检与协同智慧平台，跨系统数据协同与闭环处置。',
   },
 };
 
@@ -96,9 +91,10 @@ export const cases: CaseCard[] = [
     alt: '二维图纸智能识别与测量直驱',
     big: 'DRAWING RECOGNITION',
     title: '二维图纸智能识别与测量直驱',
-    desc: '图纸智能识别 → 智能解析 → 工艺智能匹配 → 模型智能重构 → 数智直驱测量五步链路，自动产出测量任务、工艺、重构模型与检测报告。',
-    metric: '识别-重构-测量直驱',
-    scene: '研发设计端 AI',
+      desc: '图纸智能识别 → 智能解析 → 工艺智能匹配 → 模型智能重构 → 数智直驱测量五步链路，自动产出测量任务、工艺、重构模型与检测表单。',
+      metric: '识别-重构-测量直驱',
+      href: '/detail-case-drawing-recognition/',
+      scene: '研发设计端 AI',
   },
   // ─── 生产制造端 AI ───────────────────────────────────────
   {

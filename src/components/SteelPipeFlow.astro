@@ -1,0 +1,125 @@
+---
+/**
+ * 无缝钢管 AI 排程「排程输入 → 三条主线 → 落地效果」机制示意（纯 SVG 绘制，不使用文档配图）。
+ * 内容依据《百六智数字科技公司简介 4.0》P48 无缝钢管排程案例页：
+ *   AI 排程优化工序、减少换模与质检环节，节约物料消耗、提高生产率；
+ *   订单智能合并排产，提高钢管切割用料利用率，降低废料产生；
+ *   排产优先消化库存并二次加工适配订单，降低库存积压。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  goldDeep: '#b8860b',
+  teal: '#0f766e',
+  tealSoft: '#e7f6f5',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+};
+
+/** 三行的统一纵向定位，三列逐行对齐 */
+const ROW_Y = [76, 146, 216];
+const ROW_H = 62;
+
+const IN_X = 0;
+const IN_W = 148;
+const MID_X = 232;
+const MID_W = 604;
+const MID_Y = 64;
+const MID_H = 226;
+const ROW_X = MID_X + 14;
+const ROW_W = MID_W - 28;
+const OUT_X = 892;
+const OUT_W = 268;
+
+/** 排程要同时面对的输入 */
+const inputs = [
+  { name: '原材料', note: '损耗与浪费' },
+  { name: '订单', note: '需合并排产' },
+  { name: '库存', note: '呆滞待消化' },
+];
+
+/** 三条主线：工序优化省料、订单合并提利用率、库存消化降积压 */
+const tracks = [
+  {
+    no: '01',
+    name: '工序优化 · 省料',
+    desc: 'AI 排程优化工序，减少换模与质检环节，节约物料消耗、提高生产率',
+  },
+  {
+    no: '02',
+    name: '订单合并 · 提利用率',
+    desc: '订单智能合并排产，提高钢管切割用料利用率，降低废料产生',
+  },
+  {
+    no: '03',
+    name: '库存消化 · 降积压',
+    desc: '排产优先消化库存并二次加工适配订单，降低库存积压',
+  },
+];
+
+/** 三条主线各自的落地效果（量化结果见页面「客户价值收益」） */
+const effects = ['物料消耗下降、生产率提升', '用料利用率提升、废料下降', '库存积压与资金占用下降'];
+
+const centerY = (i: number) => ROW_Y[i] + ROW_H / 2;
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 310"
+    role="img"
+    aria-label="AI 排程面向原材料、订单、库存三类输入，以工序优化省料、订单合并提利用率、库存消化降积压三条主线排产，对应物料消耗下降、用料利用率提升、库存积压下降三项落地效果。"
+    class="block h-auto w-full min-w-[900px]"
+  >
+    <title>AI 排程的三条主线与落地效果</title>
+
+    <!-- 列标题 -->
+    <text x={IN_X} y={30} font-size="12.5" fill={C.muted}>排程输入</text>
+    <text x={MID_X} y={30} font-size="12.5" fill={C.muted}>AI 排程 · 三条主线</text>
+    <text x={OUT_X} y={30} font-size="12.5" fill={C.muted}>落地效果</text>
+
+    <!-- AI 排程容器 -->
+    <rect x={MID_X} y={MID_Y} width={MID_W} height={MID_H} rx={10} fill={C.soft} stroke={C.brand} stroke-opacity="0.3" />
+
+    {
+      tracks.map((t, i) => {
+        const y = ROW_Y[i];
+        const cy = centerY(i);
+
+        return (
+          <g>
+            {/* 输入 */}
+            <rect x={IN_X} y={y} width={IN_W} height={ROW_H} rx={8} fill="#ffffff" stroke={C.line} />
+            <text x={IN_X + IN_W / 2} y={y + 28} text-anchor="middle" font-size="14.5" font-weight="600" fill={C.ink}>
+              {inputs[i].name}
+            </text>
+            <text x={IN_X + IN_W / 2} y={y + 48} text-anchor="middle" font-size="11" fill={C.muted}>
+              {inputs[i].note}
+            </text>
+
+            {/* 输入 → 主线 */}
+            <line x1={IN_X + IN_W + 6} y1={cy} x2={MID_X - 14} y2={cy} stroke={C.brand} stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.6" />
+            <polygon points={`${MID_X - 8},${cy - 5} ${MID_X},${cy} ${MID_X - 8},${cy + 5}`} fill={C.brand} fill-opacity="0.8" />
+
+            {/* 主线 */}
+            <rect x={ROW_X} y={y} width={ROW_W} height={ROW_H} rx={8} fill="#ffffff" stroke={C.brand} stroke-opacity="0.25" />
+            <text x={ROW_X + 16} y={y + 26} font-size="12" font-weight="600" fill={C.goldDeep}>{t.no}</text>
+            <text x={ROW_X + 46} y={y + 27} font-size="14.5" font-weight="600" fill={C.deep}>{t.name}</text>
+            <text x={ROW_X + 16} y={y + 47} font-size="11.5" fill={C.muted}>{t.desc}</text>
+
+            {/* 主线 → 效果 */}
+            <line x1={MID_X + MID_W + 6} y1={cy} x2={OUT_X - 14} y2={cy} stroke={C.teal} stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.6" />
+            <polygon points={`${OUT_X - 8},${cy - 5} ${OUT_X},${cy} ${OUT_X - 8},${cy + 5}`} fill={C.teal} fill-opacity="0.85" />
+
+            {/* 效果 */}
+            <rect x={OUT_X} y={y} width={OUT_W} height={ROW_H} rx={8} fill={C.tealSoft} stroke={C.teal} stroke-opacity="0.35" />
+            <text x={OUT_X + OUT_W / 2} y={y + 36} text-anchor="middle" font-size="12.5" fill={C.teal}>
+              {effects[i]}
+            </text>
+          </g>
+        );
+      })
+    }
+  </svg>
+</div>

@@ -2,73 +2,123 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Feature from '../components/Feature.astro';
+import CsicVisionFlow from '../components/CsicVisionFlow.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/**
+ * 三模块职责，逐条依据《百六智数字科技公司简介 4.0》P50
+ * 「中船某研究所 AI 视觉应用案例」页内示意图的图注原文（无增删改写）：
+ *
+ *   多机械臂检测模块：多台工业机械臂协同作业 / 负责轨迹规划与全覆盖扫描 / 实现检测区域自动分配
+ *   视觉成像模块：工业相机 + 光源系统 / 完成表面图像采集与数据获取
+ *   视觉分析模块：图像预处理与特征提取 / 缺陷识别与尺寸测量 / 与标准模型数据库比对
+ */
+const modules = [
+  {
+    idx: '01',
+    name: '多机械臂检测模块',
+    role: '执行',
+    desc: '多台工业机械臂在检测工位内协同作业，由算法完成轨迹规划并沿导轨做全覆盖扫描。',
+    points: ['多台工业机械臂协同作业', '负责轨迹规划与全覆盖扫描', '实现检测区域自动分配'],
+  },
+  {
+    idx: '02',
+    name: '视觉成像模块',
+    role: '采集',
+    desc: '以工业相机与光源系统组合成像，在扫描过程中完成表面图像采集与数据获取。',
+    points: ['工业相机 + 光源系统', '完成表面图像采集与数据获取'],
+  },
+  {
+    idx: '03',
+    name: '视觉分析模块',
+    role: '判定',
+    desc: '对采集图像做预处理与特征提取，完成缺陷识别与尺寸测量，并与标准模型数据库比对。',
+    points: ['图像预处理与特征提取', '缺陷识别与尺寸测量', '与标准模型数据库比对'],
+  },
+];
 ---
 
 <BaseLayout
   title="中船某研究所 AI 视觉应用案例 · 百六智数字科技"
-  description="面向研究所实际场景的 AI 视觉识别与检测能力落地，提升作业自动化与质量管控水平。"
+  description="多机械臂检测、视觉成像与视觉分析三大模块协同，面向研究所实际场景落地 AI 视觉识别与检测能力。"
 >
   <PageHero
-    kicker="AI VISION"
-    title="中船某研究所 AI 视觉应用"
-    lede="面向研究所实际场景的 AI 视觉识别与检测能力落地，提升作业自动化与质量管控水平。"
+    kicker="AI VISION · 多机械臂检测 | 视觉成像 | 视觉分析"
+    title="中船某研究所 AI 视觉应用案例"
+    lede="面向研究所实际检测场景，以多机械臂检测、视觉成像与视觉分析三大模块协同，完成从轨迹扫描到缺陷判定的闭环。"
   />
 
-  <!-- 案例背景 -->
-  <section id="intro" class="py-14 md:py-18">
+  <!-- 机制示意（纯 SVG，不使用文档配图） -->
+  <section id="pipeline" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Background" title="案例背景" />
-      <Feature
-        desc="研究所在精密加工与检测场景中，尺寸、形位公差与表面质量的识别高度依赖人工，效率与一致性难以保障。"
-        points={[
-          '三大模块协同：多机械臂检测 + 视觉成像 + 视觉分析',
-          '多机械臂检测模块：轨迹规划、全覆盖扫描、检测区域自动分配',
-          '视觉成像模块：工业相机 + 光源组合成像',
-          '视觉分析模块：图像预处理、特征提取、缺陷识别、与标准模型库比对',
-        ]}
-        img="/assets/media/docs/company-profile/elements/v4-p50-a.jpg"
-        alt="中船某研究所 AI 视觉检测应用案例"
-        caption="中船某研究所三模块协同 AI 视觉检测应用案例"
+      <SectionHead
+        eyebrow="Pipeline"
+        title="三个模块，一条检测链路"
+        desc="机械臂负责把测点覆盖到每一处待检表面，成像模块把表面变成可分析的图像，分析模块给出缺陷与尺寸结论。"
       />
+      <CsicVisionFlow />
     </div>
   </section>
 
-  <!-- 方案要点 · 图文详解 -->
-  <section id="solutions" class="bg-surface py-14 md:py-18">
+  <!-- 模块职责明细 -->
+  <section id="modules" class="bg-surface py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
       <SectionHead
-        eyebrow="Solutions"
-        title="方案要点 · 图文详解"
-        desc="多机械臂检测、视觉成像与视觉分析三大模块协同作业。"
+        eyebrow="Modules"
+        title="模块职责"
+        desc="三大模块各司其职，协同完成检测作业。"
       />
-      <div class="grid gap-10">
-        <Feature
-          sub="01 · 多机械臂检测模块"
-          title="多台工业机械臂协同作业"
-          desc="多台工业机械臂协同作业，负责轨迹规划与全覆盖扫描，实现检测区域自动分配，确保待检表面无遗漏。"
-          points={['多台工业机械臂协同作业', '轨迹规划与全覆盖扫描', '检测区域自动分配']}
-          img="/assets/media/docs/company-profile-pptx/media/img-ab01fc0d13a5.webp"
-          alt="三模块协同 AI 视觉检测系统示意"
-          caption="三模块协同 AI 视觉检测系统示意"
-        />
-        <Feature
-          flip
-          sub="02 · 视觉成像 + 视觉分析模块"
-          title="从图像采集到缺陷识别"
-          desc="视觉成像模块由工业相机与光源系统组合成像，完成表面图像采集与数据获取；视觉分析模块完成图像预处理与特征提取，实现缺陷识别与尺寸测量，并与标准模型数据库比对。"
-          points={['工业相机 + 光源系统成像，完成表面图像采集与数据获取', '图像预处理与特征提取，缺陷识别与尺寸测量', '与标准模型数据库比对']}
-        />
+      <div class="grid gap-6 lg:grid-cols-3">
+        {
+          modules.map((m) => (
+            <article class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-8 transition-shadow hover:shadow-[0_10px_30px_-18px_rgba(15,46,99,0.35)]">
+              <div class="flex items-baseline gap-3">
+                <span class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">{m.idx}</span>
+                <span class="inline-flex items-center rounded-full bg-brand-soft px-2.5 py-0.5 text-[0.75rem] text-brand">
+                  {m.role}
+                </span>
+              </div>
+              <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">{m.name}</h3>
+              <p class="m-0 text-[0.95rem] leading-relaxed text-muted">{m.desc}</p>
+              <ul class="mt-5 mb-0 list-none space-y-2.5 border-t border-ink/[0.08] p-0 pt-5">
+                {m.points.map((p) => (
+                  <li class="relative pl-5 text-[0.92rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[0.5em] before:h-2 before:w-2 before:rounded-sm before:bg-gold before:content-['']">
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 协同价值 -->
+  <section id="value" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead eyebrow="Value" title="协同价值" />
+      <div class="rounded-xl border border-brand/10 bg-brand-soft p-6 md:p-8">
+        <ul class="m-0 grid list-none gap-x-10 gap-y-4 p-0 md:grid-cols-2">
+          {
+            [
+              ['全覆盖', '轨迹规划与检测区域自动分配，待检表面无遗漏'],
+              ['可量化', '缺陷识别与尺寸测量形成结构化检测结论'],
+              ['有基准', '与标准模型数据库比对，判定标准统一可追溯'],
+              ['少人工', '扫描、成像与判定串成自动链路，降低人工依赖'],
+            ].map(([label, rest]) => (
+              <li class="relative pl-6 text-[1rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[0.5em] before:h-2.5 before:w-2.5 before:rounded-sm before:bg-gold before:content-['']">
+                <strong class="font-semibold text-brand-deep">{label}：</strong>
+                {rest}
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 
   <ContactSection />
-  <CtaBand
-    sub="从实际场景出发，落地可量化的视觉识别价值。"
-  >
-    让 AI 视觉 <span class="text-gold-deep">重塑作业与质检</span>
-  </CtaBand>
+  <CtaBand />
 </BaseLayout>

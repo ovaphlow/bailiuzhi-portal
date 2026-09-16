@@ -1,0 +1,116 @@
+---
+/**
+ * 航天复材案例「智能拆分」示意图（纯 SVG 绘制，不使用文档配图）。
+ * 表达 P43 中的两点：1000 多个零件的装配体，经 AI 识别与分类后，
+ * 相似零件结构、相似装配结构被归并，零件类型收敛到 150 多种。
+ */
+const C = {
+  deep: '#0f2e63',
+  brand: '#1d4ed8',
+  soft: '#eff4ff',
+  gold: '#d4af37',
+  goldDeep: '#b8860b',
+  ink: '#0f172a',
+  muted: '#64748b',
+  line: '#cbd5e1',
+  teal: '#0f766e',
+};
+
+/** 装配体示意：8 × 6 个小方块，用确定性取色模拟不同零件的颜色 */
+const cols = 8;
+const rows = 6;
+const cell = 16;
+const gap = 4;
+const palette = [C.line, C.brand, C.line, C.gold, C.line, C.teal, C.deep, C.line];
+const blocks = Array.from({ length: cols * rows }, (_, i) => {
+  const c = i % cols;
+  const r = Math.floor(i / cols);
+  return {
+    x: 52 + c * (cell + gap),
+    y: 108 + r * (cell + gap),
+    fill: palette[(i * 3 + r) % palette.length],
+  };
+});
+---
+
+<div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
+  <svg
+    viewBox="0 0 1160 420"
+    role="img"
+    aria-label="装配体含 1000 多个零件，经 AI 识别与分类后，相似零件结构与相似装配结构被自动归并，零件类型收敛为 150 多种。"
+    class="block h-auto w-full min-w-[900px]"
+  >
+    <title>复材装配体智能拆分：相似零件与相似装配结构的自动识别与归并</title>
+
+    <!-- 左：装配体（未分类） -->
+    <rect x={20} y={80} width={220} height={260} rx={12} fill="#ffffff" stroke={C.line} />
+    {blocks.map((b) => <rect x={b.x} y={b.y} width={cell} height={cell} rx={3} fill={b.fill} fill-opacity="0.75" />)}
+    <text x={130} y={262} text-anchor="middle" font-size="15" font-weight="600" fill={C.ink}>装配体</text>
+    <text x={130} y={296} text-anchor="middle" font-size="13" fill={C.muted}>1000 多个零件</text>
+
+    <!-- 箭头一：AI 识别与分类 -->
+    <line x1={250} y1={210} x2={388} y2={210} stroke={C.brand} stroke-width="2" />
+    <polygon points="388,205 400,210 388,215" fill={C.brand} />
+    <text x={320} y={186} text-anchor="middle" font-size="14" font-weight="600" fill={C.deep}>AI 识别与分类</text>
+
+    <!-- 中：相似装配结构 -->
+    <rect x={400} y={100} width={450} height={95} rx={10} fill="#ffffff" stroke="#e2e8f0" />
+    <g stroke={C.brand} stroke-width="3" fill="none">
+      <rect x={425} y={112} width={80} height={70} rx={4} />
+      <line x1={452} y1={112} x2={452} y2={182} stroke-width="2" />
+      <line x1={478} y1={112} x2={478} y2={182} stroke-width="2" />
+      <line x1={425} y1={147} x2={505} y2={147} stroke-width="2" />
+      <rect x={555} y={112} width={80} height={70} rx={4} />
+      <line x1={582} y1={112} x2={582} y2={182} stroke-width="2" />
+      <line x1={608} y1={112} x2={608} y2={182} stroke-width="2" />
+      <line x1={555} y1={147} x2={635} y2={147} stroke-width="2" />
+    </g>
+    <text x={530} y={160} text-anchor="middle" font-size="26" font-weight="700" fill={C.goldDeep}>≈</text>
+    <text x={665} y={152} font-size="15" font-weight="600" fill={C.deep}>相似装配结构</text>
+
+    <!-- 中：相似零件结构 -->
+    <rect x={400} y={225} width={450} height={95} rx={10} fill="#ffffff" stroke="#e2e8f0" />
+    <g stroke={C.brand} stroke-width="8" stroke-linecap="round" fill="none">
+      <path d="M425 248 H505" />
+      <path d="M425 248 V302" />
+      <path d="M555 248 H635" />
+      <path d="M555 248 V302" />
+    </g>
+    <g fill="#ffffff" stroke={C.brand} stroke-width="2">
+      <circle cx={480} cy={248} r={4} />
+      <circle cx={425} cy={290} r={4} />
+      <circle cx={610} cy={248} r={4} />
+      <circle cx={555} cy={290} r={4} />
+    </g>
+    <text x={530} y={288} text-anchor="middle" font-size="26" font-weight="700" fill={C.goldDeep}>≈</text>
+    <text x={665} y={283} font-size="15" font-weight="600" fill={C.deep}>相似零件结构</text>
+
+    <!-- 箭头二：类型归并 -->
+    <line x1={858} y1={210} x2={946} y2={210} stroke={C.brand} stroke-width="2" />
+    <polygon points="946,205 958,210 946,215" fill={C.brand} />
+    <text x={902} y={186} text-anchor="middle" font-size="14" font-weight="600" fill={C.deep}>类型归并</text>
+
+    <!-- 右：归并后的零件类型（错位卡片堆表示多种类型） -->
+    <rect x={960} y={80} width={180} height={260} rx={12} fill="#ffffff" stroke={C.line} />
+    {
+      [0, 1, 2, 3].map((i) => (
+        <rect
+          x={972 + i * 7}
+          y={136 + i * 11}
+          width={130}
+          height={44}
+          rx={6}
+          fill={i === 3 ? C.soft : '#ffffff'}
+          stroke={i === 3 ? C.brand : C.line}
+          stroke-opacity={i === 3 ? 0.4 : 1}
+        />
+      ))
+    }
+    <g fill={C.line}>
+      <rect x={1006} y={154} width={62} height={5} rx={2.5} />
+      <rect x={1006} y={165} width={40} height={5} rx={2.5} />
+    </g>
+    <text x={1050} y={262} text-anchor="middle" font-size="15" font-weight="600" fill={C.ink}>150 多种</text>
+    <text x={1050} y={296} text-anchor="middle" font-size="13" fill={C.muted}>零件类型</text>
+  </svg>
+</div>

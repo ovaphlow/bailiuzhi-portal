@@ -2,10 +2,52 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Figure from '../components/Figure.astro';
-import Card from '../components/Card.astro';
+import FurnitureApsFlow from '../components/FurnitureApsFlow.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+
+/**
+ * 案例背景要点：[引导词, 说明]
+ * 依据《谷器数据 SupplyX AI 智能体空间 v8.1》P16「案例二-家具定制排程」客户痛点栏：
+ *   非标定制家具多，生产计划难统一 / 板材利用率低，原材料浪费明显 /
+ *   同一订单产品工艺周期不一致 / 生产仓库积压，发货等待严重 / 交付延期风险高。
+ */
+const backgroundPoints: [string, string][] = [
+  ['非标定制家具多', '「一单一款」的订单结构下，生产计划难以统一'],
+  ['板材利用率低', '排版依赖人工经验，原材料浪费明显'],
+  ['工艺周期不一致', '同一订单内的产品工艺路径不同，完工时点参差'],
+  ['生产仓库积压', '先完工的成品滞留等齐，发货等待严重'],
+  ['交付延期风险高', '积压与等待叠加，订单按期交付缺乏保障'],
+];
+
+/** 核心落地内容，依据同页「核心落地内容」栏原文 */
+const solutions = [
+  {
+    idx: '01',
+    title: 'AI 排程生成算法优化生产排版',
+    desc: '由算法生成排版方案替代人工经验排版，提高板材利用率，从源头压缩原材料浪费。',
+    tag: '提高板材利用率',
+  },
+  {
+    idx: '02',
+    title: '合理规划生产周期',
+    desc: '打通同订单内不同产品的工艺路径，让同一订单不同产品在同一天完成生产。',
+    tag: '同日完工',
+  },
+  {
+    idx: '03',
+    title: '减少生产仓库积压',
+    desc: '完工即齐套，缩短成品在库等待时间，推动订单按时交付。',
+    tag: '推动按时交付',
+  },
+];
+
+/** 客户价值收益，依据同页「客户价值收益」栏原文 */
+const benefits = [
+  '缩短供货周期，实现极速履约交付',
+  '精细化物料采购管理，严控冗余备货',
+  '降低库存积压与资金闲置成本',
+];
 ---
 
 <BaseLayout
@@ -18,50 +60,117 @@ import CtaBand from '../components/CtaBand.astro';
     lede="破解非标定制多、板材利用率低、工艺周期不一致、仓库积压难题 —— 每年原材料成本节约 500 万元，缩短供货周期、降低呆滞库存。"
   />
 
+  <!-- 案例背景 -->
   <section id="pain" class="py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <div class="grid gap-6 md:grid-cols-2">
-        <Card
-          idx="痛点"
-          title="客户痛点"
-          desc="非标定制家具「一单一款」，人工排产难以平衡板材、周期与交付。"
-          points={[
-            '非标定制家具多，生产计划难统一',
-            '板材利用率低，原材料浪费明显',
-            '同一订单产品工艺周期不一致',
-            '生产仓库积压，发货等待严重，交付延期风险高',
-          ]}
-        />
-        <Card
-          idx="方案"
-          title="核心落地内容"
-          desc="AI 排程生成算法优化生产排版，让板材、周期、交付三者对齐。"
-          points={[
-            'AI 排程生成算法优化生产排版，提高板材利用率',
-            '合理规划生产周期，同一订单不同产品同一天完成生产',
-            '减少生产仓库积压，推动按时交付',
-          ]}
-        />
+      <SectionHead eyebrow="Background" title="案例背景" />
+      <div class="rounded-xl border border-brand/10 bg-brand-soft p-6 md:p-8">
+        <p
+          class="m-0 max-w-240 text-[1.05rem] leading-relaxed font-medium text-brand-deep md:text-[1.18rem]"
+        >
+          非标定制家具「一单一款」，人工排产难以同时平衡板材、周期与交付。
+        </p>
+        <ul class="mt-6 mb-0 grid list-none gap-x-10 gap-y-4 p-0 md:grid-cols-2">
+          {
+            backgroundPoints.map(([label, rest]) => (
+              <li class="relative pl-6 text-[1rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[0.5em] before:h-2.5 before:w-2.5 before:rounded-sm before:bg-gold before:content-['']">
+                <strong class="font-semibold text-brand-deep">{label}：</strong>
+                {rest}
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
 
+  <!-- 机制示意（纯 SVG，不使用文档配图） -->
+  <section id="pipeline" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Pipeline"
+        title="AI 排程如何同时解两道题"
+        desc="排程要同时面对板材与周期两类约束：一边把板件排得更密以提高利用率，一边把同订单产品的完工时点收拢到同一天。"
+      />
+      <FurnitureApsFlow />
+    </div>
+  </section>
+
+  <!-- 核心落地内容 -->
+  <section id="solution" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Solution"
+        title="核心落地内容"
+        desc="三项改造动作围绕同一个目标：让板材、周期与交付三者对齐。"
+      />
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          solutions.map((s) => (
+            <article class="flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8 transition-shadow hover:shadow-[0_10px_30px_-18px_rgba(15,46,99,0.35)]">
+              <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">{s.idx}</div>
+              <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">{s.title}</h3>
+              <p class="m-0 text-[0.95rem] leading-relaxed text-muted">{s.desc}</p>
+              <div class="mt-auto pt-5">
+                <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.8rem] text-brand">
+                  {s.tag}
+                </span>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 客户价值收益 -->
   <section id="value" class="bg-surface py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead eyebrow="Value" title="客户价值收益" />
-      <div class="grid gap-6 md:grid-cols-2">
-        <Card idx="降本" title="每年原材料成本节约 500 万元" desc="AI 排版提高板材利用率，配合精细化物料采购管理、严控冗余备货。" />
-        <Card idx="提速" title="缩短供货周期，极速履约交付" desc="同一订单不同产品同一天完成生产，降低库存积压与资金闲置成本，呆滞库存显著下降。" />
-      </div>
-      <Figure
-        img="/assets/media/docs/company-profile/elements/v4-p49-a.jpg"
-        alt="智能家具制造 AI 排程应用案例"
+      <SectionHead
+        eyebrow="Value"
+        title="客户价值收益"
+        desc="从依赖人工经验的排产，到算法驱动的排版与周期规划。"
       />
+
+      <div class="grid gap-6 lg:grid-cols-[1.05fr_1fr]">
+        <!-- 主指标 -->
+        <div
+          class="flex flex-col justify-center rounded-xl border border-gold/30 bg-gold-soft p-8 md:p-10"
+        >
+          <div class="text-[0.82rem] font-semibold tracking-[0.12em] text-gold-deep">
+            COST SAVING · 每年原材料成本节约
+          </div>
+          <div class="mt-4 flex items-baseline gap-2 text-brand-deep">
+            <span class="text-[clamp(3rem,9vw,5rem)] leading-none font-semibold tracking-tight">500</span>
+            <span class="text-[clamp(1.25rem,3vw,1.75rem)] font-semibold">万元</span>
+          </div>
+          <p class="mt-5 mb-0 max-w-120 text-[0.95rem] leading-relaxed text-muted">
+            AI 排版提高板材利用率，配合精细化物料采购管理、严控冗余备货，原材料成本按年计节约 500 万元。
+          </p>
+        </div>
+
+        <!-- 分项收益 -->
+        <div class="rounded-xl border border-ink/[0.08] bg-white p-8 md:p-10">
+          <div class="text-[0.82rem] font-semibold tracking-[0.12em] text-brand">
+            DELIVERY &amp; INVENTORY
+          </div>
+          <ul class="mt-5 mb-0 list-none space-y-4 p-0">
+            {
+              benefits.map((b) => (
+                <li class="relative pl-6 text-[1rem] leading-relaxed text-ink before:absolute before:left-0 before:top-[0.5em] before:h-2.5 before:w-2.5 before:rounded-sm before:bg-gold before:content-['']">
+                  {b}
+                </li>
+              ))
+            }
+          </ul>
+          <p class="mt-6 mb-0 border-t border-ink/[0.08] pt-5 text-[0.88rem] leading-relaxed text-muted">
+            缩短供货周期、极速履约交付的同时，呆滞库存与资金闲置成本同步下降。
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
   <ContactSection />
-  <CtaBand sub="从板材排版切入，体验 AI 排程带来的降本与履约提升。">
-    非标定制也能 <span class="text-gold-deep">按期交付</span>
-  </CtaBand>
+  <CtaBand />
 </BaseLayout>
