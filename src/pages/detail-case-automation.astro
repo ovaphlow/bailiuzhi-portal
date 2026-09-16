@@ -6,9 +6,14 @@ import AutomationFlow from '../components/AutomationFlow.astro';
 import Lightbox from '../components/Lightbox.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+import { Image, getImage } from 'astro:assets';
+import poster1 from '../assets/media/review/automation/demo1-poster.png';
+import poster2 from '../assets/media/review/automation/demo2-poster.png';
+import poster3 from '../assets/media/review/automation/demo3-poster.png';
+import poster4 from '../assets/media/review/automation/demo4-poster.png';
 
-/** 素材目录（非标自动化产线行业案例 PPT） */
-const M =
+/** 演示视频仍在 public/（astro:assets 不处理视频），目录名含中文，引用需 URL 编码 */
+const V =
   '/assets/media/review/%E9%9D%9E%E6%A0%87%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%A7%E7%BA%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE';
 
 /**
@@ -54,7 +59,19 @@ const demos = [
     manual: '人工 1 人 / 16+ 小时',
     speedup: '8 倍',
   },
-].map((d, i) => ({ ...d, poster: `${M}/demo${i + 1}-poster.png`, video: `${M}/demo${i + 1}.mp4` }));
+].map((d, i) => ({
+  ...d,
+  poster: [poster1, poster2, poster3, poster4][i],
+  video: `${V}/demo${i + 1}.mp4`,
+}));
+
+/** 灯箱播放前的封面大图（约 1024px，点击播放时才请求） */
+const posterSrcs = await Promise.all(
+  demos.map(
+    async (d) =>
+      (await getImage({ src: d.poster, width: Math.min(1024, d.poster.width), format: 'webp', quality: 82 })).src
+  )
+);
 ---
 
 <BaseLayout
@@ -98,7 +115,7 @@ const demos = [
       />
       <div class="grid gap-5 md:grid-cols-2">
         {
-          demos.map((d) => (
+          demos.map((d, i) => (
             <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-5">
               <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <h3 class="m-0 text-base font-semibold text-brand-deep">{d.name}</h3>
@@ -110,15 +127,19 @@ const demos = [
                 type="button"
                 class="group relative mt-4 block w-full cursor-pointer overflow-hidden rounded-lg border border-ink/[0.08] bg-ink/5 p-0"
                 data-lb-video={d.video}
-                data-lb-poster={d.poster}
+                data-lb-poster={posterSrcs[i]}
                 data-lb-caption={`${d.name}（${d.scale}）出图演示`}
                 aria-label={`播放${d.name}出图演示视频`}
               >
-                <img
+                <Image
                   class="block aspect-[3/2] w-full object-cover"
                   src={d.poster}
                   alt={`${d.name}出图演示`}
-                  loading="lazy"
+                  width={512}
+                  widths={[320, 512, 768]}
+                  sizes="(min-width: 768px) 510px, 88vw"
+                  format="webp"
+                  quality={82}
                 />
                 <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
                   <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">

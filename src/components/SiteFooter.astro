@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { navLinks } from '../data/site';
+import logoLight from '../assets/img/logo-light.png';
 ---
 
 <!-- 页脚（深色） -->
@@ -7,7 +9,15 @@ import { navLinks } from '../data/site';
   <div class="mx-auto flex max-w-300 flex-wrap items-start justify-between gap-6 px-6 lg:px-10">
     <div>
       <div class="flex items-center">
-        <img src="/assets/img/logo-light.png" alt="百六智数字科技" class="block h-[30px] w-auto" />
+        <Image
+          src={logoLight}
+          alt="百六智数字科技"
+          width={255}
+          widths={[255, 510]}
+          sizes="255px"
+          format="png"
+          class="block h-[30px] w-auto"
+        />
       </div>
       <p class="mt-1 mb-0 text-[0.875rem] text-[#dee7ff]/66">
         © 2026 百六智数字科技 · 让每一家追求卓越的制造企业，都拥有专属「智慧大脑」

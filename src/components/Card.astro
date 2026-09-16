@@ -1,10 +1,14 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface ListItem {
   title: string;
   desc?: string;
 }
 interface Props {
-  img?: string;
+  /** 位图传 ESM 导入的 ImageMetadata（构建期派生多尺寸 WebP）；矢量示意图传 public 绝对路径字符串 */
+  img?: ImageMetadata | string;
   alt?: string;
   /** 金色序号，如 01 */
   idx?: string;
@@ -56,19 +60,29 @@ function rich(text: string): { red?: string; plain?: string }[] {
     .filter((p) => p !== "")
     .map((p) => (p.startsWith("**") && p.endsWith("**") ? { red: p.slice(2, -2) } : { plain: p }));
 }
+
+/** 图片统一类名（zoomable 触发 Lightbox 放大） */
+const imgClass = `mb-4 block w-full shrink-0 ${imgHeight} rounded-lg border border-ink/[0.08] bg-white object-cover${zoomable ? ' zoomable' : ''}`;
 ---
 
 <!-- 通用内容卡片：底部区块（metric / tag / 链接）用 mt-auto 置底，同一行卡片底部对齐 -->
 <article class:list={['flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8', className]}>
   {
-    img && (
-      <img
-        class={`mb-4 block w-full shrink-0 ${imgHeight} rounded-lg border border-ink/[0.08] bg-white object-cover${zoomable ? ' zoomable' : ''}`}
-        src={img}
-        alt={alt}
-        loading="lazy"
-      />
-    )
+    img &&
+      (typeof img === 'string' ? (
+        <img class={imgClass} src={img} alt={alt} loading="lazy" />
+      ) : (
+        <Image
+          class={imgClass}
+          src={img}
+          alt={alt}
+          width={640}
+          widths={[320, 480, 640, 960]}
+          sizes="(min-width: 1024px) 340px, (min-width: 768px) 45vw, 88vw"
+          format="webp"
+          quality={82}
+        />
+      ))
   }
   {idx && <div class="font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">{idx}</div>}
   {big && <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{big}</div>}

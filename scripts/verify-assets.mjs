@@ -3,8 +3,9 @@
  * 校验：构建产物（dist）中引用的每个本地资源是否真实存在。
  * 用于在交付前发现漏放的图片、路径写错、改了引用没补文件等问题。
  *
- * 检查范围：<img src> / <link href> / 内联 CSS url(...) 中以 / 开头的本地路径，
- * 且最后一段带扩展名（用于区分资源文件与 /cases/ 这类页面路由）。
+ * 检查范围：<img src> / <link href> / <img srcset> / <video poster> / data-lb-*（灯箱大图与视频）
+ * / 内联 CSS url(...) 中以 / 开头的本地路径，且最后一段带扩展名（用于区分资源文件与
+ * /cases/ 这类页面路由）。srcset 是 astro:assets 多尺寸输出的主要形态，必须一起校验。
  * 资源来源按前缀区分：/_astro/ 为 Astro 构建产物（校验 dist/），其余为静态资源（校验 public/）。
  *
  * 用法: node scripts/verify-assets.mjs
@@ -34,9 +35,22 @@ for (const entry of readdirSync(dist)) {
 /** 从一段 HTML 中提取本地资源引用 */
 function refsOf(html) {
   const refs = new Set();
-  const patterns = [/src="(\/[^"]+)"/g, /href="(\/[^"]+)"/g, /url\(['"]?(\/[^'")]+)['"]?\)/g];
+  const patterns = [
+    /src="(\/[^"]+)"/g,
+    /href="(\/[^"]+)"/g,
+    /poster="(\/[^"]+)"/g,
+    /data-lb-(?:video|poster|full)="(\/[^"]+)"/g,
+    /url\(['"]?(\/[^'")]+)['"]?\)/g,
+  ];
   for (const re of patterns) {
     for (const m of html.matchAll(re)) refs.add(m[1]);
+  }
+  // srcset="a.webp 480w, b.webp 960w"：逗号分隔，每段第一字段是 URL
+  for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
+    for (const candidate of m[1].split(',')) {
+      const url = candidate.trim().split(/\s+/)[0];
+      if (url.startsWith('/')) refs.add(url);
+    }
   }
   return [...refs].filter((ref) => {
     if (ref.startsWith('//')) return false; // 协议相对的外链

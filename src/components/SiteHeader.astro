@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { navLinks } from '../data/site';
+import logoMain from '../assets/img/logo-main.png';
 
 const { pathname } = Astro.url;
 const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
@@ -9,7 +11,15 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
 <nav class="sticky top-0 z-50 border-b border-ink/[0.08] bg-white/90 backdrop-blur-[8px]">
   <div class="relative mx-auto flex h-18 max-w-300 items-center justify-between px-6 lg:px-10">
     <a class="flex items-center" href="#top" aria-label="百六智数字科技">
-      <img src="/assets/img/logo-main.png" alt="百六智数字科技" class="block h-10 w-auto" />
+      <Image
+        src={logoMain}
+        alt="百六智数字科技"
+        width={340}
+        widths={[340, 680]}
+        sizes="340px"
+        format="png"
+        class="block h-10 w-auto"
+      />
     </a>
 
     <div class="flex items-center gap-6">

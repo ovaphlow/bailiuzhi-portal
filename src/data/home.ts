@@ -1,11 +1,20 @@
 /**
  * 首页各区块内容数据（迁移自 site/index.html）。
- * 图片路径沿用原站 assets（已复制到 public/assets），中文路径保持 URL 编码形态。
+ *
+ * 位图（封面、场景配图）放在 src/assets/ 下按 ESM 导入，交给 astro:assets 在构建期
+ * 派生多尺寸 WebP；矢量示意图（cases/*.svg）无需优化，仍放在 public/ 用绝对路径引用。
  */
+import type { ImageMetadata } from 'astro';
+import scene1 from '../assets/img/scenes/scene1.webp';
+import scene2 from '../assets/img/scenes/scene2.webp';
+import scene3 from '../assets/img/scenes/scene3.webp';
+import rndIntegration from '../assets/img/scenes/rnd-integration.webp';
+import smartUpgrade from '../assets/img/scenes/smart-upgrade.webp';
+import aiGongcheng from '../assets/img/scenes/ai-gongcheng.webp';
 
 export interface SceneCard {
   idx: string;
-  img: string;
+  img: ImageMetadata;
   alt: string;
   title: string;
   desc: string;
@@ -18,7 +27,7 @@ export interface SceneCard {
 /** 三大核心业务板块（以《公司简介 4.0》第 15 页「助力中小型企业数字化转型三大场景」为准） */
 export interface SegmentCard {
   idx: string;
-  img: string;
+  img: ImageMetadata;
   alt: string;
   title: string;
   points: string[];
@@ -27,7 +36,7 @@ export interface SegmentCard {
 export const segments: SegmentCard[] = [
   {
     idx: '01',
-    img: '/assets/img/scene1.webp',
+    img: scene1,
     alt: '研发设计制造一体化',
     title: '研发设计制造一体化',
     points: [
@@ -42,7 +51,7 @@ export const segments: SegmentCard[] = [
   },
   {
     idx: '02',
-    img: '/assets/img/scene2.webp',
+    img: scene2,
     alt: '智能化改造·非标自动化产线',
     title: '智能化改造',
     points: [
@@ -55,7 +64,7 @@ export const segments: SegmentCard[] = [
   },
   {
     idx: '03',
-    img: '/assets/img/scene3.webp',
+    img: scene3,
     alt: 'AI 智能体应用',
     title: 'AI 智能体应用',
     points: [
@@ -70,7 +79,7 @@ export const segments: SegmentCard[] = [
 export const scenes: SceneCard[] = [
   {
     idx: '01',
-    img: '/assets/img/rnd-integration.webp',
+    img: rndIntegration,
     alt: '研发设计制造一体化·参数化建模',
     title: '研发设计端 AI',
     desc: '减少低价值、重复性工作，提升研发设计人员的效率和价值。',
@@ -82,7 +91,7 @@ export const scenes: SceneCard[] = [
   },
   {
     idx: '02',
-    img: '/assets/img/smart-upgrade.webp',
+    img: smartUpgrade,
     alt: '智能化改造·非标自动化产线',
     title: '生产制造端 AI',
     desc: '聚焦核心生产流程优化，通过 AI 技术赋能制造全链路，实现生产效率与产品质量的双重飞跃。',
@@ -95,7 +104,7 @@ export const scenes: SceneCard[] = [
   },
   {
     idx: '03',
-    img: '/assets/img/ai-gongcheng.webp',
+    img: aiGongcheng,
     alt: 'AI 智能体应用·岗位 AI 员工',
     title: '办公智能工作平台',
     desc: '以智能工作平台为核心，重构办公协同模式，释放组织创造力，赋能决策与管理升级。',

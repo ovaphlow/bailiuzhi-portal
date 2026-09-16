@@ -4,6 +4,8 @@
  *
  * 使用方页面引入 <Lightbox /> 后：
  *   - img.zoomable                      → 点击放大图片
+ *     若 img 带 data-lb-full，则灯箱用该地址（用于列表里是 srcset 缩略图、
+ *     放大要换高清图的场景），否则沿用 currentSrc / src
  *   - [data-lb-video="xxx.mp4"]         → 点击在灯箱内播放视频（data-lb-poster 作为封面）
  * 说明文字取自最近的 figure > figcaption，其次 img 的 alt / data-lb-caption。
  */
@@ -137,7 +139,12 @@
           alt: el.getAttribute('aria-label') || '视频',
         };
       }
-      return { kind: 'img', src: el.currentSrc || el.src, caption: cap || el.alt || '', alt: el.alt || '' };
+      return {
+        kind: 'img',
+        src: el.getAttribute('data-lb-full') || el.currentSrc || el.src,
+        caption: cap || el.alt || '',
+        alt: el.alt || '',
+      };
     });
 
     var current = 0;

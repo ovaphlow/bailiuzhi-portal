@@ -10,6 +10,7 @@
 - **Tailwind CSS v4**：通过 `@tailwindcss/vite` 集成，设计令牌集中在 `src/styles/global.css` 的 `@theme` 中（品牌蓝 / 金色 / 字体等），无 `tailwind.config`。
 - **组件化 + 数据驱动**：页头、页脚、区块标题、卡片、按钮等公共部件已抽离为组件（`src/components/`），页面内容来自 `src/data/`，改文案不必动模板。
 - **案例示意图用代码绘制**：案例页里的流程框图不是图片，而是按 PPT 原页几何 1:1 复刻的 SVG / CSS 组件，见下文「组件」一节。
+- **图片走 `astro:assets`**：位图放在 `src/assets/`，构建期由 sharp 派生多尺寸 WebP 并输出 `srcset`，原图不进产物，因此**不需要人工压缩原图**，只需要在组件里声明渲染尺寸；矢量图与视频留在 `public/`（见下文「静态资源」）。
 - **SEO**：`BaseLayout` 统一输出 `title` / `description` / OG 标签；字体走 Google Fonts（Inter + JetBrains Mono）。
 
 ## 环境与常用命令
@@ -30,7 +31,8 @@ bun run preview    # 预览构建产物
 
 ```
 portal/
-├── public/assets/          # 静态资源，原样拷贝到 dist/（见下文说明）
+├── src/assets/             # 位图素材（构建期由 astro:assets 派生多尺寸，见下文说明）
+├── public/assets/          # 矢量图 / favicon / 视频，原样拷贝到 dist/
 ├── scripts/                # 资源校验与排查脚本
 └── src/
     ├── components/         # 公共部件 + 各案例的示意图组件
@@ -103,7 +105,42 @@ portal/
 
 ## 静态资源
 
-`public/assets/` 下的文件会原样拷贝进 `dist/assets/`，引用一律用 `/assets/...` 绝对路径。
+素材按「是否需要构建期处理」分两处存放：
+
+| 位置 | 放什么 | 引用方式 |
+| --- | --- | --- |
+| `src/assets/` | **位图**：首屏背景、场景配图、PPT 截图、视频封面、logo | ESM 导入后交给 `astro:assets` 的 `<Image>` / `getImage` |
+| `public/` | **矢量与视频**：`img/cases/*.svg`、`img/partner/*.svg`、`favicon.png`、`media/review/**/*.mp4` | `/assets/...` 绝对路径原样引用 |
+
+**为什么位图要放 `src/assets/`**：`public/` 下的文件会原样拷进 `dist/`，浏览器拿到的就是设计稿尺寸——1929px 宽的 logo 在页头只显示 40px 高，3069px 宽的 PPT 截图在版式里只占约 140px。放进 `src/assets/` 后原图不再出货，构建期按声明的宽度生成 `dist/_astro/*.webp` 与 `srcset`。
+
+**四条约定**
+
+1. 位图一律 `const pic = import '../assets/...'` 后传给 `<Image src={pic} width={...} widths={[...]} sizes="..." format="webp" quality={...} />`。`width` 决定兜底 `src` 与 `width/height` 属性，`widths` 决定 `srcset`；两者都以源图宽度为上限，不会放大。
+2. `sizes` 必须按真实版式写（卡片约 340px、视频封面约 510px、轴承版式插图约 240px、首屏 `100vw`），写错会让浏览器挑到过大或过小的候选图。
+3. 列表里是缩略图、放大要用高清图时，在触发元素上加 `data-lb-full={大图地址}`；大图用 `getImage({ width: Math.min(1600, 原图宽) })` 单独生成，`Lightbox` 会优先取它（否则只会放大 `currentSrc` 那张小图）。
+4. 矢量示意图继续放 `public/assets/img/`：合计约 40KB，`astro:assets` 对 SVG 不做压缩，搬进 `src/assets` 只增加复杂度。
+
+```
+src/assets/
+├── img/
+│   ├── logo-main.png / logo-light.png              页头 / 页脚 logo
+│   ├── cover-background.jpeg                       首页首屏背景
+│   └── scenes/*.webp                               首页业务板块与场景配图
+└── media/
+    ├── docs/v4-*.jpg                               暂时停用的产品配图
+    └── review/
+        ├── bearing/image10~19.(png|jpeg)            轴承案例版式插图 10 张
+        └── automation/demo1~4-poster.png           非标自动化案例视频封面
+
+public/assets/
+├── favicon.png
+├── img/cases/*.svg                                 案例卡片封面（矢量，代码绘制）
+├── img/partner/heyuan-jingdian-line.svg            客户产线示意图
+└── media/review/<中文目录>/*.mp4                    演示视频（H.264）
+```
+
+视频素材必须是浏览器可解的 H.264：PPT 内嵌视频常见的是 MPEG-4 Part 2 / HEVC，直接拿来放不了，转码后再入库（现有的 `media1-h264.mp4`、`demoN.mp4` 即为转码产物）。视频不走 `astro:assets`，目录名是中文、引用时需 URL 编码，路径在组件顶部以 `const V = '/assets/media/review/%E8%BD%B4...'` 集中定义。
 
 ```
 public/assets/
@@ -127,7 +164,7 @@ public/assets/
 1. 视频素材在页面里由 `Lightbox` 播放，因而必须是浏览器可解的 H.264。PPT 内嵌视频常见的是 MPEG-4 Part 2 / HEVC，直接拿来放不了，转码后再入库（现有的 `media1-h264.mp4`、`demoN.mp4` 即为转码产物）。
 2. `review/` 下的目录名是中文，引用时需 URL 编码；素材路径多在组件顶部以 `const M = '/assets/media/review/%E8%BD%B4...'` 的形式集中定义，再拼成 `` `${M}/image17.png` ``。新增素材照这个写法来，别在模板里散着写裸路径。
 
-另外，`company-profile/elements/v4-p31-a.jpg` 与 `v4-p34-a.jpg` 目前只被 `products-solutions.ts` 里一段注释掉的分组引用（标注为「以后可能恢复」），属于有意保留的素材，`find-unused-assets.mjs` 会把它们单独列出来而不计入待删项。
+`src/assets/media/docs/v4-p31-a.jpg`、`v4-p34-a.jpg`、`v4-p36-a.jpg` 只被 `products-solutions.ts` 里一段注释掉的分组引用（标注为「以后可能恢复」），属于有意保留的素材：放在 `src/assets/` 下不会产出构建产物，恢复时在文件顶部补 ESM 导入即可。
 
 ## 脚本
 
@@ -137,7 +174,7 @@ public/assets/
 | `find-unused-assets.mjs` | 找出 `public/` 中未被任何页面引用的死资源（基于 `dist` 判定，因为素材路径是模板拼接的）。存在未引用文件时退出码 1，可接 CI 做体积回归 | `node scripts/find-unused-assets.mjs` |
 | `render-svgs.mjs` | 把 `dist` 里内联的 SVG 示意图光栅化成 PNG 到 `.svg-preview/`，便于逐张肉眼核对排版 | `node scripts/render-svgs.mjs [页面名] [输出目录]` |
 
-`verify-assets.mjs` 与 `find-unused-assets.mjs` 都需要先跑 `bun run build`。新增或删除素材后，建议走一遍 `build` → 两个校验 → 再 `build`。
+`verify-assets.mjs` 与 `find-unused-assets.mjs` 都需要先跑 `bun run build`。`verify-assets.mjs` 会连带校验 `srcset` / `poster` / `data-lb-*` 里的每一个候选图。新增或删除素材后，建议走一遍 `build` → 两个校验 → 再 `build`。
 
 `find-unused-assets.mjs` 支持 `--delete`（删除「全仓库无引用」一类）、`--include-src-only`（连注释里引用的也一起删）、`--json <path>`（导出清单）。
 

@@ -8,7 +8,21 @@
  * 连线为原稿的 11 条流程线（#0070C0，2.25pt，无箭头；其中 1 条虚线、1 条渐变）
  * 与 9 个节点圆点，它们是原页面「数据接口 → 墨·CAS/TAV/DAG → 六项输出」的连接关系。
  */
-const M =
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import image10 from '../assets/media/review/bearing/image10.png';
+import image11 from '../assets/media/review/bearing/image11.png';
+import image12 from '../assets/media/review/bearing/image12.png';
+import image13 from '../assets/media/review/bearing/image13.jpeg';
+import image14 from '../assets/media/review/bearing/image14.png';
+import image15 from '../assets/media/review/bearing/image15.png';
+import image16 from '../assets/media/review/bearing/image16.png';
+import image17 from '../assets/media/review/bearing/image17.png';
+import image18 from '../assets/media/review/bearing/image18.png';
+import image19 from '../assets/media/review/bearing/image19.png';
+
+/** 演示视频仍在 public/（astro:assets 不处理视频），目录名含中文，引用需 URL 编码 */
+const V =
   '/assets/media/review/%E8%BD%B4%E6%89%BF%E8%A1%8C%E4%B8%9A%E6%A1%88%E4%BE%8B-%E5%8F%82%E6%95%B0%E5%8C%96%E5%BB%BA%E6%A8%A1%E4%B8%8E%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8%E8%87%AA%E5%8A%A8%E5%87%BA%E5%9B%BE';
 
 const SW = 13.333;
@@ -138,7 +152,7 @@ type Pic = {
   y: number;
   w: number;
   h: number;
-  img: string;
+  img: ImageMetadata;
   alt: string;
   caption: string;
   video?: string;
@@ -154,7 +168,7 @@ const pics: Pic[] = [
     y: 1.451,
     w: 3.25,
     h: 1.917,
-    img: `${M}/image17.png`,
+    img: image17,
     alt: '轴承尺寸链计算表',
     caption: '尺寸链计算：轴承平均直径与内／外沟径、挡边径、沟位置推导',
   },
@@ -163,18 +177,18 @@ const pics: Pic[] = [
     y: 1.39,
     w: 2.457,
     h: 1.549,
-    img: `${M}/image10.png`,
+    img: image10,
     alt: 'UG NX 中的自动标注工具条',
     caption: '视频：UG NX 内自动标注工具条演示',
     // 原 pptx 内嵌视频为 MPEG-4 Part 2（mp4v）编码，浏览器无法播放，已转码为 H.264
-    video: `${M}/media1-h264.mp4`,
+    video: `${V}/media1-h264.mp4`,
   },
   {
     x: 10.762,
     y: 1.371,
     w: 1.869,
     h: 2.294,
-    img: `${M}/image11.png`,
+    img: image11,
     alt: '轴承尺寸定义规范表',
     caption: '检测规范 · 尺寸定义表：外圈厚／外圈直径／内圈厚／内圈直径的取值与计算基准',
   },
@@ -183,17 +197,17 @@ const pics: Pic[] = [
     y: 3.341,
     w: 2.296,
     h: 1.447,
-    img: `${M}/image12.png`,
+    img: image12,
     alt: '墨·CAS 检图项目面板',
     caption: '视频：墨·CAS 检图项目面板（一键检图／出图）',
-    video: `${M}/media2.mp4`,
+    video: `${V}/media2.mp4`,
   },
   {
     x: 0.709,
     y: 4.078,
     w: 1.713,
     h: 1.071,
-    img: `${M}/image18.png`,
+    img: image18,
     alt: '柔性轴承二维装配图',
     caption: '二维装配图自动出图（含零件明细表与技术要求），红框为自动生成的技术要求',
     cropTop: 0.1625,
@@ -204,7 +218,7 @@ const pics: Pic[] = [
     y: 4.07,
     w: 1.548,
     h: 1.08,
-    img: `${M}/image15.png`,
+    img: image15,
     alt: '公差分布分析报告',
     caption: '尺寸链分析 · 公差分布分析（CP/CPK 与合格率）',
   },
@@ -213,7 +227,7 @@ const pics: Pic[] = [
     y: 5.197,
     w: 1.69,
     h: 1.188,
-    img: `${M}/image14.png`,
+    img: image14,
     alt: '公差因素影响因子报告',
     caption: '尺寸链分析 · 公差因素影响因子（L1–L5）',
   },
@@ -222,7 +236,7 @@ const pics: Pic[] = [
     y: 5.197,
     w: 1.548,
     h: 1.177,
-    img: `${M}/image16.png`,
+    img: image16,
     alt: '公差因素影响因子明细',
     caption: '尺寸链分析 · 公差因素影响因子明细（垂直度／线性）',
   },
@@ -231,7 +245,7 @@ const pics: Pic[] = [
     y: 5.304,
     w: 2.153,
     h: 1.434,
-    img: `${M}/image13.jpeg`,
+    img: image13,
     alt: '轴承套圈 MBD 模型形位公差标注',
     caption: 'MBD 模型自动标注：轴承套圈剖视图的尺寸与形位公差',
   },
@@ -240,11 +254,27 @@ const pics: Pic[] = [
     y: 5.272,
     w: 1.988,
     h: 1.011,
-    img: `${M}/image19.png`,
+    img: image19,
     alt: '国标形状与位置公差标注示例',
     caption: '老国标 · 形状与位置公差标注示例（圆度／圆柱度／垂直度）',
   },
 ];
+
+/**
+ * 灯箱放大用的大图地址：图中缩略图走 srcset（约 240px 宽），点击放大时才请求这张。
+ * 尺寸取「原图宽度」与 1600 的较小值，既不放大小图，也不把 3069px 的截图原样丢给浏览器。
+ */
+const lbFullSrcs = await Promise.all(
+  pics.map(async (p) => {
+    const { src } = await getImage({
+      src: p.img,
+      width: Math.min(1600, p.img.width),
+      format: 'webp',
+      quality: 82,
+    });
+    return src;
+  })
+);
 ---
 
 <div class="-mx-6 overflow-x-auto px-6 pb-1 lg:mx-0 lg:overflow-visible lg:px-0">
@@ -301,7 +331,7 @@ const pics: Pic[] = [
 
     <!-- 图片与视频（图片点击放大，视频点击播放） -->
     {
-      pics.map((p) => {
+      pics.map((p, i) => {
         const crop = p.cropTop ?? 0;
         const imgStyle = crop
           ? `top:${((-crop / (1 - crop)) * 100).toFixed(2)}%;height:${(100 / (1 - crop)).toFixed(2)}%`
@@ -321,11 +351,21 @@ const pics: Pic[] = [
                 type="button"
                 class="group absolute inset-0 block cursor-pointer border-0 bg-transparent p-0"
                 data-lb-video={p.video}
-                data-lb-poster={p.img}
+                data-lb-poster={lbFullSrcs[i]}
                 data-lb-caption={p.caption}
                 aria-label={`播放${p.caption}`}
               >
-                <img class="absolute left-0 w-full object-fill" style={imgStyle} src={p.img} alt={p.alt} loading="lazy" />
+                <Image
+                  class="absolute left-0 w-full object-fill"
+                  style={imgStyle}
+                  src={p.img}
+                  alt={p.alt}
+                  width={384}
+                  widths={[256, 384, 512, 768]}
+                  sizes="240px"
+                  format="webp"
+                  quality={82}
+                />
                 <span class="absolute inset-0 grid place-items-center bg-ink/15 transition group-hover:bg-ink/30">
                   <span
                     class="grid place-items-center rounded-full bg-white/95 shadow-md"
@@ -344,13 +384,18 @@ const pics: Pic[] = [
               </button>
             ) : (
               <>
-                <img
+                <Image
                   class="zoomable absolute left-0 w-full cursor-zoom-in object-fill"
                   style={imgStyle}
                   src={p.img}
                   alt={p.alt}
                   data-lb-caption={p.caption}
-                  loading="lazy"
+                  data-lb-full={lbFullSrcs[i]}
+                  width={384}
+                  widths={[256, 384, 512, 768]}
+                  sizes="240px"
+                  format="webp"
+                  quality={82}
                 />
                 {mark}
               </>

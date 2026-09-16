@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 /**
  * 产品和解决方案页内容数据。
  * 产品列表按《公司简介 4.0》第三章「产品与方案」的层级组织：
@@ -9,8 +11,8 @@
 
 export interface SolutionCard {
   idx: string;
-  /** 卡片配图（文字主导的卡片可不带） */
-  img?: string;
+  /** 卡片配图（文字主导的卡片可不带）；位图需从 src/assets 导入 */
+  img?: ImageMetadata;
   alt?: string;
   title: string;
   desc: string;
@@ -87,7 +89,8 @@ export const productGroups: ProductGroup[] = [
       },
     ],
   },
-  // ───【用户暂时不用】生产制造端 AI 分组（以后可能恢复）：恢复时取消本段注释即可 ───
+  // ───【用户暂时不用】生产制造端 AI 分组（以后可能恢复）：恢复时取消本段注释即可。
+  // 配图已随素材迁移到 src/assets/media/docs/，取消注释时需在文件顶部补 ESM 导入 ───
   // {
   //   id: 'production-ai',
   //   scene: '生产制造端 AI',
@@ -96,7 +99,7 @@ export const productGroups: ProductGroup[] = [
   //   products: [
   //     {
   //       idx: '01',
-  //       img: '/assets/media/docs/company-profile/elements/v4-p31-a.jpg',
+  //       img: v4P31, // import v4P31 from '../assets/media/docs/v4-p31-a.jpg'
   //       alt: 'AI 排程智能生成最优生产计划',
   //       title: 'AI 排程',
   //       desc: 'AI 算法综合订单、产能、物料、人员设备多维约束，智能生成最优生产计划，动态适配插单、故障等突发变化，几周即可上线。',
@@ -104,7 +107,7 @@ export const productGroups: ProductGroup[] = [
   //     },
   //     {
   //       idx: '02',
-  //       img: '/assets/media/docs/company-profile/elements/v4-p34-a.jpg',
+  //       img: v4P34, // import v4P34 from '../assets/media/docs/v4-p34-a.jpg'
   //       alt: 'AI 质检在线全检与根因追溯',
   //       title: 'AI 质检',
   //       desc: '深度学习视觉技术在线全检各类缺陷，异常实时预警、根因自动追溯，不良率数据反向推送 MES/SCADA 驱动制程改进。',
@@ -112,7 +115,7 @@ export const productGroups: ProductGroup[] = [
   //     },
   //     {
   //       idx: '03',
-  //       img: '/assets/media/docs/company-profile/elements/v4-p36-a.jpg',
+  //       img: v4P36, // import v4P36 from '../assets/media/docs/v4-p36-a.jpg'
   //       alt: '设备预测性维护',
   //       title: '设备预测性维护',
   //       desc: '融合维修台账、技术手册、运行参数与保养记录，AI 综合研判输出故障预警、维修方案与保养计划，从「事后抢修」到「事前预防」。',
