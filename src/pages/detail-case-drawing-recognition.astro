@@ -36,18 +36,18 @@ const features = [
   },
 ];
 
-/** slide6-8 三个智能算法 */
+/** slide6-8 三个智能算法：算法名作卡片标题，「智能算法」降为上方小字 */
 const algos = [
   {
-    idx: '工艺信息分类',
+    name: '工艺信息分类',
     desc: '通过神经网络对不同工艺信息的特征识别，并结合 OCR 文本识别等功能对不同的工艺信息区分处理。',
   },
   {
-    idx: '同视图分类',
+    name: '同视图分类',
     desc: '通过整理公差形式和引线关联轮廓获得视图范围，关联同视图的所有标注。',
   },
   {
-    idx: '轮廓提取',
+    name: '轮廓提取',
     desc: '通过线卷积神经网络提取不同标注形式的引线关联轮廓。',
   },
 ];
@@ -122,7 +122,7 @@ const customs = [
       />
       <DrawingRecognitionSheet />
       <div class="mt-8 grid gap-6 md:grid-cols-3">
-        {algos.map((a) => <Card idx={a.idx} title="智能算法" desc={a.desc} />)}
+        {algos.map((a) => <Card idx="智能算法" title={a.name} desc={a.desc} />)}
       </div>
     </div>
   </section>

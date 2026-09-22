@@ -7,6 +7,25 @@ import VisionLightLibrary from '../components/VisionLightLibrary.astro';
 import VisionLightAutoGen from '../components/VisionLightAutoGen.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { Image, getImage } from 'astro:assets';
+import lightSourcePoster from '../assets/media/review/vision-light/light-source-poster.png';
+
+/**
+ * 演示视频来自《非标设计自动化系统方案V3.0.pptx》第 32 页内嵌视频（原 media5.mp4）。
+ * 已转为 H.264 + faststart；视频放 public/，astro:assets 不处理视频。
+ */
+const VIDEO = '/assets/media/review/vision-light/media5.mp4';
+
+/** 灯箱播放前的封面大图（点击播放时才请求） */
+const posterSrc = (
+  await getImage({
+    src: lightSourcePoster,
+    width: Math.min(1024, lightSourcePoster.width),
+    format: 'webp',
+    quality: 82,
+  })
+).src;
 ---
 
 <BaseLayout
@@ -54,6 +73,51 @@ import CtaBand from '../components/CtaBand.astro';
     </div>
   </section>
 
+  <section id="demo" class="py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Demo"
+        title="选型与出图演示"
+        desc="在选型软件中选定光源系列并输入关键参数，系统即时给出规格、图纸与配件信息。点击封面播放演示。"
+      />
+      <div class="mx-auto max-w-160">
+        <div class="rounded-xl border border-ink/[0.08] bg-white p-5">
+          <h3 class="m-0 text-base font-semibold text-brand-deep">条形光源选型</h3>
+          <p class="mt-1.5 mb-0 text-[0.85rem] text-muted">
+            PPX 产品选型 · 系列代码 PPX-TR 系列，输入光源宽度、需求长度、挡边宽度等参数
+          </p>
+          <button
+            type="button"
+            class="group relative mt-4 block w-full cursor-pointer overflow-hidden rounded-lg border border-ink/[0.08] bg-ink/5 p-0"
+            data-lb-video={VIDEO}
+            data-lb-poster={posterSrc}
+            data-lb-caption="机器视觉光源：条形光源选型与出图演示"
+            aria-label="播放机器视觉光源选型与出图演示视频"
+          >
+            <Image
+              class="block aspect-[7/6] w-full object-cover"
+              src={lightSourcePoster}
+              alt="机器视觉光源条形光源选型界面"
+              width={512}
+              widths={[320, 512, 872]}
+              sizes="(min-width: 768px) 640px, 88vw"
+              format="webp"
+              quality={82}
+            />
+            <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+              <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <ContactSection />
   <CtaBand />
+  <Lightbox />
 </BaseLayout>

@@ -1,0 +1,55 @@
+---
+/**
+ * 合作伙伴标识条：用于「合作伙伴解决方案」页，为每一位合作伙伴开篇。
+ * 深蓝底 + 金色点缀，交代序号、名称、英文标签、定位与口号。
+ */
+interface Props {
+  /** 序号，如 01 */
+  index: string;
+  /** 中文名称 */
+  name: string;
+  /** 英文标签 */
+  en: string;
+  /** 一句话定位 */
+  tagline: string;
+  /** 口号 / 主张（金色呈现） */
+  slogan?: string;
+}
+const { index, name, en, tagline, slogan } = Astro.props;
+---
+
+<div
+  class="relative overflow-hidden rounded-2xl border border-white/10 bg-brand-deep px-7 py-8 text-white md:px-10 md:py-10"
+>
+  <!-- 右侧金色光晕装饰 -->
+  <div
+    class="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-gold/10 blur-2xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3">
+        <span class="font-mono text-[0.75rem] tracking-[0.18em] text-gold">{en}</span>
+      </div>
+      <h2 class="mt-3 mb-0 text-[clamp(1.5rem,3vw,2.1rem)] leading-tight font-semibold text-balance">
+        {name}
+      </h2>
+      <p class="mt-3 mb-0 text-[0.98rem] leading-relaxed text-white/75">{tagline}</p>
+      {
+        slogan && (
+          <p class="mt-3 mb-0 text-[0.95rem] font-semibold text-gold">
+            {slogan}
+          </p>
+        )
+      }
+    </div>
+    <div
+      class="font-mono text-[2.5rem] leading-none font-semibold text-white/15 md:text-[3.25rem]"
+      aria-hidden="true"
+    >
+      {index}
+    </div>
+  </div>
+</div>

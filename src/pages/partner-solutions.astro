@@ -5,7 +5,24 @@ import SectionHead from '../components/SectionHead.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { productMatrix, customerCase } from '../data/partner-solutions';
+import PartnerBanner from '../components/PartnerBanner.astro';
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { productMatrix, industryCases, demos, customerCase } from '../data/partner-solutions';
+import {
+  partner as zonglian,
+  valueProps,
+  markets,
+  products,
+  productMoat,
+  coreProducts,
+  clients,
+  demoVideos,
+  coreTech,
+  capabilities,
+  ecosystem,
+  cases as zonglianCases,
+} from '../data/partner-zonglian';
 
 /** 按高亮短语把引言切成 普通/高亮 交替片段 */
 function splitQuote(text: string, highlights: string[]) {
@@ -28,85 +45,828 @@ function splitQuote(text: string, highlights: string[]) {
   return parts;
 }
 const quoteParts = splitQuote(customerCase.quote, customerCase.highlights);
+
+/** 只保留不超过原图宽度的候选尺寸，避免把图放大 */
+function srcWidths(img: ImageMetadata, candidates: number[]) {
+  return candidates.filter((w) => w <= img.width);
+}
+
+/** 灯箱播放前的视频封面大图（点击播放时才请求） */
+const posterSrcs = await Promise.all(
+  demos.map(
+    async (d) =>
+      (await getImage({ src: d.poster, width: Math.min(1024, d.poster.width), format: 'webp', quality: 82 })).src
+  )
+);
+
+/** 纵涟演示视频的封面大图，同上 */
+const zonglianPosterSrcs = await Promise.all(
+  demoVideos.map(
+    async (d) =>
+      (await getImage({ src: d.poster, width: Math.min(1024, d.poster.width), format: 'webp', quality: 82 })).src
+  )
+);
+
+/** 重点行业里视频素材的封面大图（灯箱播放用，点击时才请求） */
+const industryVideos = industryCases.flatMap((c) => c.videos ?? []);
+const videoPosterSrcs = await Promise.all(
+  industryVideos.map(
+    async (v) =>
+      (await getImage({ src: v.poster, width: Math.min(1024, v.poster.width), format: 'webp', quality: 82 })).src
+  )
+);
+/** 视频地址 → 灯箱封面，供卡片媒体区取用 */
+const posterByVideo = new Map(industryVideos.map((v, i) => [v.video, videoPosterSrcs[i]]));
+
+/** 灯箱放大用的高清图 */
+async function full(src: ImageMetadata, w = 1600) {
+  return (await getImage({ src, width: Math.min(w, src.width), format: 'webp', quality: 82 })).src;
+}
+const caseFull = await full(customerCase.img);
+
+/** 已在「核心产品」里单独展开的产品线，从「完整产品矩阵」中剔除，避免重复（P7） */
+const supportProducts = products.filter((p) => p.id !== 'narrow');
+
+/** 全栈闭环示意顺序：核心部件 → 工作站 → 产线（BP 第 10 页的三层，按价值链升序呈现） */
+const matrixChain = ['核心部件级', '工作站级', '产线级'];
+
+/** 两位合作伙伴的概览卡片 */
+const partnerCards = [
+  {
+    no: 'PARTNER 01',
+    href: '#partner-cgx',
+    name: '长广溪 · 众脉',
+    desc: '工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环。',
+  },
+  {
+    no: 'PARTNER 02',
+    href: '#partner-zonglian',
+    name: zonglian.short,
+    desc: '复杂工业环境智能运维 —— 特种机器人 + AI 数据智能，攻克运维「最后一米」难题。',
+  },
+];
 ---
 
 <BaseLayout
   title="合作伙伴解决方案 · 百六智数字科技"
-  description="携手无锡众脉机器人，工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环。"
+  description="携手长广溪 · 众脉与上海纵涟智驱科技：从工业具身智能工作站、产线，到复杂工业环境的特种运维机器人与 AI 健康管理平台。"
 >
   <PageHero
-    kicker="PARTNER SOLUTIONS · ZHONGMAI ROBOTICS"
+    kicker="PARTNER SOLUTIONS"
     title="合作伙伴解决方案"
-    lede="携手无锡众脉机器人，以工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环，赋能制造企业柔性智造升级。"
+    lede="携手长广溪 · 众脉与上海纵涟智驱科技 —— 从工业具身智能的工作站与产线，到复杂工业环境的特种运维机器人与 AI 健康管理平台，为制造企业提供覆盖设计、生产、运维全链路的解决方案。"
   />
 
-  <!-- 工业具身智能产品矩阵（BP 第 10 页） -->
-  <section id="product-matrix" class="py-14 md:py-18">
+  <!-- 两位合作伙伴概览 -->
+  <section id="partners" class="scroll-mt-24 py-14 md:py-18">
     <div class="mx-auto max-w-300 px-6 lg:px-10">
       <SectionHead
-        eyebrow="Product Matrix"
-        title="工业具身智能产品矩阵"
-        desc="从核心部件到工作站到产线，全栈自研闭环。"
+        eyebrow="Partners"
+        title="两位合作伙伴"
+        desc="百六智携手两家在各自细分领域深耕的合作伙伴，覆盖工业具身智能产线与复杂环境智能运维。"
       />
-      {
-        productMatrix.map((tier, i) => (
-          <div class={i === 0 ? '' : 'mt-12'}>
-            <!-- 分层标题 -->
-            <div class="mb-5 flex flex-wrap items-baseline gap-3">
-              <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{tier.tierEn}</span>
-              <h3 class="text-lg font-semibold text-brand-deep">{tier.tier}</h3>
-              <span class="hidden h-[1px] flex-1 bg-ink/[0.08] sm:block" />
-            </div>
-            <!-- 该层产品卡片 -->
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {tier.items.map((item) => (
-                <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
-                  <span class="inline-grid h-10 w-10 place-items-center rounded-lg bg-brand-deep text-[1.05rem] font-semibold text-white">
-                    {item.glyph}
-                  </span>
-                  <h4 class="mt-4 mb-1.5 text-[1.02rem] font-semibold text-brand-deep">{item.title}</h4>
-                  <p class="m-0 text-[0.88rem] text-muted">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- 客户现场案例展示（BP 第 21 页） -->
-  <section id="customer-case" class="bg-surface py-14 md:py-18">
-    <div class="mx-auto max-w-300 px-6 lg:px-10">
-      <SectionHead
-        eyebrow="Customer Case"
-        title="客户现场案例展示"
-        desc="与河源精电两年测试磨合，顶级产线跑出来的真实数据与技术迭代速度。"
-      />
-      <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
-        <figure class="m-0">
-          <img
-            src={customerCase.img}
-            alt={customerCase.alt}
-            class="zoomable block w-full rounded-xl border border-ink/[0.08] bg-white shadow-sm"
-            loading="lazy"
-          />
-          <figcaption class="mt-3 text-center text-[0.82rem] text-muted">{customerCase.caption}</figcaption>
-        </figure>
-        <div>
-          <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">河源精电 · 客户现场</span>
-          <blockquote class="m-0 mt-4 border-l-4 border-gold pl-6 text-[1.15rem] leading-relaxed text-brand-deep md:text-[1.3rem]">
-            {
-              quoteParts.map((part) =>
-                part.hl ? <strong class="font-semibold text-brand">{part.t}</strong> : part.t
-              )
-            }
-          </blockquote>
-          <p class="mt-6 text-[0.9rem] text-muted">无锡众脉机器人智能科技有限公司</p>
-        </div>
+      <div class="grid gap-6 lg:grid-cols-2">
+        {
+          partnerCards.map((p) => (
+            <a
+              href={p.href}
+              class="group flex flex-col rounded-xl border border-ink/[0.08] bg-surface p-8 transition hover:border-brand/40 hover:shadow-md"
+            >
+              <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{p.no}</span>
+              <h3 class="mt-3.5 mb-2.5 text-xl font-semibold text-brand-deep">{p.name}</h3>
+              <p class="m-0 text-[0.95rem] text-muted">{p.desc}</p>
+              <span class="mt-5 inline-flex items-center gap-1.5 text-[0.85rem] font-semibold text-brand">
+                查看方案
+                <span class="transition-transform group-hover:translate-x-0.5">→</span>
+              </span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
+
+  <!-- ============ 第一部分：长广溪 · 众脉 ============ -->
+  <div id="partner-cgx" class="scroll-mt-24">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <PartnerBanner
+        index="01"
+        name="长广溪 · 众脉"
+        en="CHANGGUANGXI · ZHONGMAI ROBOTICS"
+        tagline="工业具身智能产品矩阵 —— 从核心部件到工作站到产线，全栈自研闭环，赋能制造企业柔性智造升级。"
+      />
+    </div>
+
+    <!-- 工业具身智能产品矩阵（BP 第 10 页；关键指标取自第 11–16 页） -->
+    <section id="product-matrix" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Product Matrix"
+          title="工业具身智能产品矩阵"
+          desc="从核心部件到工作站到产线，全栈自研闭环。"
+        />
+
+        <!-- 全栈闭环阶梯：核心部件级 → 工作站级 → 产线级 -->
+        <div class="mb-8 rounded-2xl border border-ink/[0.08] bg-surface px-6 py-6">
+          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+            {
+              matrixChain.map((name, i) => (
+                <span class="flex items-center gap-3">
+                  {i > 0 && (
+                    <span class="text-gold" aria-hidden="true">
+                      →
+                    </span>
+                  )}
+                  <span class="rounded-full border border-brand/15 bg-white px-4 py-2 text-[0.95rem] font-semibold text-brand-deep">
+                    {name}
+                  </span>
+                </span>
+              ))
+            }
+          </div>
+          <p class="mt-4 mb-0 text-center text-[0.85rem] text-muted">
+            核心部件自研 → 工作站 → 整线集成，一套全栈闭环能力
+          </p>
+        </div>
+
+        <!-- 三列矩阵 -->
+        <div class="grid gap-6 lg:grid-cols-3">
+          {
+            productMatrix.map((tier, i) => (
+              <div class="flex flex-col overflow-hidden rounded-2xl border border-ink/[0.08] bg-white">
+                {/* 表头：深蓝渐变 + 金色英文 + 大号编号 */}
+                <div class="relative overflow-hidden bg-[linear-gradient(135deg,#0f2e63_0%,#1c4a8f_100%)] px-6 pt-5 pb-5 text-white">
+                  <span
+                    class="pointer-events-none absolute -top-3 right-4 font-mono text-[3.6rem] leading-none font-semibold text-white/15 select-none"
+                    aria-hidden="true"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 class="relative mt-0 mb-0 text-xl font-semibold">{tier.tier}</h3>
+                  <div class="relative mt-1.5 font-mono text-[0.7rem] tracking-[0.16em] text-gold">
+                    {tier.tierEn}
+                  </div>
+                </div>
+
+                {/* 定位语 */}
+                <p class="m-0 border-b border-ink/[0.08] bg-surface px-6 py-3.5 text-[0.85rem] text-muted">
+                  {tier.position}
+                </p>
+
+                {/* 该层实拍：contain 为透明底产品图，深蓝聚光底 + 剪影投影 */}
+                <figure
+                  class={`m-0 border-b border-ink/[0.08] ${tier.bannerFit === 'contain' ? 'bg-[radial-gradient(120%_100%_at_50%_0%,#1c4a8f_0%,#0f2e63_62%)]' : 'bg-white'}`}
+                >
+                  <Image
+                    class={`block aspect-[16/9] w-full ${tier.bannerFit === 'contain' ? 'object-contain p-4 contrast-[1.04] saturate-[1.06] drop-shadow-[0_14px_20px_rgba(0,0,0,0.45)]' : 'object-cover'}`}
+                    src={tier.banner}
+                    alt={tier.bannerAlt}
+                    width={Math.min(640, tier.banner.width)}
+                    widths={srcWidths(tier.banner, [320, 480, 640, 960])}
+                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 88vw"
+                    format="webp"
+                    quality={82}
+                  />
+                </figure>
+
+                {/* 产品条目 */}
+                <ul class="m-0 flex-1 list-none p-0">
+                  {tier.items.map((item, j) => (
+                    <li class="border-b border-ink/[0.06] px-6 py-5 last:border-b-0">
+                      <div class="flex items-start gap-3.5">
+                        <span class="inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-deep text-[0.95rem] font-semibold text-white">
+                          {item.glyph}
+                        </span>
+                        <div class="min-w-0 flex-1">
+                          <div class="flex items-baseline gap-2">
+                            <span class="font-mono text-[0.68rem] text-gold-deep">
+                              {String(j + 1).padStart(2, '0')}
+                            </span>
+                            <h4 class="m-0 text-[0.98rem] font-semibold text-brand-deep">{item.title}</h4>
+                          </div>
+                          <p class="mt-1.5 mb-0 text-[0.83rem] leading-relaxed text-muted">{item.desc}</p>
+                          <span class="mt-2.5 inline-flex items-center rounded-full border border-gold/40 bg-gold-soft px-2.5 py-0.5 text-[0.72rem] text-gold-deep">
+                            {item.metric}
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- 系统级壁垒（BP 第 8 页） -->
+        <div
+          class="mt-8 rounded-xl border border-gold/30 bg-gold-soft px-6 py-5 text-center text-[0.95rem] font-semibold text-brand-deep"
+        >
+          唯一同时具备「核心部件自研 + AI 软件平台 + 行业工艺库」的柔性产线方案商
+        </div>
+      </div>
+    </section>
+
+    <!-- 重点行业：3C 与汽车零部件（示意图）、中央厨房（客户端提供的整线仿真 + 现场实拍视频） -->
+    <section id="industries" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Industries"
+          title="重点行业"
+          desc="以 3C 电子与汽车零部件为主战场，并向中央厨房等民生制造场景延伸。"
+        />
+        <div class="grid gap-6 lg:grid-cols-2">
+          {
+            industryCases.map((ind) => (
+              <article class="flex flex-col overflow-hidden rounded-2xl border border-ink/[0.08] bg-white">
+                {/* 媒体区：有视频素材的行业用「横屏 + 竖屏」双联画面，其余用示意图 */}
+                {ind.videos ? (
+                  <div class="flex gap-2 border-b border-ink/[0.08]">
+                    {ind.videos.map((v) => (
+                      <button
+                        type="button"
+                        class:list={[
+                          'group relative block cursor-pointer overflow-hidden p-0',
+                          v.portrait ? 'w-[21%] shrink-0' : 'flex-1',
+                        ]}
+                        data-lb-video={v.video}
+                        data-lb-poster={posterByVideo.get(v.video)}
+                        data-lb-caption={v.caption}
+                        aria-label={`播放${v.title}`}
+                      >
+                        <Image
+                          class:list={[
+                            'block h-full w-full object-cover',
+                            v.portrait ? 'aspect-[592/1280]' : 'aspect-video',
+                          ]}
+                          src={v.poster}
+                          alt={v.alt}
+                          width={v.portrait ? Math.min(592, v.poster.width) : Math.min(1280, v.poster.width)}
+                          widths={srcWidths(v.poster, v.portrait ? [140, 220, 300, 592] : [420, 640, 960, 1280])}
+                          sizes={v.portrait ? '(min-width: 1024px) 110px, 21vw' : '(min-width: 1024px) 420px, 79vw'}
+                          format="webp"
+                          quality={84}
+                        />
+                        <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+                          <span
+                            class:list={[
+                              'grid place-items-center rounded-full bg-white/95 shadow-md',
+                              v.portrait ? 'h-9 w-9' : 'h-12 w-12',
+                            ]}
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              class:list={['ml-0.5 fill-brand-deep', v.portrait ? 'h-4 w-4' : 'h-5 w-5']}
+                              aria-hidden="true"
+                            >
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </span>
+                        </span>
+                        <span class="absolute bottom-2.5 left-2.5 rounded-full bg-ink/65 px-2 py-0.5 text-[0.68rem] text-white backdrop-blur-sm">
+                          {v.tag}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <img
+                    class="block aspect-[5/3] w-full border-b border-ink/[0.08]"
+                    src={ind.svg}
+                    alt={ind.alt}
+                    width="900"
+                    height="540"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+
+                <div class="flex flex-1 flex-col p-7">
+                  <span class="font-mono text-[0.7rem] tracking-[0.14em] text-brand">{ind.en}</span>
+                  <h3 class="mt-2.5 mb-0 text-xl font-semibold text-brand-deep">{ind.title}</h3>
+                  <p class="mt-3.5 mb-0 text-[0.9rem] leading-relaxed text-muted">{ind.desc}</p>
+
+                  <div class="mt-5 flex flex-wrap gap-2">
+                    {ind.tags.map((t) => (
+                      <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.78rem] text-brand">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {ind.metrics.length > 0 && (
+                    <dl class="mt-5 mb-0 grid grid-cols-2 gap-3">
+                      {ind.metrics.map((m) => (
+                        <div class="rounded-lg bg-surface px-3 py-2.5">
+                          <dt class="m-0 text-[0.72rem] text-muted">{m.label}</dt>
+                          <dd class="mt-0.5 mb-0 text-[0.92rem] font-semibold text-brand-deep">{m.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+
+                  {ind.clients && ind.clients.length > 0 && (
+                    <div class="mt-auto pt-5">
+                      <div class="text-[0.78rem] font-semibold text-brand-deep">标杆客户</div>
+                      <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+                        {ind.clients.map((c) => (
+                          <span class="text-[0.85rem] text-muted">{c}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {ind.videoNote && <p class="mt-auto pt-5 text-[0.78rem] text-muted">{ind.videoNote}</p>}
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 产品演示视频（PPT 第 13–17 页内嵌视频） -->
+    <section id="demo-videos" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Demo"
+          title="产品演示视频"
+          desc="五段现场实拍：螺丝锁付、上下料、焊锡、AGV 搬运与具身柔性产线。点击封面播放。"
+        />
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            demos.map((d, i) => (
+              <div class="flex flex-col overflow-hidden rounded-xl border border-ink/[0.08] bg-white">
+                <button
+                  type="button"
+                  class="group relative block w-full cursor-pointer overflow-hidden p-0"
+                  data-lb-video={d.video}
+                  data-lb-poster={posterSrcs[i]}
+                  data-lb-caption={d.caption}
+                  aria-label={`播放${d.title}演示视频`}
+                >
+                  <Image
+                    class="block aspect-video w-full object-cover"
+                    src={d.poster}
+                    alt={d.alt}
+                    width={512}
+                    widths={srcWidths(d.poster, [320, 512, 768])}
+                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 88vw"
+                    format="webp"
+                    quality={82}
+                  />
+                  <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+                    <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                      <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+                <div class="flex flex-1 flex-col p-5">
+                  <h3 class="mt-0 mb-1.5 text-base font-semibold text-brand-deep">{d.title}</h3>
+                  <p class="m-0 text-[0.85rem] text-muted">{d.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 客户现场案例展示（BP 第 21 页） -->
+    <section id="customer-case" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Customer Case"
+          title="客户现场案例展示"
+          desc="与河源精电两年测试磨合，顶级产线跑出来的真实数据与技术迭代速度。"
+        />
+        <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
+          <figure class="m-0">
+            <Image
+              class="zoomable block w-full rounded-xl border border-ink/[0.08] bg-white shadow-sm"
+              src={customerCase.img}
+              alt={customerCase.alt}
+              width={Math.min(1200, customerCase.img.width)}
+              widths={srcWidths(customerCase.img, [640, 960, 1200])}
+              sizes="(min-width: 1024px) 560px, 88vw"
+              format="webp"
+              quality={82}
+              data-lb-full={caseFull}
+            />
+            <figcaption class="mt-3 text-center text-[0.82rem] text-muted">{customerCase.caption}</figcaption>
+          </figure>
+          <div>
+            <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">河源精电 · 客户现场</span>
+            <blockquote class="m-0 mt-4 border-l-4 border-gold pl-6 text-[1.15rem] leading-relaxed text-brand-deep md:text-[1.3rem]">
+              {
+                quoteParts.map((part) =>
+                  part.hl ? <strong class="font-semibold text-brand">{part.t}</strong> : part.t
+                )
+              }
+            </blockquote>
+            <p class="mt-6 text-[0.9rem] text-muted">无锡众脉机器人智能科技有限公司</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ 第二部分：上海纵涟智驱科技 ============ -->
+  <div id="partner-zonglian" class="scroll-mt-24">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <PartnerBanner
+        index="02"
+        name={zonglian.name}
+        en={zonglian.en}
+        tagline={zonglian.tagline}
+        slogan={zonglian.slogan}
+      />
+    </div>
+
+    <!-- 公司简介 + 价值主张（P2 / P4） -->
+    <section id="zonglian-about" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="About"
+          title="源自上海大学的智能运维团队"
+          desc="成立于 2026 年，上海大学机器人技术在智能运维领域落地转化的重要载体，由上海大学特种机器人方向的博导团队领衔创办。"
+        />
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+          <div class="space-y-4">
+            <div class="flex flex-wrap gap-2 pb-1">
+              {
+                zonglian.origins.map((o) => (
+                  <span class="inline-flex items-center rounded-full border border-gold/40 bg-gold-soft px-3 py-1 text-[0.8rem] font-medium text-gold-deep">
+                    {o}
+                  </span>
+                ))
+              }
+            </div>
+            {
+              zonglian.about.map((p) => (
+                <p class="m-0 text-[0.95rem] leading-relaxed text-muted">{p}</p>
+              ))
+            }
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            {
+              valueProps.map((v) => (
+                <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
+                  <h3 class="m-0 text-[1.02rem] font-semibold text-brand-deep">{v.title}</h3>
+                  <p class="mt-2.5 mb-0 text-[0.86rem] leading-relaxed text-muted">{v.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心产品（P7 产品矩阵 + P11–P13 蛇形机械臂重点展开） -->
+    <section id="zonglian-core-products" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Core Products"
+          title="核心产品"
+          desc="两款拳头产品：超冗余蛇形机械臂，以及搭载它的「洞察者」狭窄空间检测机器人。"
+        />
+        <div class="space-y-8">
+          {
+            coreProducts.map((p, i) => (
+              <article
+                class="grid gap-8 rounded-2xl border border-ink/[0.08] bg-white p-6 md:p-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-center"
+              >
+                {/* 媒体：代码绘制的示意图（public/ 下的 SVG，矢量图不入 astro:assets） */}
+                <figure class:list={['m-0', i % 2 === 1 && 'lg:order-2']}>
+                  <img
+                    class="block aspect-[5/3] w-full rounded-xl border border-ink/[0.08] bg-white"
+                    src={p.svg}
+                    alt={p.alt}
+                    width="900"
+                    height="540"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+
+                {/* 文字说明 */}
+                <div class:list={[i % 2 === 1 && 'lg:order-1']}>
+                  <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{p.series}</span>
+                  <h3 class="mt-3 mb-1.5 text-[1.35rem] font-semibold text-brand-deep">{p.name}</h3>
+                  <p class="m-0 text-[0.92rem] font-medium text-brand">{p.subtitle}</p>
+                  <p class="mt-4 mb-0 text-[0.92rem] leading-relaxed text-muted">{p.desc}</p>
+                  <dl class="mt-5 mb-0 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    {p.specs.map((s) => (
+                      <div class="rounded-lg bg-surface px-3 py-3 text-center">
+                        <dt class="m-0 text-[0.72rem] text-muted">{s.label}</dt>
+                        <dd class="mt-1 mb-0 text-[0.95rem] font-semibold text-brand-deep">{s.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <div class="mt-5 flex flex-wrap gap-2">
+                    {p.capabilities.map((c) => (
+                      <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.78rem] text-brand">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                  <p class="mt-5 mb-0 text-[0.86rem] leading-relaxed text-muted">
+                    <span class="font-semibold text-brand-deep">应用场景：</span>
+                    {p.scenes}
+                  </p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <!-- 完整产品矩阵：核心产品之外的产品线（P7） -->
+        <div class="mt-12">
+          <div class="mb-5 flex flex-wrap items-baseline gap-3">
+            <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">PRODUCT MATRIX</span>
+            <h3 class="text-lg font-semibold text-brand-deep">完整产品矩阵</h3>
+            <span class="hidden h-[1px] flex-1 bg-ink/[0.08] sm:block" />
+          </div>
+          <div class="grid gap-5 md:grid-cols-2">
+            {
+              supportProducts.map((p) => (
+                <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-7">
+                  <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{p.series}</span>
+                  <h3 class="mt-3.5 mb-2.5 text-[1.05rem] font-semibold text-brand-deep">{p.product}</h3>
+                  <p class="m-0 text-[0.9rem] leading-relaxed text-muted">{p.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-xl border border-gold/30 bg-gold-soft p-6">
+          <div class="text-[0.95rem] font-semibold text-brand-deep">坚实的技术壁垒</div>
+          <p class="mt-2 mb-0 text-[0.9rem] leading-relaxed text-muted">{productMoat}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 主要客户：官方标识 logo 墙（透明底 PNG；企业名已含在标识内，名称仅作 alt） -->
+    <section id="zonglian-clients" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Clients"
+          title="主要客户"
+          desc="服务航空、船舶、能源与电力装备领域的高端制造企业与科研院所。"
+        />
+        <ul class="m-0 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+          {
+            clients.map((c) => (
+              <li class="group flex min-w-0 items-center justify-center rounded-xl border border-ink/[0.08] bg-white p-6 transition hover:border-brand/40 hover:shadow-sm sm:p-8">
+                {/* 标识区：统一 52px 高度居中，宽度按各标识原始比例自适应（不放大、保持清晰） */}
+                <span class="flex h-[52px] min-w-0 max-w-full items-center justify-center">
+                  <Image
+                    class="block h-full w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                    src={c.logo}
+                    alt={`${c.name}（${c.en}）`}
+                    width={Math.min(c.logo.width, 480)}
+                    widths={srcWidths(c.logo, [160, 240, 320, 420, 480, 640, 960])}
+                    sizes="(min-width: 1024px) 340px, (min-width: 640px) 45vw, 88vw"
+                    format="png"
+                  />
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-6 mb-0 text-center text-[0.82rem] text-muted">主要客户（部分），排名不分先后</p>
+      </div>
+    </section>
+
+    <!-- 应用场景价值矩阵（P3） -->
+    <section id="zonglian-markets" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Market"
+          title="应用场景价值矩阵"
+          desc="从核心支柱产业到技术高地，再到潜力市场，逐层切入。"
+        />
+        <div class="grid gap-5 lg:grid-cols-3">
+          {
+            markets.map((tier) => (
+              <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-6">
+                <div class="border-l-2 border-gold pl-3 text-[0.95rem] font-semibold text-brand-deep">
+                  {tier.tag}
+                </div>
+                <div class="mt-5 space-y-5">
+                  {tier.items.map((it) => (
+                    <div>
+                      <h4 class="m-0 text-[1rem] font-semibold text-brand-deep">{it.name}</h4>
+                      <p class="mt-2 mb-0 text-[0.86rem] leading-relaxed text-muted">{it.scene}</p>
+                      <p class="mt-2.5 mb-0 text-[0.86rem] leading-relaxed text-muted">
+                        <span class="font-semibold text-brand">{it.value}</span>
+                        <span class="mx-1.5">→</span>
+                        {it.effect}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心技术战略（P8） -->
+    <section id="zonglian-core-tech" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Core Tech"
+          title="核心技术战略"
+          desc="一个核心武器，两大价值维度，三大应用层级。"
+        />
+        <div class="grid gap-5 lg:grid-cols-3">
+          <div class="rounded-xl bg-brand-deep p-7 text-white">
+            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-gold">{coreTech.weapon.title}</div>
+            <h3 class="mt-3.5 mb-2.5 text-xl font-semibold">{coreTech.weapon.name}</h3>
+            <p class="m-0 text-[0.9rem] leading-relaxed text-white/75">{coreTech.weapon.desc}</p>
+          </div>
+          <div class="rounded-xl border border-ink/[0.08] bg-white p-7">
+            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">两大价值维度</div>
+            <div class="mt-4 space-y-4">
+              {
+                coreTech.dimensions.map((d) => (
+                  <div>
+                    <h4 class="m-0 text-[0.98rem] font-semibold text-brand-deep">{d.title}</h4>
+                    <p class="mt-2 mb-0 text-[0.86rem] leading-relaxed text-muted">{d.desc}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <div class="rounded-xl border border-ink/[0.08] bg-white p-7">
+            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">三大应用层级</div>
+            <div class="mt-4 space-y-4">
+              {
+                coreTech.levels.map((l) => (
+                  <div>
+                    <h4 class="m-0 text-[0.95rem] font-semibold text-brand-deep">{l.title}</h4>
+                    <p class="mt-1.5 mb-0 text-[0.86rem] text-muted">{l.scope}</p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关键技术能力（P9） -->
+    <section id="zonglian-capabilities" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Capabilities"
+          title="关键技术能力"
+          desc="装备、感知、运维、平台与远程支持的完整技术栈。"
+        />
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            capabilities.map((c, i) => (
+              <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
+                <span class="font-mono text-[0.72rem] tracking-[0.1em] text-gold-deep">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="mt-3 mb-2 text-[1.02rem] font-semibold text-brand-deep">{c.title}</h3>
+                <p class="m-0 text-[0.88rem] leading-relaxed text-muted">{c.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 生态赋能，非对称竞争（P10） -->
+    <section id="zonglian-ecosystem" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead eyebrow="Ecosystem" title="生态赋能，非对称竞争" desc="互补共生，价值共享。" />
+        <div class="space-y-5">
+          <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
+            <div class="text-[0.9rem] font-semibold text-brand-deep">行业格局</div>
+            <p class="mt-2 mb-0 text-[0.9rem] leading-relaxed text-muted">{ecosystem.landscape}</p>
+          </div>
+          <div class="rounded-xl bg-brand p-6 text-white">
+            <div class="text-[0.9rem] font-semibold">我们的策略</div>
+            <p class="mt-2 mb-0 text-[0.95rem] leading-relaxed text-white/90">{ecosystem.strategy}</p>
+          </div>
+          <div class="grid gap-5 md:grid-cols-3">
+            {
+              ecosystem.partners.map((p) => (
+                <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
+                  <h3 class="m-0 text-[1rem] font-semibold text-brand-deep">{p.title}</h3>
+                  <p class="mt-2 mb-0 text-[0.88rem] leading-relaxed text-muted">{p.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+          <div class="rounded-xl border border-gold/30 bg-gold-soft p-6 text-[0.92rem] leading-relaxed text-muted">
+            <span class="font-semibold text-brand-deep">战略价值：</span>
+            {ecosystem.value}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 精选案例（P11–P37，精选 5 个） -->
+    <section id="zonglian-cases" class="py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Cases"
+          title="精选案例"
+          desc="从特种装备到产线应用，覆盖航空、能源、石化、核电与救援场景。"
+        />
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            zonglianCases.map((c) => (
+              <article class="flex flex-col overflow-hidden rounded-xl border border-ink/[0.08] bg-white">
+                <Image
+                  class="block aspect-16/10 w-full object-cover"
+                  src={c.img}
+                  alt={c.alt}
+                  width={Math.min(640, c.img.width)}
+                  widths={srcWidths(c.img, [320, 480, 640, 960])}
+                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 88vw"
+                  format="webp"
+                  quality={82}
+                />
+                <div class="flex flex-1 flex-col p-6">
+                  <span class="font-mono text-[0.72rem] tracking-[0.1em] text-gold-deep">{c.no}</span>
+                  <h3 class="mt-2 mb-1 text-[1.05rem] font-semibold text-brand-deep">{c.title}</h3>
+                  <p class="m-0 text-[0.85rem] font-medium text-brand">{c.subtitle}</p>
+                  <p class="mt-3 mb-0 text-[0.86rem] leading-relaxed text-muted">{c.desc}</p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {c.specs.map((s) => (
+                      <span class="inline-flex items-center rounded-full bg-brand-soft px-3 py-1 text-[0.78rem] text-brand">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 演示视频（置于纵涟区块最下方；点击由 Lightbox 播放） -->
+    <section id="zonglian-videos" class="bg-surface py-14 md:py-18">
+      <div class="mx-auto max-w-300 px-6 lg:px-10">
+        <SectionHead
+          eyebrow="Demo"
+          title="演示视频"
+          desc="四段现场演示：蛇形机械臂受限空间作业、发电机气隙检测与检测平台、气缸式重力补偿超长机械臂。点击封面播放。"
+        />
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            demoVideos.map((d, i) => (
+              <div class="flex flex-col overflow-hidden rounded-xl border border-ink/[0.08] bg-white">
+                <button
+                  type="button"
+                  class="group relative block w-full cursor-pointer overflow-hidden p-0"
+                  data-lb-video={d.video}
+                  data-lb-poster={zonglianPosterSrcs[i]}
+                  data-lb-caption={d.caption}
+                  aria-label={`播放${d.title}演示视频`}
+                >
+                  <Image
+                    class="block aspect-video w-full object-cover"
+                    src={d.poster}
+                    alt={d.alt}
+                    width={512}
+                    widths={srcWidths(d.poster, [320, 512, 768])}
+                    sizes="(min-width: 1024px) 290px, (min-width: 640px) 45vw, 88vw"
+                    format="webp"
+                    quality={82}
+                  />
+                  <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+                    <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                      <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+                <div class="flex flex-1 flex-col p-5">
+                  <h3 class="mt-0 mb-1.5 text-base font-semibold text-brand-deep">{d.title}</h3>
+                  <p class="m-0 text-[0.85rem] text-muted">{d.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </div>
 
   <ContactSection />
   <CtaBand />
