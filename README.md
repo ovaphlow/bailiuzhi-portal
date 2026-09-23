@@ -50,9 +50,9 @@ portal/
 | --- | --- | --- |
 | `/` | `index.astro` | 首页：首屏、三大核心业务场景、AI 应用场景、案例精选、立即行动、联系我们 |
 | `/products-solutions/` | `products-solutions.astro` | 产品和解决方案 |
+| `/video-demos/` | `video-demos.astro` | 视频演示：二维图纸自动识别、自动标注自动出图两段实操视频（灯箱播放） |
 | `/cases/` | `cases.astro` | 案例总览，10 个案例按三大场景分组 |
 | `/partner-solutions/` | `partner-solutions.astro` | 合作伙伴解决方案（两部分）：长广溪 · 众脉（产品矩阵 + 重点行业 + 河源精电客户案例）、上海纵涟智驱科技（公司简介 + 核心产品 + 主要客户 + 技术 / 案例 / 视频） |
-| `/detail-fiz-chat/` | `detail-fiz-chat.astro` | Fiz-Chat 智能工作平台 · 岗位 AI 员工 |
 | `/detail-case-bearing-mbd/` | `detail-case-bearing-mbd.astro` | 轴承标准件设计、检测一体化 |
 | `/detail-case-aerospace-mbd/` | `detail-case-aerospace-mbd.astro` | 航天复材装配体智能拆分、快速出图 |
 | `/detail-case-automation/` | `detail-case-automation.astro` | 非标自动化行业设计出图 |
@@ -74,19 +74,20 @@ portal/
 | `home.ts` | 首页：三大核心业务场景（`segments`）、AI 应用场景（`scenes`）、案例精选（`caseScenes`）、立即行动（`actions`） |
 | `cases.ts` | 案例页：场景分组（`sceneOrder` / `sceneMeta`）与 10 张案例卡片 |
 | `products-solutions.ts` | 产品和解决方案页 |
-| `partner-solutions.ts` | 合作伙伴页 · 长广溪 · 众脉部分：产品矩阵（三层 + 关键指标）、重点行业（3C 与汽车零部件）、中央厨房（整线三维仿真 + 现场实拍两段视频、产线参数）、客户案例与演示视频 |
-| `partner-zonglian.ts` | 合作伙伴页 · 上海纵涟智驱科技部分：公司简介（上海大学背景）、核心产品（蛇形机械臂、狭窄空间检测机器人，媒体区为代码绘制的 SVG 示意图）、主要客户（官方标识 logo 墙，素材来源见仓库根目录 `_partner-logos/`）、演示视频（4 段）、价值矩阵、产品线、精选案例 |
+| `videos.ts` | 视频演示页：两段实操视频的标题、说明、时长、封面与视频地址 |
+| `partner-solutions.ts` | 合作伙伴页 · 长广溪 · 众脉部分：产品矩阵（三层台阶，按价值链升序：核心部件级 → 工作站级 → 产线级，各层带定位语、配图与关键指标）、重点行业（3C 与汽车零部件）、中央厨房（整线三维仿真 + 现场实拍两段视频、产线参数）、客户案例与演示视频 |
+| `partner-zonglian.ts` | 合作伙伴页 · 上海纵涟智驱科技部分：公司简介（上海大学背景）、核心产品（蛇形机械臂、狭小空间巡检机器人，媒体区为代码绘制的 SVG 示意图）、主要客户（官方标识 logo 墙，素材来源见仓库根目录 `_partner-logos/`）、演示视频（4 段）、价值矩阵、产品线、精选案例 |
 
 ## 组件
 
 **页面骨架与通用区块**
 
-- `SiteHeader` / `SiteFooter` —— 页头导航与页脚，内容取自 `data/site.ts`
+- `SiteHeader` / `SiteFooter` —— 页头导航与页脚，内容取自 `data/site.ts`；导航共 5 项，1024px 以下收成汉堡菜单（5 项 + 340px logo + 联系我们按钮在 1024px 以下排不下）
 - `PageHero` —— 详情页统一的开头区块；`SectionHead` —— 区块标题
 - `Card` / `Feature` / `Button` / `Figure` —— 卡片、图文条目、按钮、配图
 - `CtaBand` / `ContactSection` —— 页尾行动号召与联系我们，几乎所有页面都会用到
 - `Hero` —— 首页首屏；`SolutionsSection` —— 首页与产品页共用的解决方案区块（数据来自 `home.ts` 与 `products-solutions.ts`）
-- `Lightbox` —— 图片点击放大、视频点击播放（案例页与合作伙伴页使用）
+- `Lightbox` —— 图片点击放大、视频点击播放（视频演示页、案例页与合作伙伴页使用）
 - `PartnerBanner` —— 合作伙伴页为每位合作伙伴开篇的标识条（深蓝底 + 金色点缀，数据来自 `partner-zonglian.ts` 等）
 
 **案例示意图（代码绘制的 SVG / CSS 图形，非位图）**
@@ -131,19 +132,22 @@ src/assets/
 │   ├── partner-logos/*.png                         主要客户官方标识（透明底；来源与去背说明见仓库根目录 _partner-logos/README.md）
 │   └── scenes/*.webp                               首页业务板块与场景配图
 └── media/
+    ├── demos/auto-dimensioning-poster.png          视频演示页封面（视频 59s 处抽帧）
     ├── docs/v4-*.jpg                               暂时停用的产品配图
     ├── partner/                                    长广溪 · 众脉产品实拍、演示视频封面、中央厨房封面帧
     │   └── zonglian/*.jpg                          上海纵涟智驱案例与产品实拍
     └── review/
         ├── bearing/image10~19.(png|jpeg)            轴承案例版式插图 10 张
+        ├── drawing-recognition/drawing-recognition-poster.png  二维图纸识别视频封面（案例页与视频演示页共用）
         └── automation/demo1~4-poster.png           非标自动化案例视频封面
 
 public/assets/
 ├── favicon.png
 ├── img/cases/*.svg                                 案例卡片封面（矢量，代码绘制）
 ├── img/partner/zonglian-snake-arm.svg              蛇形机械臂示意图（核心产品配图）
-├── img/partner/zonglian-narrow-space.svg           狭窄空间检测机器人示意图（核心产品配图）
-├── img/partner/zm-industry-3c-auto.svg             3C 与汽车零部件行业示意图（重点行业配图）
+├── img/partner/zonglian-narrow-space.svg           狭小空间巡检机器人示意图（核心产品配图）
+├── img/partner/zm-industry-3c-auto.svg             3C 与汽车零部件行业示意图（重点行业配图，1100×500 横幅：与中央厨房视频卡片媒体区同为 11/5，左右卡片对齐）
+├── media/demos/auto-dimensioning.mp4               视频演示页《自动标注自动出图》（1280×720 / 65s，H.264）
 ├── media/partner/*.mp4                             长广溪 · 众脉演示视频（H.264）
 ├── media/partner/central-kitchen-line.mp4          中央厨房整线三维仿真（客户端提供，1280×720 / 44s）
 ├── media/partner/central-kitchen-station.mp4       中央厨房现场实拍（客户端提供，竖屏 592×1280 / 65s）
@@ -151,7 +155,23 @@ public/assets/
 └── media/review/<中文目录>/*.mp4                    演示视频（H.264）
 ```
 
-视频素材必须是浏览器可解的 H.264：PPT 内嵌视频常见的是 MPEG-4 Part 2 / HEVC，直接拿来放不了，转码后再入库（现有的 `media1-h264.mp4`、`demoN.mp4` 即为转码产物）。视频不走 `astro:assets`，目录名是中文、引用时需 URL 编码，路径在组件顶部以 `const V = '/assets/media/review/%E8%BD%B4...'` 集中定义。
+视频素材必须是浏览器可解的 H.264：PPT 内嵌视频常见的是 MPEG-4 Part 2 / HEVC，直接拿来放不了，转码后再入库（现有的 `media1-h264.mp4`、`demoN.mp4`、`demos/auto-dimensioning.mp4` 即为转码产物）。视频不走 `astro:assets`，目录名是中文、引用时需 URL 编码，路径在组件顶部以 `const V = '/assets/media/review/%E8%BD%B4...'` 集中定义；视频演示页的路径集中在 `src/data/videos.ts`。
+
+**体积基线（2026-09 全量压缩后）**：`public/assets/media` 合计约 99 MB（`find-unused-assets.mjs` 口径，压缩前 157 MB，其中视频演示页新增 4.8 MB），单条最大 11.7 MB。入库参数：
+
+```bash
+# 实拍类（长片/演示片）：CRF 26~27
+ffmpeg -i in.mp4 -c:v libx264 -preset slow -profile:v high -crf 26 -pix_fmt yuv420p \
+  -movflags +faststart -c:a aac -b:a 96k out.mp4
+# 界面录制类（含大量文字，如 media8）：保 1080p、CRF 24，避免文字发虚
+ffmpeg -i in.mp4 -vf "scale=-2:1080" -c:v libx264 -preset slow -crf 24 -pix_fmt yuv420p \
+  -movflags +faststart -c:a aac -b:a 96k out.mp4
+# 60fps 素材一律降到 30fps（-vf fps=30）；竖屏只压码率、不改分辨率
+# 源分辨率不足 1080p 时不做放大，宁可把 CRF 降到 20 保文字（demos/auto-dimensioning.mp4：
+# 720p 源、CRF 20、VMAF 96.5、4.8 MB；用 ffmpeg 的 libvmaf 滤镜与源片比对后定档）
+```
+
+三条硬性要求：① **必须 `-movflags +faststart`**（moov 在尾部时浏览器要把整段下完才能播，`generator-gap.mp4` 曾踩过）；② 单条控制在 10 MB 以内，2K/4K 源不要直接入库（灯箱最大只显示约 88vw×80vh）；③ 原片另存留档，不要提交进仓库。压缩后用 `ffprobe` 核对时长、分辨率、音轨与原始文件一致。
 
 > 往 `public/` 里补视频后**记得重启 dev server**：dev 期间新增的文件若先被请求过一次，该 URL 会被缓存成 404，重启后才恢复正常（构建产物不受影响）。
 
@@ -164,10 +184,13 @@ public/assets/
 │   ├── cases/*.svg                                 案例卡片封面（矢量，代码绘制）
 │   └── partner/*.svg                               合作伙伴示意图（代码绘制）
 └── media/
+    ├── demos/                                    视频演示页素材
+    │   └── auto-dimensioning.mp4                    《自动标注自动出图》实操视频（H.264）
     ├── docs/                                     公司简介 PPT 抽出的配图
     │   ├── company-profile/elements/                P15 / P20 / P27 / P31 … 页面级插图
     │   └── company-profile-pptx/                    pptx 内嵌图（webp）与首屏背景底图
     └── review/                                   从 PPT 抽取的案例素材
+        ├── drawing-recognition/                    二维图纸识别视频及其封面（案例页与视频演示页共用）
         ├── 轴承行业案例-参数化建模与自动标注自动出图/      插图 10 张 + 演示视频 2 个
         └── 非标自动化产线行业案例-自动标注与自动出图/      4 组演示视频及封面
 ```

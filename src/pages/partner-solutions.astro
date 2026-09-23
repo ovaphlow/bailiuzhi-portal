@@ -87,9 +87,6 @@ const caseFull = await full(customerCase.img);
 /** 已在「核心产品」里单独展开的产品线，从「完整产品矩阵」中剔除，避免重复（P7） */
 const supportProducts = products.filter((p) => p.id !== 'narrow');
 
-/** 全栈闭环示意顺序：核心部件 → 工作站 → 产线（BP 第 10 页的三层，按价值链升序呈现） */
-const matrixChain = ['核心部件级', '工作站级', '产线级'];
-
 /** 两位合作伙伴的概览卡片 */
 const partnerCards = [
   {
@@ -163,106 +160,87 @@ const partnerCards = [
         <SectionHead
           eyebrow="Product Matrix"
           title="工业具身智能产品矩阵"
-          desc="从核心部件到工作站到产线，全栈自研闭环。"
+          desc="三层能力全栈自研、层层咬合 —— 自研核心部件 → 单站智能装备 → 整线集成，一套闭环能力支撑柔性智造升级。"
         />
 
-        <!-- 全栈闭环阶梯：核心部件级 → 工作站级 → 产线级 -->
-        <div class="mb-8 rounded-2xl border border-ink/[0.08] bg-surface px-6 py-6">
-          <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-            {
-              matrixChain.map((name, i) => (
-                <span class="flex items-center gap-3">
-                  {i > 0 && (
-                    <span class="text-gold" aria-hidden="true">
-                      →
-                    </span>
-                  )}
-                  <span class="rounded-full border border-brand/15 bg-white px-4 py-2 text-[0.95rem] font-semibold text-brand-deep">
-                    {name}
-                  </span>
-                </span>
-              ))
-            }
-          </div>
-          <p class="mt-4 mb-0 text-center text-[0.85rem] text-muted">
-            核心部件自研 → 工作站 → 整线集成，一套全栈闭环能力
-          </p>
-        </div>
-
-        <!-- 三列矩阵 -->
-        <div class="grid gap-6 lg:grid-cols-3">
+        <!-- 三层台阶：左侧一条贯穿的闭环导轨，每层一个金色节点 -->
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute top-3 bottom-3 left-0 hidden w-px bg-[linear-gradient(180deg,rgba(212,175,55,0.55)_0%,rgba(15,23,42,0.10)_50%,rgba(212,175,55,0.55)_100%)] lg:block"
+            aria-hidden="true"
+          />
           {
             productMatrix.map((tier, i) => (
-              <div class="flex flex-col overflow-hidden rounded-2xl border border-ink/[0.08] bg-white">
-                {/* 表头：深蓝渐变 + 金色英文 + 大号编号 */}
-                <div class="relative overflow-hidden bg-[linear-gradient(135deg,#0f2e63_0%,#1c4a8f_100%)] px-6 pt-5 pb-5 text-white">
+              <article
+                class:list={[
+                  'relative py-10 first:pt-0 last:pb-0 lg:pl-12',
+                  i > 0 && 'border-t border-ink/[0.08]',
+                ]}
+              >
+                {/* 层头：编号 · 层级 · 英文 · 条目数（导轨节点锚在这一行上） */}
+                <div class="relative flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
                   <span
-                    class="pointer-events-none absolute -top-3 right-4 font-mono text-[3.6rem] leading-none font-semibold text-white/15 select-none"
+                    class="absolute top-2.5 left-[-51.5px] hidden h-2 w-2 rounded-full bg-gold ring-4 ring-white lg:block"
                     aria-hidden="true"
-                  >
+                  />
+                  <span class="font-mono text-[0.7rem] tracking-[0.2em] text-gold-deep">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <h3 class="relative mt-0 mb-0 text-xl font-semibold">{tier.tier}</h3>
-                  <div class="relative mt-1.5 font-mono text-[0.7rem] tracking-[0.16em] text-gold">
-                    {tier.tierEn}
-                  </div>
+                  <h3 class="m-0 text-[1.4rem] leading-tight font-semibold tracking-tight text-brand-deep">
+                    {tier.tier}
+                  </h3>
+                  <span class="font-mono text-[0.68rem] tracking-[0.18em] text-muted">{tier.tierEn}</span>
+                  <span class="ml-auto font-mono text-[0.7rem] text-muted">{tier.items.length} 项</span>
                 </div>
-
-                {/* 定位语 */}
-                <p class="m-0 border-b border-ink/[0.08] bg-surface px-6 py-3.5 text-[0.85rem] text-muted">
+                <p class="mt-3.5 mb-0 max-w-3xl text-[0.88rem] leading-relaxed text-muted">
                   {tier.position}
                 </p>
 
-                {/* 该层实拍：contain 为透明底产品图，深蓝聚光底 + 剪影投影 */}
-                <figure
-                  class={`m-0 border-b border-ink/[0.08] ${tier.bannerFit === 'contain' ? 'bg-[radial-gradient(120%_100%_at_50%_0%,#1c4a8f_0%,#0f2e63_62%)]' : 'bg-white'}`}
-                >
-                  <Image
-                    class={`block aspect-[16/9] w-full ${tier.bannerFit === 'contain' ? 'object-contain p-4 contrast-[1.04] saturate-[1.06] drop-shadow-[0_14px_20px_rgba(0,0,0,0.45)]' : 'object-cover'}`}
-                    src={tier.banner}
-                    alt={tier.bannerAlt}
-                    width={Math.min(640, tier.banner.width)}
-                    widths={srcWidths(tier.banner, [320, 480, 640, 960])}
-                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 88vw"
-                    format="webp"
-                    quality={82}
-                  />
-                </figure>
+                {/* 该层配图（统一 16:9 深蓝底）+ 产品条目（发丝线网格） */}
+                <div class="mt-7 grid items-start gap-7 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
+                  <figure class="m-0 overflow-hidden rounded-xl bg-[linear-gradient(155deg,#0f2e63_0%,#1c4a8f_58%,#0f2e63_100%)] p-3">
+                    <Image
+                      class="block aspect-video w-full object-contain"
+                      src={tier.banner}
+                      alt={tier.bannerAlt}
+                      width={Math.min(812, tier.banner.width)}
+                      widths={srcWidths(tier.banner, [360, 480, 640, 812, 960])}
+                      sizes="(min-width: 1024px) 430px, 88vw"
+                      format="webp"
+                      quality={84}
+                    />
+                  </figure>
 
-                {/* 产品条目 */}
-                <ul class="m-0 flex-1 list-none p-0">
-                  {tier.items.map((item, j) => (
-                    <li class="border-b border-ink/[0.06] px-6 py-5 last:border-b-0">
-                      <div class="flex items-start gap-3.5">
-                        <span class="inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-deep text-[0.95rem] font-semibold text-white">
-                          {item.glyph}
-                        </span>
-                        <div class="min-w-0 flex-1">
-                          <div class="flex items-baseline gap-2">
-                            <span class="font-mono text-[0.68rem] text-gold-deep">
-                              {String(j + 1).padStart(2, '0')}
-                            </span>
-                            <h4 class="m-0 text-[0.98rem] font-semibold text-brand-deep">{item.title}</h4>
-                          </div>
-                          <p class="mt-1.5 mb-0 text-[0.83rem] leading-relaxed text-muted">{item.desc}</p>
-                          <span class="mt-2.5 inline-flex items-center rounded-full border border-gold/40 bg-gold-soft px-2.5 py-0.5 text-[0.72rem] text-gold-deep">
-                            {item.metric}
+                  <ul class="m-0 grid list-none grid-cols-1 gap-px overflow-hidden rounded-xl bg-ink/[0.08] p-0 sm:grid-cols-2">
+                    {tier.items.map((item, j) => (
+                      <li class="bg-white px-5 py-5">
+                        <div class="flex items-baseline gap-2.5">
+                          <span class="font-mono text-[0.66rem] tracking-[0.1em] text-gold-deep">
+                            {String(j + 1).padStart(2, '0')}
                           </span>
+                          <h4 class="m-0 text-[0.96rem] leading-snug font-semibold text-brand-deep">
+                            {item.title}
+                          </h4>
                         </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                        <p class="mt-2 mb-0 text-[0.83rem] leading-relaxed text-muted">{item.desc}</p>
+                        <p class="mt-3 mb-0 font-mono text-[0.74rem] text-gold-deep">{item.metric}</p>
+                      </li>
+                    ))}
+                    {tier.items.length % 2 === 1 && <li class="bg-white" aria-hidden="true" />}
+                  </ul>
+                </div>
+              </article>
             ))
           }
         </div>
 
         <!-- 系统级壁垒（BP 第 8 页） -->
-        <div
-          class="mt-8 rounded-xl border border-gold/30 bg-gold-soft px-6 py-5 text-center text-[0.95rem] font-semibold text-brand-deep"
-        >
-          唯一同时具备「核心部件自研 + AI 软件平台 + 行业工艺库」的柔性产线方案商
+        <div class="mt-12 flex items-start gap-3.5 border-t border-ink/[0.08] pt-8">
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" aria-hidden="true" />
+          <p class="m-0 text-[0.95rem] leading-relaxed text-brand-deep">
+            <span class="font-semibold">系统级壁垒：</span>
+            唯一同时具备「核心部件自研 + AI 软件平台 + 行业工艺库」的柔性产线方案商
+          </p>
         </div>
       </div>
     </section>
@@ -279,9 +257,12 @@ const partnerCards = [
           {
             industryCases.map((ind) => (
               <article class="flex flex-col overflow-hidden rounded-2xl border border-ink/[0.08] bg-white">
-                {/* 媒体区：有视频素材的行业用「横屏 + 竖屏」双联画面，其余用示意图 */}
+                {/*
+                  媒体区：有视频素材的行业用「横屏 + 竖屏」双联画面，其余用示意图。
+                  两种媒体统一按 11/5（与示意图 1100×500 同比例）取高，左右卡片的图片与正文因此齐平。
+                */}
                 {ind.videos ? (
-                  <div class="flex gap-2 border-b border-ink/[0.08]">
+                  <div class="flex aspect-[11/5] gap-2 border-b border-ink/[0.08]">
                     {ind.videos.map((v) => (
                       <button
                         type="button"
@@ -295,10 +276,7 @@ const partnerCards = [
                         aria-label={`播放${v.title}`}
                       >
                         <Image
-                          class:list={[
-                            'block h-full w-full object-cover',
-                            v.portrait ? 'aspect-[592/1280]' : 'aspect-video',
-                          ]}
+                          class="absolute inset-0 h-full w-full object-cover"
                           src={v.poster}
                           alt={v.alt}
                           width={v.portrait ? Math.min(592, v.poster.width) : Math.min(1280, v.poster.width)}
@@ -331,11 +309,11 @@ const partnerCards = [
                   </div>
                 ) : (
                   <img
-                    class="block aspect-[5/3] w-full border-b border-ink/[0.08]"
+                    class="block aspect-[11/5] w-full border-b border-ink/[0.08]"
                     src={ind.svg}
                     alt={ind.alt}
-                    width="900"
-                    height="540"
+                    width="1100"
+                    height="500"
                     loading="lazy"
                     decoding="async"
                   />
@@ -531,7 +509,7 @@ const partnerCards = [
         <SectionHead
           eyebrow="Core Products"
           title="核心产品"
-          desc="两款拳头产品：超冗余蛇形机械臂，以及搭载它的「洞察者」狭窄空间检测机器人。"
+          desc="两款拳头产品：超冗余蛇形机械臂，以及搭载它的狭小空间巡检机器人。"
         />
         <div class="space-y-8">
           {

@@ -36,11 +36,9 @@ const VIDEO_BASE = '/assets/media/partner';
 
 /** 产品矩阵条目（BP 第 10 页；关键指标取自 BP 第 11–16 页的「关键参数」） */
 export interface MatrixItem {
-  /** 单字标识 */
-  glyph: string;
   title: string;
   desc: string;
-  /** 关键指标（金色胶囊） */
+  /** 关键指标（金色等宽字） */
   metric: string;
 }
 
@@ -50,27 +48,41 @@ export interface MatrixTier {
   tierEn: string;
   /** 该层定位语 */
   position: string;
-  /** 该层的横版横幅实拍 */
+  /** 该层配图：统一 16:9 深蓝底，实拍与透明底产品图都用 contain 摆放 */
   banner: ImageMetadata;
   bannerAlt: string;
-  /** 实拍用 cover 裁成宽幅；白底产品图用 contain 留白 */
-  bannerFit?: 'cover' | 'contain';
   items: MatrixItem[];
 }
 
+/**
+ * 按价值链升序排列：核心部件级 → 工作站级 → 产线级。
+ * 页面左侧那条贯穿的闭环导轨与此处三层一一对应，读下来就是「自研部件 → 单站装备 → 整线集成」。
+ */
 export const productMatrix: MatrixTier[] = [
+  {
+    tier: '核心部件级',
+    tierEn: 'CORE COMPONENTS',
+    position: '具身核心部件全栈自研，系统级壁垒',
+    banner: robotArmImg,
+    bannerAlt: '协作机械臂产品图',
+    items: [
+      { title: '协作机械臂', desc: '一体化关节，力感知碰撞检测', metric: '变加速度柔顺控制' },
+      { title: '灵巧手', desc: '腕部视觉 + AI 力控，自主抓取', metric: '臂端自主抓取' },
+      { title: '伺服驱动器', desc: '21 位精度磁编码器，RTOS 硬实时', metric: '21 位 · RTOS <1μs' },
+      { title: '六维力传感器', desc: '全闭环力控算法', metric: '全闭环力位混合控制' },
+    ],
+  },
   {
     tier: '工作站级',
     tierEn: 'WORKSTATION',
     position: '高精度、高柔性、自适应、自决策的单站装备',
     banner: pickPlaceImg,
     bannerAlt: '协作机器人上下料工作站现场：机械臂、料盘与示教屏',
-    bannerFit: 'cover',
     items: [
-      { glyph: '锁', title: '智能柔性螺丝锁付机器人工作站', desc: '高速锁付，M1–M5 多角度', metric: '±0.02mm · 2.5s/颗' },
-      { glyph: '抓', title: '智能柔性抓取移动工作站', desc: '3D 视觉 + 多种夹爪适配', metric: '效率 +50% · ROI 12–18 月' },
-      { glyph: '检', title: '智能柔性检测机器人工作站', desc: 'AI 视觉缺陷检测', metric: 'AI 识别率 ≥99%' },
-      { glyph: '磨', title: '智能柔性打磨工作站', desc: '恒力力控 ±1N 精度', metric: '±1N · Ra0.2μm' },
+      { title: '智能柔性螺丝锁付机器人工作站', desc: '高速锁付，M1–M5 多角度', metric: '±0.02mm · 2.5s/颗' },
+      { title: '智能柔性抓取移动工作站', desc: '3D 视觉 + 多种夹爪适配', metric: '效率 +50% · ROI 12–18 月' },
+      { title: '智能柔性检测机器人工作站', desc: 'AI 视觉缺陷检测', metric: 'AI 识别率 ≥99%' },
+      { title: '智能柔性打磨工作站', desc: '恒力力控 ±1N 精度', metric: '±1N · Ra0.2μm' },
     ],
   },
   {
@@ -79,25 +91,10 @@ export const productMatrix: MatrixTier[] = [
     position: '模块化重组、数据驱动的整线集成',
     banner: lineImg,
     bannerAlt: '多工位机器人柔性产线全景',
-    bannerFit: 'cover',
     items: [
-      { glyph: '柔', title: 'AI 具身柔性产线', desc: '模块化集成，换线 8h → 10min', metric: '换线 8h → 10min' },
-      { glyph: '溯', title: 'Xi- 黑匣子追溯', desc: '业内首创故障追溯系统', metric: '全流程数据追溯' },
-      { glyph: '脑', title: 'Cobot Brain AI 平台', desc: '建模 / 仿真 / 数字孪生', metric: '现场调试 −70%' },
-    ],
-  },
-  {
-    tier: '核心部件级',
-    tierEn: 'CORE COMPONENTS',
-    position: '具身核心部件全栈自研，系统级壁垒',
-    banner: robotArmImg,
-    bannerAlt: '协作机械臂产品图',
-    bannerFit: 'contain',
-    items: [
-      { glyph: '臂', title: '协作机械臂', desc: '一体化关节，力感知碰撞检测', metric: '变加速度柔顺控制' },
-      { glyph: '手', title: '灵巧手', desc: '腕部视觉 + AI 力控，自主抓取', metric: '臂端自主抓取' },
-      { glyph: '驱', title: '伺服驱动器', desc: '21 位精度磁编码器，RTOS 硬实时', metric: '21 位 · RTOS <1μs' },
-      { glyph: '感', title: '六维力传感器', desc: '全闭环力控算法', metric: '全闭环力位混合控制' },
+      { title: 'AI 具身柔性产线', desc: '模块化集成，换线 8h → 10min', metric: '换线 8h → 10min' },
+      { title: 'Xi- 黑匣子追溯', desc: '业内首创故障追溯系统', metric: '全流程数据追溯' },
+      { title: 'Cobot Brain AI 平台', desc: '建模 / 仿真 / 数字孪生', metric: '现场调试 −70%' },
     ],
   },
 ];
@@ -154,7 +151,10 @@ export interface IndustryCase {
   metrics: { label: string; value: string }[];
   /** 标杆客户；资料不足时省略 */
   clients?: string[];
-  /** 配图：public/ 下的 SVG 示意图（与 videos 二选一） */
+  /**
+   * 配图：public/ 下的 SVG 示意图（与 videos 二选一）。
+   * 画布按 11/5 横幅绘制（1100×500），与视频卡片的媒体区同比例，左右两张卡片因此等高对齐。
+   */
   svg?: string;
   alt?: string;
   /** 视频素材：客户端提供（与 svg 二选一） */

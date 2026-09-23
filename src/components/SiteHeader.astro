@@ -26,7 +26,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
       <div
         id="nav-menu"
         data-open="false"
-        class="hidden flex-col max-md:absolute max-md:top-18 max-md:right-0 max-md:left-0 max-md:border-b max-md:border-ink/[0.08] max-md:bg-white max-md:px-6 max-md:pt-2 max-md:pb-4 max-md:data-[open=true]:flex md:flex md:flex-row md:items-center md:gap-8"
+        class="hidden flex-col max-lg:absolute max-lg:top-18 max-lg:right-0 max-lg:left-0 max-lg:border-b max-lg:border-ink/[0.08] max-lg:bg-white max-lg:px-6 max-lg:pt-2 max-lg:pb-4 max-lg:data-[open=true]:flex lg:flex lg:flex-row lg:items-center lg:gap-6 xl:gap-8"
       >
         {
           navLinks.map((link) => (
@@ -34,7 +34,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
               href={link.href}
               aria-current={isActive(link.href) ? 'page' : undefined}
               class:list={[
-                'inline-flex items-center gap-1.5 border-b border-ink/[0.08] py-3 text-[0.95rem] transition-colors last:border-b-0 md:border-0 md:py-0',
+                'inline-flex items-center gap-1.5 border-b border-ink/[0.08] py-3 text-[0.95rem] transition-colors last:border-b-0 lg:border-0 lg:py-0',
                 isActive(link.href)
                   ? 'text-brand'
                   : 'text-muted hover:text-brand',
@@ -51,9 +51,10 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
           ))
         }
       </div>
+      <!-- 5 项导航 + 340px logo + 按钮在 1024px 以下排不下，故 1024px 以下与移动端一致用汉堡菜单 -->
       <a
         href="/#contact"
-        class="hidden rounded-md bg-brand px-6 py-3 text-[0.95rem] font-semibold text-white transition-colors hover:bg-brand-hover md:inline-flex"
+        class="hidden rounded-md bg-brand px-6 py-3 text-[0.95rem] font-semibold text-white transition-colors hover:bg-brand-hover lg:inline-flex"
       >
         联系我们
       </a>
@@ -62,7 +63,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
     <button
       id="nav-burger"
       type="button"
-      class="absolute top-1/2 right-6 flex -translate-y-1/2 flex-col items-center gap-1 p-2 md:hidden"
+      class="absolute top-1/2 right-6 flex -translate-y-1/2 flex-col items-center gap-1 p-2 lg:hidden"
       aria-label="打开菜单"
       aria-controls="nav-menu"
       aria-expanded="false"

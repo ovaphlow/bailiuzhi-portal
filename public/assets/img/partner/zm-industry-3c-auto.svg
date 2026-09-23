@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540" role="img" aria-label="3C 电子与汽车零部件产线上协作机器人执行锁付与视觉检测示意">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 500" width="1100" height="500" role="img" aria-label="3C 电子与汽车零部件产线上协作机器人执行锁付与视觉检测示意">
   <defs>
     <linearGradient id="bgI1" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#f7faff"/>
@@ -12,58 +12,58 @@
       <stop offset="1" stop-color="#d4af37" stop-opacity="0.03"/>
     </linearGradient>
   </defs>
-  <rect width="900" height="540" fill="url(#bgI1)"/>
-  <rect width="900" height="540" fill="url(#gridI1)"/>
+  <rect width="1100" height="500" fill="url(#bgI1)"/>
+  <rect width="1100" height="500" fill="url(#gridI1)"/>
 
   <!-- 标题 -->
-  <text x="40" y="52" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#0f2e63" letter-spacing="2">3C &amp; AUTO PARTS</text>
-  <text x="40" y="88" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="600" fill="#1d4ed8">3C 电子 · 汽车零部件</text>
+  <text x="40" y="50" font-family="Consolas, 'Courier New', monospace" font-size="30" fill="#0f2e63" letter-spacing="2">3C &amp; AUTO PARTS</text>
+  <text x="40" y="92" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="33" font-weight="600" fill="#1d4ed8">3C 电子 · 汽车零部件</text>
 
   <!-- 面板 A：3C 电子 / 车载显示，锁付工位 -->
   <g>
-    <rect x="60" y="132" width="370" height="308" rx="16" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
-    <text x="84" y="172" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="20" font-weight="600" fill="#0f2e63">3C 电子 · 车载显示</text>
-    <rect x="84" y="186" width="196" height="32" rx="16" fill="#fbf6e9" stroke="#d4af37" stroke-width="3"/>
-    <text x="182" y="208" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="16" fill="#b8860b">&#177;0.02mm &#183; 2.5s/&#39063;</text>
+    <rect x="40" y="112" width="498" height="284" rx="16" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <text x="68" y="154" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="27" font-weight="600" fill="#0f2e63">3C 电子 · 车载显示</text>
+    <rect x="68" y="170" width="216" height="34" rx="17" fill="#fbf6e9" stroke="#d4af37" stroke-width="3"/>
+    <text x="176" y="193" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#b8860b">&#177;0.02mm &#183; 2.5s/&#39063;</text>
     <!-- 工件：显示屏 -->
-    <rect x="100" y="248" width="118" height="170" rx="12" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
-    <rect x="112" y="262" width="94" height="122" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-opacity="0.3" stroke-width="3"/>
-    <path d="M140 404H178" stroke="#0f2e63" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+    <rect x="88" y="222" width="124" height="150" rx="12" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <rect x="100" y="236" width="100" height="112" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-opacity="0.3" stroke-width="3"/>
+    <path d="M131 358H169" stroke="#0f2e63" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
     <!-- 锁付机械臂 -->
-    <rect x="300" y="392" width="100" height="32" rx="8" fill="#e6efff" stroke="#0f2e63" stroke-width="4"/>
-    <path d="M350 392L322 312" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
-    <path d="M322 312L268 276" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
-    <circle cx="322" cy="312" r="11" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
-    <g transform="rotate(-38 266 271)">
-      <rect x="248" y="258" width="36" height="26" rx="6" fill="#1d4ed8"/>
+    <rect x="392" y="350" width="100" height="32" rx="8" fill="#e6efff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M442 350L414 270" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <path d="M414 270L360 234" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="414" cy="270" r="11" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
+    <g transform="rotate(-38 358 229)">
+      <rect x="340" y="216" width="36" height="26" rx="6" fill="#1d4ed8"/>
     </g>
-    <path d="M252 272Q214 296 186 306" fill="none" stroke="#1d4ed8" stroke-opacity="0.45" stroke-width="3" stroke-dasharray="8 6"/>
+    <path d="M344 230Q254 263 174 282" fill="none" stroke="#1d4ed8" stroke-opacity="0.45" stroke-width="3" stroke-dasharray="8 6"/>
   </g>
 
   <!-- 面板 B：汽车零部件，视觉检测工位 -->
   <g>
-    <rect x="470" y="132" width="370" height="308" rx="16" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
-    <text x="494" y="172" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="20" font-weight="600" fill="#0f2e63">汽车零部件</text>
-    <rect x="494" y="186" width="216" height="32" rx="16" fill="#fbf6e9" stroke="#d4af37" stroke-width="3"/>
-    <text x="602" y="208" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="16" fill="#b8860b">IATF16949 &#183; ROI 12&#8211;18M</text>
+    <rect x="562" y="112" width="498" height="284" rx="16" fill="#ffffff" stroke="#0f2e63" stroke-width="4"/>
+    <text x="590" y="154" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="27" font-weight="600" fill="#0f2e63">汽车零部件</text>
+    <rect x="590" y="170" width="258" height="34" rx="17" fill="#fbf6e9" stroke="#d4af37" stroke-width="3"/>
+    <text x="719" y="193" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#b8860b">IATF16949 &#183; ROI 12&#8211;18M</text>
     <!-- 工件：结构件 -->
-    <rect x="496" y="252" width="170" height="92" rx="12" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
-    <circle cx="540" cy="298" r="12" fill="#ffffff" stroke="#0f2e63" stroke-width="3"/>
-    <circle cx="622" cy="298" r="12" fill="#ffffff" stroke="#0f2e63" stroke-width="3"/>
+    <rect x="590" y="222" width="220" height="104" rx="12" fill="#eff4ff" stroke="#0f2e63" stroke-width="4"/>
+    <circle cx="646" cy="274" r="12" fill="#ffffff" stroke="#0f2e63" stroke-width="3"/>
+    <circle cx="746" cy="274" r="12" fill="#ffffff" stroke="#0f2e63" stroke-width="3"/>
     <!-- 检测视锥 + 识别框 -->
-    <path d="M676 274L556 286V372Z" fill="url(#coneI1)"/>
-    <rect x="598" y="274" width="48" height="48" fill="none" stroke="#d4af37" stroke-width="4"/>
-    <path d="M598 274h-12M646 274h12M598 322h-12M646 322h12" stroke="#d4af37" stroke-width="4"/>
+    <path d="M846 232L696 246V326Z" fill="url(#coneI1)"/>
+    <rect x="720" y="248" width="52" height="52" fill="none" stroke="#d4af37" stroke-width="4"/>
+    <path d="M720 248h-13M772 248h13M720 300h-13M772 300h13" stroke="#d4af37" stroke-width="4"/>
     <!-- 检测机械臂 -->
-    <rect x="700" y="392" width="100" height="32" rx="8" fill="#e6efff" stroke="#0f2e63" stroke-width="4"/>
-    <path d="M750 392L722 310" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
-    <path d="M722 310L676 274" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
-    <circle cx="722" cy="310" r="11" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
-    <g transform="rotate(-38 674 269)">
-      <rect x="656" y="256" width="36" height="26" rx="6" fill="#1d4ed8"/>
+    <rect x="870" y="350" width="100" height="32" rx="8" fill="#e6efff" stroke="#0f2e63" stroke-width="4"/>
+    <path d="M920 350L892 268" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <path d="M892 268L846 232" stroke="#0f2e63" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="892" cy="268" r="11" fill="#ffffff" stroke="#1d4ed8" stroke-width="4"/>
+    <g transform="rotate(-38 844 227)">
+      <rect x="826" y="214" width="36" height="26" rx="6" fill="#1d4ed8"/>
     </g>
   </g>
 
   <!-- 参数 -->
-  <text x="860" y="512" text-anchor="end" font-family="Consolas, 'Courier New', monospace" font-size="20" fill="#b8860b">FLEXIBLE CELL &#183; 8h &#8594; 10min CHANGE&#8209;OVER</text>
+  <text x="1060" y="452" text-anchor="end" font-family="Consolas, 'Courier New', monospace" font-size="25" fill="#b8860b">FLEXIBLE CELL &#183; 8h &#8594; 10min CHANGE&#8209;OVER</text>
 </svg>

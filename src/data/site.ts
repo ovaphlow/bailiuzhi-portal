@@ -5,6 +5,7 @@
 export const navLinks = [
   { label: '首页', href: '/' },
   { label: '产品和解决方案', href: '/products-solutions/' },
+  { label: '视频演示', href: '/video-demos/' },
   { label: '案例', href: '/cases/' },
   { label: '合作伙伴解决方案', href: '/partner-solutions/' },
 ];

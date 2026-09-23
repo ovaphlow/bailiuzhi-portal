@@ -7,6 +7,9 @@ import DrawingRecognitionPipeline from '../components/DrawingRecognitionPipeline
 import DrawingRecognitionSheet from '../components/DrawingRecognitionSheet.astro';
 import ContactSection from '../components/ContactSection.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { Image, getImage } from 'astro:assets';
+import drawingPoster from '../assets/media/review/drawing-recognition/drawing-recognition-poster.png';
 
 /**
  * 内容依据根目录《二维图纸自动识别软件介绍1.0.pptx》与《公司简介 4.0》P46。
@@ -59,6 +62,22 @@ const customs = [
   { unit: '某 3C 电子企业', items: '气泡号识别，标注图幅定位分区识别' },
   { unit: '某风电企业', items: '超大图幅识别，复杂形位公差表单生成' },
 ];
+
+/**
+ * 软件实操演示视频，取自根目录《二维图纸自动识别.mp4》（H.264 1280×720、已 faststart，
+ * 无需转码）。视频放 public/，astro:assets 不处理视频；封面为视频 35s 处抽帧。
+ */
+const VIDEO = '/assets/media/review/drawing-recognition/drawing-recognition.mp4';
+
+/** 灯箱播放前的封面大图（约 1024px，点击播放时才请求） */
+const posterSrc = (
+  await getImage({
+    src: drawingPoster,
+    width: Math.min(1024, drawingPoster.width),
+    format: 'webp',
+    quality: 82,
+  })
+).src;
 ---
 
 <BaseLayout
@@ -147,6 +166,51 @@ const customs = [
     </div>
   </section>
 
+  <section id="demo" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Demo"
+        title="软件实操演示"
+        desc="从多格式图纸导入到标注自动识别，再到气泡图与检测计划表导出。点击封面播放演示视频。"
+      />
+      <div class="mx-auto max-w-160">
+        <div class="rounded-xl border border-ink/[0.08] bg-white p-5">
+          <h3 class="m-0 text-base font-semibold text-brand-deep">二维图纸自动识别软件实操</h3>
+          <p class="mt-1.5 mb-0 text-[0.85rem] text-muted">
+            多格式图纸导入 → 标注自动识别 → 气泡图 / 检测计划表导出
+          </p>
+          <button
+            type="button"
+            class="group relative mt-4 block w-full cursor-pointer overflow-hidden rounded-lg border border-ink/[0.08] bg-ink/5 p-0"
+            data-lb-video={VIDEO}
+            data-lb-poster={posterSrc}
+            data-lb-caption="二维图纸自动识别：多格式图纸导入、标注自动识别与气泡图、检测计划表导出演示"
+            aria-label="播放二维图纸自动识别软件实操演示视频"
+          >
+            <Image
+              class="block aspect-video w-full object-cover"
+              src={drawingPoster}
+              alt="二维图纸自动识别软件界面：图纸标注识别与气泡图结果"
+              width={512}
+              widths={[320, 512, 768]}
+              sizes="(min-width: 768px) 640px, 88vw"
+              format="webp"
+              quality={82}
+            />
+            <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+              <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <ContactSection />
   <CtaBand />
+  <Lightbox />
 </BaseLayout>

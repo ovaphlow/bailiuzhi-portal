@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ContactSection from '../components/ContactSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { Image, getImage } from 'astro:assets';
+import { videoDemos } from '../data/videos';
+
+/** 灯箱播放前的封面大图（约 1024px，点击播放时才请求） */
+const posters: Record<string, string> = {};
+for (const demo of videoDemos) {
+  const { src } = await getImage({
+    src: demo.poster,
+    width: Math.min(1024, demo.poster.width),
+    format: 'webp',
+    quality: 82,
+  });
+  posters[demo.id] = src;
+}
+---
+
+<BaseLayout
+  title="视频演示 · 百六智数字科技"
+  description="二维图纸自动识别、自动标注自动出图 —— 两段软件实操演示视频，点击封面即可播放。"
+>
+  <PageHero
+    kicker="VIDEO DEMOS"
+    title="视频演示"
+    lede="用实操录像看软件怎么跑：二维图纸自动识别，以及自动标注自动出图。点击封面即可播放。"
+  />
+
+  <!-- 演示视频：封面 + 播放按钮，点击交给 Lightbox 播放 -->
+  <section id="demos" class="bg-surface py-14 md:py-18">
+    <div class="mx-auto max-w-300 px-6 lg:px-10">
+      <SectionHead
+        eyebrow="Demos"
+        title="软件实操演示"
+        desc="两段完整实操：从图纸识别到气泡图与检测计划表导出，从模型自动标注到工程图自动出图。"
+      />
+      <div class="grid gap-6 md:grid-cols-2">
+        {
+          videoDemos.map((demo) => (
+            <figure
+              id={demo.id}
+              class="m-0 flex scroll-mt-24 flex-col rounded-xl border border-ink/[0.08] bg-white p-5"
+            >
+              <button
+                type="button"
+                class="group relative block w-full cursor-pointer overflow-hidden rounded-lg border border-ink/[0.08] bg-ink/5 p-0"
+                data-lb-video={demo.src}
+                data-lb-poster={posters[demo.id]}
+                data-lb-caption={demo.caption}
+                aria-label={`播放演示视频：${demo.title}`}
+              >
+                <Image
+                  class="block aspect-video w-full object-cover"
+                  src={demo.poster}
+                  alt={demo.posterAlt}
+                  width={512}
+                  widths={[320, 512, 768]}
+                  sizes="(min-width: 768px) 508px, 88vw"
+                  format="webp"
+                  quality={82}
+                />
+                <span class="absolute inset-0 grid place-items-center bg-ink/20 transition group-hover:bg-ink/35">
+                  <span class="grid h-12 w-12 place-items-center rounded-full bg-white/95 shadow-md">
+                    <svg viewBox="0 0 24 24" class="ml-0.5 h-5 w-5 fill-brand-deep" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+              <figcaption class="mt-4 flex flex-1 flex-col">
+                <h3 class="m-0 text-base font-semibold text-brand-deep">{demo.title}</h3>
+                <p class="mt-1.5 mb-0 text-[0.9rem] text-muted">{demo.desc}</p>
+                <span class="mt-auto pt-3 font-mono text-[0.75rem] tracking-[0.1em] text-gold-deep">
+                  {demo.duration}
+                </span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <ContactSection />
+  <CtaBand />
+  <Lightbox />
+</BaseLayout>
