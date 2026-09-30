@@ -18,7 +18,6 @@ import {
   coreProducts,
   clients,
   demoVideos,
-  coreTech,
   capabilities,
   ecosystem,
   cases as zonglianCases,
@@ -568,13 +567,33 @@ const partnerCards = [
             <h3 class="text-lg font-semibold text-brand-deep">完整产品矩阵</h3>
             <span class="hidden h-[1px] flex-1 bg-ink/[0.08] sm:block" />
           </div>
-          <div class="grid gap-5 md:grid-cols-2">
+          {/*
+            双列网格只在有两条以上产品线时启用：剩一条时铺满整行并改横向排版
+            （系列 / 名称在左，说明在右），避免双列网格里空出半边。
+          */}
+          <div class:list={['grid gap-5', supportProducts.length > 1 && 'md:grid-cols-2']}>
             {
               supportProducts.map((p) => (
-                <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-7">
-                  <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{p.series}</span>
-                  <h3 class="mt-3.5 mb-2.5 text-[1.05rem] font-semibold text-brand-deep">{p.product}</h3>
-                  <p class="m-0 text-[0.9rem] leading-relaxed text-muted">{p.desc}</p>
+                <div
+                  class:list={[
+                    'rounded-xl border border-ink/[0.08] bg-white p-7',
+                    supportProducts.length > 1
+                      ? 'flex flex-col'
+                      : 'md:grid md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.5fr)] md:items-center md:gap-10',
+                  ]}
+                >
+                  <div>
+                    <span class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">{p.series}</span>
+                    <h3 class="mt-3.5 mb-0 text-[1.05rem] font-semibold text-brand-deep">{p.product}</h3>
+                  </div>
+                  <p
+                    class:list={[
+                      'm-0 text-[0.9rem] leading-relaxed text-muted',
+                      supportProducts.length > 1 && 'mt-2.5',
+                    ]}
+                  >
+                    {p.desc}
+                  </p>
                 </div>
               ))
             }
@@ -626,9 +645,9 @@ const partnerCards = [
         <SectionHead
           eyebrow="Market"
           title="应用场景价值矩阵"
-          desc="从核心支柱产业到技术高地，再到潜力市场，逐层切入。"
+          desc="从核心支柱产业到技术高地，逐层切入。"
         />
-        <div class="grid gap-5 lg:grid-cols-3">
+        <div class="grid gap-5 lg:grid-cols-2">
           {
             markets.map((tier) => (
               <div class="flex flex-col rounded-xl border border-ink/[0.08] bg-white p-6">
@@ -651,50 +670,6 @@ const partnerCards = [
               </div>
             ))
           }
-        </div>
-      </div>
-    </section>
-
-    <!-- 核心技术战略（P8） -->
-    <section id="zonglian-core-tech" class="bg-surface py-14 md:py-18">
-      <div class="mx-auto max-w-300 px-6 lg:px-10">
-        <SectionHead
-          eyebrow="Core Tech"
-          title="核心技术战略"
-          desc="一个核心武器，两大价值维度，三大应用层级。"
-        />
-        <div class="grid gap-5 lg:grid-cols-3">
-          <div class="rounded-xl bg-brand-deep p-7 text-white">
-            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-gold">{coreTech.weapon.title}</div>
-            <h3 class="mt-3.5 mb-2.5 text-xl font-semibold">{coreTech.weapon.name}</h3>
-            <p class="m-0 text-[0.9rem] leading-relaxed text-white/75">{coreTech.weapon.desc}</p>
-          </div>
-          <div class="rounded-xl border border-ink/[0.08] bg-white p-7">
-            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">两大价值维度</div>
-            <div class="mt-4 space-y-4">
-              {
-                coreTech.dimensions.map((d) => (
-                  <div>
-                    <h4 class="m-0 text-[0.98rem] font-semibold text-brand-deep">{d.title}</h4>
-                    <p class="mt-2 mb-0 text-[0.86rem] leading-relaxed text-muted">{d.desc}</p>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-          <div class="rounded-xl border border-ink/[0.08] bg-white p-7">
-            <div class="font-mono text-[0.72rem] tracking-[0.12em] text-brand">三大应用层级</div>
-            <div class="mt-4 space-y-4">
-              {
-                coreTech.levels.map((l) => (
-                  <div>
-                    <h4 class="m-0 text-[0.95rem] font-semibold text-brand-deep">{l.title}</h4>
-                    <p class="mt-1.5 mb-0 text-[0.86rem] text-muted">{l.scope}</p>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
         </div>
       </div>
     </section>
