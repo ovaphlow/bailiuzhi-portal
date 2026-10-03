@@ -19,7 +19,6 @@ import {
   clients,
   demoVideos,
   capabilities,
-  ecosystem,
   cases as zonglianCases,
 } from '../data/partner-zonglian';
 
@@ -698,60 +697,29 @@ const partnerCards = [
       </div>
     </section>
 
-    <!-- 生态赋能，非对称竞争（P10） -->
-    <section id="zonglian-ecosystem" class="bg-surface py-14 md:py-18">
-      <div class="mx-auto max-w-300 px-6 lg:px-10">
-        <SectionHead eyebrow="Ecosystem" title="生态赋能，非对称竞争" desc="互补共生，价值共享。" />
-        <div class="space-y-5">
-          <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
-            <div class="text-[0.9rem] font-semibold text-brand-deep">行业格局</div>
-            <p class="mt-2 mb-0 text-[0.9rem] leading-relaxed text-muted">{ecosystem.landscape}</p>
-          </div>
-          <div class="rounded-xl bg-brand p-6 text-white">
-            <div class="text-[0.9rem] font-semibold">我们的策略</div>
-            <p class="mt-2 mb-0 text-[0.95rem] leading-relaxed text-white/90">{ecosystem.strategy}</p>
-          </div>
-          <div class="grid gap-5 md:grid-cols-3">
-            {
-              ecosystem.partners.map((p) => (
-                <div class="rounded-xl border border-ink/[0.08] bg-surface p-6">
-                  <h3 class="m-0 text-[1rem] font-semibold text-brand-deep">{p.title}</h3>
-                  <p class="mt-2 mb-0 text-[0.88rem] leading-relaxed text-muted">{p.desc}</p>
-                </div>
-              ))
-            }
-          </div>
-          <div class="rounded-xl border border-gold/30 bg-gold-soft p-6 text-[0.92rem] leading-relaxed text-muted">
-            <span class="font-semibold text-brand-deep">战略价值：</span>
-            {ecosystem.value}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 精选案例（P11–P37，精选 5 个） -->
+    <!-- 精选案例（P11–P37，精选 1 个） -->
     <section id="zonglian-cases" class="py-14 md:py-18">
       <div class="mx-auto max-w-300 px-6 lg:px-10">
         <SectionHead
           eyebrow="Cases"
           title="精选案例"
-          desc="从特种装备到产线应用，覆盖航空、能源、石化、核电与救援场景。"
+          desc="覆盖能源电力场景 —— 发电机巡检机器人免抽转子，直接进入定转子气隙完成巡检。"
         />
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-5">
           {
             zonglianCases.map((c) => (
-              <article class="flex flex-col overflow-hidden rounded-xl border border-ink/[0.08] bg-white">
+              <article class="grid overflow-hidden rounded-xl border border-ink/[0.08] bg-white lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
                 <Image
-                  class="block aspect-16/10 w-full object-cover"
+                  class="block aspect-16/10 w-full object-cover lg:aspect-auto lg:h-full"
                   src={c.img}
                   alt={c.alt}
-                  width={Math.min(640, c.img.width)}
-                  widths={srcWidths(c.img, [320, 480, 640, 960])}
-                  sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 88vw"
+                  width={Math.min(960, c.img.width)}
+                  widths={srcWidths(c.img, [480, 640, 960])}
+                  sizes="(min-width: 1024px) 500px, 88vw"
                   format="webp"
                   quality={82}
                 />
-                <div class="flex flex-1 flex-col p-6">
+                <div class="flex flex-1 flex-col p-6 lg:p-8">
                   <span class="font-mono text-[0.72rem] tracking-[0.1em] text-gold-deep">{c.no}</span>
                   <h3 class="mt-2 mb-1 text-[1.05rem] font-semibold text-brand-deep">{c.title}</h3>
                   <p class="m-0 text-[0.85rem] font-medium text-brand">{c.subtitle}</p>

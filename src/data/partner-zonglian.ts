@@ -7,7 +7,7 @@
  * 内容摘自《上海纵涟智驱科技公司简介 1.0.pdf》：
  *   P2 摘要、P3 应用场景价值矩阵、P4 公司简介、
  *   P7 产品与技术矩阵（核心产品与产品线）、
- *   P9 关键技术能力、P10 生态赋能，以及 P11–P37 中的代表性案例（精选 5 个）。
+ *   P9 关键技术能力，以及 P11–P37 中的代表性案例（精选 5 个）。
  *
  * 配图取自同一 PDF 的内嵌原图，案例配图放在 src/assets/media/partner/zonglian/，
  * 构建期由 astro:assets 派生多尺寸 WebP。
@@ -24,10 +24,6 @@ import generatorGapPoster from '../assets/media/partner/zonglian/generator-gap-p
 import generatorPlatformPoster from '../assets/media/partner/zonglian/generator-platform-poster.jpg';
 import longArmPoster from '../assets/media/partner/zonglian/long-arm-poster.jpg';
 import generatorImg from '../assets/media/partner/zonglian/generator-inspection.jpg';
-import pipeImg from '../assets/media/partner/zonglian/pipe-inspection.jpg';
-import damImg from '../assets/media/partner/zonglian/dam-inspection.jpg';
-import conveyorImg from '../assets/media/partner/zonglian/conveyor-inspection.jpg';
-import crossDomainImg from '../assets/media/partner/zonglian/cross-domain-aircraft.jpg';
 
 /** 主要客户的官方标识（背景透明 PNG；来源与去背说明见仓库根目录 _partner-logos/README.md） */
 import comacLogo from '../assets/img/partner-logos/comac.png';
@@ -316,20 +312,7 @@ export const capabilities = [
   },
 ];
 
-/** 生态赋能，非对称竞争（P10） */
-export const ecosystem = {
-  landscape:
-    '标准巡检场景已经有大量应用，如电力领域的亿嘉和、申昊，石化领域的七腾，以及核电领域的景业智能。',
-  strategy: '互补共生，价值共享 —— 我们不做颠覆者，而是成为他们的「关键能力增强模块」供应商。',
-  partners: [
-    { title: '对电力伙伴', desc: '补充其「最后一米」的检测能力（管道内、设备内），解决设备盲区痛点。' },
-    { title: '对石化伙伴', desc: '帮助其将能力延伸至「设备内部检测」，完善现有解决方案的全链路覆盖。' },
-    { title: '对核电伙伴', desc: '提供高性价比的日常巡检方案，与高端定制方案形成互补，降低综合成本。' },
-  ],
-  value: '借助成熟渠道快速切入市场，与行业龙头共享订单价值，实现商业双赢。',
-};
-
-/** 精选案例（P11–P37，共 12 个，此处精选 5 个最具代表性的；蛇形机械臂已作为核心产品单独展开，不重复） */
+/** 精选案例（P11–P37，共 12 个，此处保留最具代表性的 1 个；蛇形机械臂已作为核心产品单独展开，不重复） */
 export interface ZonglianCase {
   no: string;
   title: string;
@@ -350,41 +333,5 @@ export const cases: ZonglianCase[] = [
     img: generatorImg,
     alt: '发电厂发电机转子吊装检修现场',
     specs: ['探测间隙 55–150mm', '全长 630mm', '宽度 320mm', '厚度 20mm', '质量 4.7kg', '速度 150mm/s', '线缆 25m'],
-  },
-  {
-    no: '02',
-    title: '管道巡检机器人',
-    subtitle: '免开挖精细内检',
-    desc: '空气弹簧行走机构提升推进力与越障能力，紧急情况下可手动撤回；模块化设计让一款产品覆盖多种工业现场的巡检需求。',
-    img: pipeImg,
-    alt: '管道内检测机器人传回的管内画面',
-    specs: ['6in 管道样机', 'L / U / 垂直管道通过性验证', '快拆式传感器搭载模块', '全内走线设计'],
-  },
-  {
-    no: '03',
-    title: '大坝探查机器人',
-    subtitle: '水下建筑物视觉探查 ROV',
-    desc: '源自日本国土交通省「未来社会基础设施用机器人开发引进推进事业」，面向集体老化的大型水坝，解决隐患位置难以准确定位、人体极限无法深水作业的痛点。',
-    img: damImg,
-    alt: '大型拱形水坝外观',
-    specs: ['自然湖水环境清晰成像', '成功下潜约 34m', '2 名操作员即可完成搬运与设置', '同等日工作量节省约 800 万日元'],
-  },
-  {
-    no: '04',
-    title: '散料输送系统巡检机器人',
-    subtitle: '智能化监测 · 无人化巡检 · 可视化管理',
-    desc: '替代高危环境下的人工巡检与监控范围有限的固定摄像头，集多传感器于一体，覆盖设备状态与人员安全行为识别。',
-    img: conveyorImg,
-    alt: '轨道式散料输送系统巡检机器人实拍',
-    specs: ['质量 10kg', '防护 IP66', '尺寸 500×300×350mm', '功耗 20W', '速度 0–3m/s', '合金轨道 · 有 / 无线充电'],
-  },
-  {
-    no: '05',
-    title: '跨域飞行器',
-    subtitle: '可在海空两种介质中运动',
-    desc: '同时在飞行与潜航两种介质中作业的跨域机器人平台，可高速扎水、水下航行、水面起飞。',
-    img: crossDomainImg,
-    alt: '跨域飞行器三维设计模型',
-    specs: ['飞行最大速度 70km/h', '最小起飞速度 35km/h', '巡航速度 45km/h', '飞行航程 13km', '负载 3kg', '潜航 0.3h / 飞行 0.2h'],
   },
 ];
