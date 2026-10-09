@@ -1,0 +1,23 @@
+blzkj.com, www.blzkj.com {
+	root * /home/ubuntu/bailiuzhi-portal
+	file_server
+	encode gzip zstd
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+}
+
+# 通过 http://106.54.2.178/ 直连IP 访问时走这里。
+# 不能写成 http://106.54.2.178 —— Caddy 会尝试 bind 该地址，
+# 但本机网卡只有 172.17.0.2（公网 IP 由腾讯云 NAT 映射），bind 会失败。
+# 所以用 :80 通配监听，由 Caddy 按 Host 头区分：
+#   Host 为 blzkj.com/www.blzkj.com -> 匹配上面的域名块，走 HTTPS
+#   其余 Host（含裸 IP）-> 匹配本块，走 HTTP
+:80 {
+	root * /home/ubuntu/bailiuzhi-portal
+	file_server
+	encode gzip zstd
+}
