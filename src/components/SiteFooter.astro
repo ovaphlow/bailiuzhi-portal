@@ -2,6 +2,9 @@
 import { Image } from 'astro:assets';
 import { navLinks } from '../data/site';
 import logoLight from '../assets/img/logo-light.png';
+// 公安备案徽标（警徽）。原图同款由公安部经备案平台核发，本副本取自公开 CDN；
+// 官方直发地址需登录 beian.mps.gov.cn 下载，故此处使用等效副本。
+import ghIcon from '../assets/img/gh.png';
 ---
 
 <!-- 页脚（深色） -->
@@ -46,13 +49,33 @@ import logoLight from '../assets/img/logo-light.png';
         联系我们
       </a>
     </nav>
-    <p class="mt-4 w-full text-[0.8rem] text-[#dee7ff]/50">
-        <a
-          class="transition-colors hover:text-gold"
-          href="https://beian.miit.gov.cn/"
-        >
-          苏CP备2026067886号
-        </a>
-      </p>
+    <div class="mt-4 flex w-full flex-wrap items-center gap-x-3 gap-y-1 text-[0.8rem] text-[#dee7ff]/50">
+      <a
+        class="transition-colors hover:text-gold"
+        href="https://beian.miit.gov.cn/"
+        rel="nofollow noopener"
+        target="_blank"
+      >
+          苏ICP备2026067886号
+      </a>
+      <a
+        class="inline-flex items-center gap-1 transition-colors hover:text-gold"
+        href="https://beian.mps.gov.cn/#/query/webSearch?code=32021102003710"
+        rel="nofollow noopener"
+        target="_blank"
+      >
+        <Image
+          src={ghIcon}
+          alt="公安备案"
+          width={14}
+          height={14}
+          densities={[1, 2]}
+          loading="lazy"
+          decoding="async"
+          class="block h-[14px] w-[14px]"
+        />
+          苏公网安备32021102003710号
+      </a>
+    </div>
   </div>
 </footer>
