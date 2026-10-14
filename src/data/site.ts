@@ -14,5 +14,5 @@ export const navLinks = [
 export const contact = {
   tel: '131 1541 3199',
   telHref: 'tel:13115413199',
-  mail: '13115413199@163.com',
+  mail: 'zhangzhi@blzkj.com',
 };
