@@ -132,7 +132,7 @@ src/assets/
 │   ├── partner-logos/*.png                         主要客户官方标识（透明底；来源与去背说明见仓库根目录 _partner-logos/README.md）
 │   └── scenes/*.webp                               首页业务板块与场景配图
 └── media/
-    ├── demos/auto-dimensioning-poster.png          视频演示页封面（视频 59s 处抽帧）
+    ├── demos/auto-dimensioning-poster.png          视频演示页封面（视频首帧，工程师双屏工位画面）
     ├── docs/v4-*.jpg                               暂时停用的产品配图
     ├── partner/                                    长广溪 · 众脉产品实拍、演示视频封面、中央厨房封面帧
     │   └── zonglian/*.jpg                          上海纵涟智驱案例与产品实拍

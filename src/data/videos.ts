@@ -19,8 +19,9 @@ import rotaryJointPoster from '../assets/media/demos/rotary-joint-system-poster.
  *   public/assets/media/demos/auto-dimensioning.mp4：
  *     ffmpeg -i 自动标注自动出图.mp4 -c:v libx264 -preset slow -profile:v high -crf 20 \
  *       -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 96k auto-dimensioning.mp4
- *   封面为视频 59s 处抽帧（该处画面静止 4.3s、细节最密，适合做封面），换封面用：
- *     ffmpeg -ss 59 -i 自动标注自动出图.mp4 -frames:v 1 auto-dimensioning-poster.png
+ *   封面取视频首帧（0s：工程师在双屏工位看三维模型与二维工程图的实拍画面），
+ *   原片上下各 24px 黑边属画幅本身，与灯箱里播放的画面一致，故不裁切，换封面用：
+ *     ffmpeg -ss 0 -i 自动标注自动出图.mp4 -frames:v 1 auto-dimensioning-poster.png
  * - AI 选型 + 参数化建模系统讲解：根目录《微信视频2026-10-14_142702_058.mp4》
  *   （87s / 1280×720 / 30fps）本身已是 H.264 + yuv420p + AAC + faststart，能直接播，
  *   只是 16.1 MB 比站内其他片子明显偏大，按仓库口径重压到约 5 MB：
@@ -84,7 +85,7 @@ export const videoSections: VideoSection[] = [
         desc: '三维模型自动标注尺寸与公差 → 二维工程图自动出图，含零件明细表与技术要求。',
         duration: '1 分 05 秒',
         poster: autoDimensioningPoster,
-        posterAlt: '自动标注自动出图软件界面：模型自动标注与工程图输出结果',
+        posterAlt: '自动标注自动出图：工程师在双屏工位查看三维模型自动标注与二维工程图',
         src: '/assets/media/demos/auto-dimensioning.mp4',
         caption:
           '自动标注自动出图：三维模型自动标注尺寸与公差，到二维工程图自动生成与出图',

@@ -15,4 +15,9 @@ export const contact = {
   tel: '131 1541 3199',
   telHref: 'tel:13115413199',
   mail: 'zhangzhi@blzkj.com',
+  /** 公司地址：无锡 + 昆山 两处 */
+  addresses: [
+    { city: '无锡', region: '江苏省无锡市滨湖区', detail: '建筑西路777号A3幢3层320' },
+    { city: '昆山', region: '江苏省昆山市张浦镇', detail: '振新东路586号' },
+  ],
 };
